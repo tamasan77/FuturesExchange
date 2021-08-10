@@ -1,0 +1,2429 @@
+{
+  "contractName": "CollateralWallet",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "Paused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "Unpaused",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "paused",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "ffaContractAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "collateralTokenAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "newBalance",
+          "type": "uint256"
+        }
+      ],
+      "name": "setNewBalance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "ffaContractAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "collateralTokenAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getMappedBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.6+commit.11564f7e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Paused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Unpaused\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"ffaContractAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"collateralTokenAddress\",\"type\":\"address\"}],\"name\":\"getMappedBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"paused\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"ffaContractAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"collateralTokenAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"newBalance\",\"type\":\"uint256\"}],\"name\":\"setNewBalance\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"paused()\":{\"details\":\"Returns true if the contract is paused, and false otherwise.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/CollateralWallet.sol\":\"CollateralWallet\"},\"evmVersion\":\"berlin\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@chainlink/contracts/src/v0.8/Chainlink.sol\":{\"keccak256\":\"0x12e1313c62b0dae9684b7ca52f0a05be3ddef6926f5a714ec723ef9587b08222\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f47f2c9100938369feaad91776bc4c08176cbfc4de0e5ef24929d5d4549a538b\",\"dweb:/ipfs/QmWUX7LUTDbf9AL6mB8LbWgMgzvTjTPNNbApMSB87tz9Rv\"]},\"@chainlink/contracts/src/v0.8/ChainlinkClient.sol\":{\"keccak256\":\"0x15f8b423b9a4417b916e076b77ce59bcaeee8947807b3efca9e0e864888afddf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://50719ec09477676fbf657ae524d7a56e5395d2b6724c678fa343908ee8d297f7\",\"dweb:/ipfs/QmPyzYxFHKBbs5Fa965CG7955CefJvQP8fjPn5o9Kzfi6D\"]},\"@chainlink/contracts/src/v0.8/interfaces/ChainlinkRequestInterface.sol\":{\"keccak256\":\"0xa8adfbd0326c982c38ea3808a4da52f0a51807241787c4bd28235bbe86707c04\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://364e3be6190a68fbe84e4ede560af3ccede8d36e40e91378b4de042202c6e86a\",\"dweb:/ipfs/QmNpCP9j3FhBd1hDofg1uMCYiXBKNTU95n1Lxbnnj12oxw\"]},\"@chainlink/contracts/src/v0.8/interfaces/ENSInterface.sol\":{\"keccak256\":\"0xd8545d2e73f7aa517543d97e1763d95c11ddd52a5050cf1933047c9f22f10b5a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://de663408f7c1937e46aef8d86e180a2528f31cdcbc43e1682297c20be03af461\",\"dweb:/ipfs/QmVpFw2fJkaegf6hGRYtjx932KJCs6bAuKvCRoXrhV7GMF\"]},\"@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol\":{\"keccak256\":\"0x50528c237386c55ff122d047f91b32be7abe24e9dfdc609de21cd605aae83b9a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://92037bd13b34432f9377cb205c0039bd0724af66ea605598db31d4ccd33f879f\",\"dweb:/ipfs/QmdH6Ef5PZgcPrJuWboLX5MhmezzTFniZCwJ6fk2tYVua4\"]},\"@chainlink/contracts/src/v0.8/interfaces/OperatorInterface.sol\":{\"keccak256\":\"0x71dcc45bae7384cfb47c74de767a7ec56df21e165468610b2abf2bb02ca0c352\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://173fbef5a1b6d41eef13583531edf98a4a2faa2712adc049e6cf390ca104725f\",\"dweb:/ipfs/Qmd8uNSup5VQ5B6bV2ciJVxvg7ix5s9zba4PJx6DsVZcRm\"]},\"@chainlink/contracts/src/v0.8/interfaces/OracleInterface.sol\":{\"keccak256\":\"0x55fb2c156150379d285ab89081ff5add6f37343d7992bd2ec1485a2652af94d7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://cd1fc4c0fb89f7de9ec68fdc582950c63d581f3822ef71d9a8fd240a73b37778\",\"dweb:/ipfs/QmdvboNgXzaQXMaceVQPGwpZHMC5fe9LU9GkippzA8quPJ\"]},\"@chainlink/contracts/src/v0.8/interfaces/PointerInterface.sol\":{\"keccak256\":\"0xc3d897e7c93b02e53f21b40accd4a0bd5c38f9780a4f74a7109b70fbfde03b40\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://11166ec1ac48aaf14f5a7053283371341e0418eaced385b7ed7c9140d9f1f1df\",\"dweb:/ipfs/QmV4bkHEEpeqC6pr3nmmQQURkVKMroucA31YoGcysnByt7\"]},\"@chainlink/contracts/src/v0.8/vendor/BufferChainlink.sol\":{\"keccak256\":\"0x68a67e15960462bf12313307765e619de03c73949b6ef0626785e7e76cf484af\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6859a1ea9d84cc3888dee8abb2491bc0020d9ff06ddf1d9f6a36fc1690d58a67\",\"dweb:/ipfs/QmdEeRx4rKRDtCwWcz4BP7ZkcCCx6XSYMH9Hff2baXQMww\"]},\"@chainlink/contracts/src/v0.8/vendor/CBORChainlink.sol\":{\"keccak256\":\"0xe7c6e4290ac2a41a138e6bd89d89a2779f66847a5ee6fb5a6f2a3386e5ce589d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1eb0e7821c4963b125b47c93e31cd6e073d2b87550651054fc526e63915d92ab\",\"dweb:/ipfs/QmVJq2sNTzX4Hfyway8JiY4RoQw4vQRSbzJWbsC7JsiyUs\"]},\"@chainlink/contracts/src/v0.8/vendor/ENSResolver.sol\":{\"keccak256\":\"0xeed48a6a522c400f024f8725ad931833205cb63cc87285b46c5c0e88ca090352\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c4065aed34d3fae897ac7eb7c5e3af1ba9f458fc31c9f165acae8fa448125ec5\",\"dweb:/ipfs/Qmejzy7Kdw4mHiv5QqyvA8nUU5SeqH6n6dQoe1VEWZUnsi\"]},\"@openzeppelin/contracts/access/Ownable.sol\":{\"keccak256\":\"0x6bb804a310218875e89d12c053e94a13a4607cdf7cc2052f3e52bd32a0dc50a1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b2ebbbe6d0011175bd9e7268b83de3f9c2f9d8d4cbfbaef12aff977d7d727163\",\"dweb:/ipfs/Qmd5c7Vxtis9wzkDNhxwc6A2QT5H9xn9kfjhx7qx44vpro\"]},\"@openzeppelin/contracts/security/Pausable.sol\":{\"keccak256\":\"0xa35b1f2a670cd2a701a52c398032c9fed72df1909fe394d77ceacbf074e8937b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://72b957861691ebdaa78c52834465c4f8296480fe4f1a12ba72dc6c0c8ac076dd\",\"dweb:/ipfs/QmVz1sHCwgEivHPRDswdt9tdvky7EnWqFmbuk1wFE55VMG\"]},\"@openzeppelin/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x027b891937d20ccf213fdb9c31531574256de774bda99d3a70ecef6e1913ed2a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://087318b21c528119f649899f5b5580566dd8d7b0303d4904bd0e8580c3545f14\",\"dweb:/ipfs/Qmbn5Mj7aUn8hJuQ8VrQjjEXRsXyJKykgnjR9p4C3nfLtL\"]},\"@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol\":{\"keccak256\":\"0x83fe24f5c04a56091e50f4a345ff504c8bff658a76d4c43b16878c8f940c53b2\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d4c3df1a7ca104b633a7d81c6c6f5192367d150cd5a32cba81f7f27012729013\",\"dweb:/ipfs/QmSim72e3ZVsfgZt8UceCvbiSuMRHR6WDsiamqNzZahGSY\"]},\"@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol\":{\"keccak256\":\"0x02348b2e4b9f3200c7e3907c5c2661643a6d8520e9f79939fbb9b4005a54894d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d41d627f4ef9c6006df8c2d01227d3cf4a6c3359b5704c629d88933272eecadd\",\"dweb:/ipfs/QmYDo7MvMsvuDxuJZ9RC9zFganS3Tm8RYzSmBP5qSmJfuY\"]},\"@openzeppelin/contracts/utils/Address.sol\":{\"keccak256\":\"0x3b4820cac4f127869f6eb496c1d74fa6ac86ed24071e0f94742e6aef20e7252c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://23e1c7303c30a2ef9c9b3f861cda15c78e4c9697b4a7988f2bf7b21c392a02fb\",\"dweb:/ipfs/QmWQJh5MsXJZjSTzAs9n5gtrqWYgXwkBa6xfwD5KKGQgSC\"]},\"@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0x95098bd1d9c8dec4d80d3dedb88a0d949fa0d740ee99f2aa466bc308216ca6d5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7fec968dcd68e13961521fa3c7dd87baecad91a2653b19240e81f21cc4f3ba85\",\"dweb:/ipfs/QmaXtsYt4Mphm8XHNUfk2me1cF3ssS2SqDBNFpYAzMjomC\"]},\"@openzeppelin/contracts/utils/math/SafeMath.sol\":{\"keccak256\":\"0x8666f020bd8fc9dc14f07e2ebc52b5f236ab4cdde7c77679b08cb2f94730043b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://163776cbf565c722232393aa2d62cbe8a2ffb5805986abf4906c00e1e07450a6\",\"dweb:/ipfs/QmPZoN9T3cb6o8bGhjBPZcz7im8T8DWhpr3tjLwhJJHx9N\"]},\"project:/contracts/ChainlinkOracle.sol\":{\"keccak256\":\"0x4198a0397d78cdfcf52339ca572746b3ea960d7baa5f735796033561ea6e2579\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://ae60410717222ffc0d2d39bf48fbf09983c14af4538ed2b7e01ca0ff1cb93472\",\"dweb:/ipfs/QmYacKpZWQM5K37eCgCzXTBUtZfERMD2tAPjhb8p2YN46Y\"]},\"project:/contracts/CollateralWallet.sol\":{\"keccak256\":\"0x9e38510f6f63e6bf28801c5baf836478ed757b1f0d7be8f575abdbd2026a10d0\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://5aa018dafcc8d9aaaabc87f0bc0951416c9ba48a602b6697205917a9c620b656\",\"dweb:/ipfs/QmSv8u5JG7SDwuqjrdtQgKXzPq3daJxJ5UibdWfbvYizNM\"]},\"project:/contracts/FFAContract.sol\":{\"keccak256\":\"0x187270b43f365fffd79dd486e5371bd51297179068cd114a447aa8d8c79e4d41\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://21b314d7cfc4fada7fb757119384bd6ef6d00298b5ac9d9a8055d2a236eaddc8\",\"dweb:/ipfs/QmXZdfpg1qmxu32yrQPVCdBt4Pdk8XhDfVkr6cv1vhzYv6\"]},\"project:/interfaces/IFFAContract.sol\":{\"keccak256\":\"0xc394d45e0d2b2a63f8adb1d12712e1b790dbaa82002dcfd4592559496046f826\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://67fe689fbbbbcb72b33ce5174afbc89017edfbe8f9ae476abb28537f66372669\",\"dweb:/ipfs/QmeQDSLUu1e6aah8PPoJMWrGAXu3NAp5NuGGv8E3SRKmoS\"]},\"project:/utils/BokkyPooBahsDateTimeLibrary.sol\":{\"keccak256\":\"0xcda76c51be93f65763cc12f67066962393d97a7837e8ac610eb03ed3f0db97d4\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://9c09dd9189bbdcdd13a4dcd8077615cb4a6e432f1acea0ab117077068457b2eb\",\"dweb:/ipfs/QmZWjApQjbK38uYn3yxssNLBcooGzbYLbFz94pS4Ly4U8E\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: UNLICENSED\r\n\r\npragma solidity ^0.8.6;\r\n\r\nimport \"@openzeppelin/contracts/access/Ownable.sol\";\r\nimport \"@openzeppelin/contracts/token/ERC20/IERC20.sol\";\r\nimport \"@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol\";\r\nimport \"@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol\";\r\nimport \"@openzeppelin/contracts/security/Pausable.sol\";\r\n\r\nimport \"./FFAContract.sol\";\r\n//import \"../interfaces/ICollateralWallet.sol\";\r\n\r\nabstract contract CollateralWallet is Pausable, Ownable{//IERC20Metadata\r\n    using SafeERC20 for IERC20;\r\n\r\n    //do i even need this?\r\n    IERC20[] private tokens;\r\n\r\n    string private name;\r\n\r\n    //ffa contracts have collaterals that have unique balance\r\n    mapping(address => mapping(address => uint256)) private ffaToPledgedCollateralMapping;\r\n    mapping(address => mapping(address => uint256)) private pledgedCollateralToFFAMapping;\r\n\r\n    //add events here\r\n\r\n    constructor (IERC20[] memory _tokens, string memory _name) {\r\n        name = _name;\r\n        tokens = _tokens;\r\n    }\r\n\r\n    //deposit\r\n\r\n    //withdraw\r\n\r\n    //transferCollateral moved to FFAContract.sol\r\n    /*\r\n    function transferCollateral(CollateralWallet recipientWallet, uint256 amount, address ffaContractAddress, address collateralTokenAddress) external returns (bool transfered_){\r\n        require(ffaToPledgedCollateralMapping[ffaContractAddress][collateralTokenAddress] >= amount, \"collateral balance not sufficient\");\r\n        require(pledgedCollateralToFFAMapping[collateralTokenAddress][ffaContractAddress] >= amount, \"collateral balance not sufficient\");\r\n\r\n        IERC20(collateralTokenAddress).safeTransfer(address(recipientWallet), amount);\r\n\r\n        //deduct from sender balance mapping\r\n        unchecked {\r\n            ffaToPledgedCollateralMapping[ffaContractAddress][collateralTokenAddress] -= amount;\r\n            pledgedCollateralToFFAMapping[collateralTokenAddress][ffaContractAddress] -= amount;\r\n        }\r\n        //add to recipient balance mapping\r\n        recipientWallet.ffaToPledgedCollateralMapping[ffaContractAddress][collateralTokenAddress] += amount;\r\n\r\n        transfered_ = true;\r\n    }*/\r\n\r\n\r\n    //setters\r\n    //ADD MODIFIERS FOR SAFETY!!!!!!!!!!!!\r\n    function setNewBalance(address ffaContractAddress, address collateralTokenAddress, uint256 newBalance) external {\r\n        ffaToPledgedCollateralMapping[ffaContractAddress][collateralTokenAddress] = newBalance;\r\n        pledgedCollateralToFFAMapping[collateralTokenAddress][ffaContractAddress] = newBalance;\r\n    }\r\n\r\n    function getMappedBalance(address ffaContractAddress, address collateralTokenAddress) external view returns (uint256) {\r\n        return ffaToPledgedCollateralMapping[ffaContractAddress][collateralTokenAddress];\r\n    }\r\n}",
+  "sourcePath": "C:\\Users\\Tomi\\OneDrive - The University of Chicago\\Documents\\Securrency\\FuturesExchange\\contracts\\CollateralWallet.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/CollateralWallet.sol",
+    "exportedSymbols": {
+      "Address": [
+        2907
+      ],
+      "BokkyPooBahsDateTimeLibrary": [
+        5746
+      ],
+      "BufferChainlink": [
+        1653
+      ],
+      "CBORChainlink": [
+        2078
+      ],
+      "Chainlink": [
+        268
+      ],
+      "ChainlinkClient": [
+        799
+      ],
+      "ChainlinkOracle": [
+        3415
+      ],
+      "ChainlinkRequestInterface": [
+        832
+      ],
+      "CollateralWallet": [
+        3510
+      ],
+      "Context": [
+        2928
+      ],
+      "ENSInterface": [
+        912
+      ],
+      "ENSResolver_Chainlink": [
+        2088
+      ],
+      "FFAContract": [
+        4007
+      ],
+      "IERC20": [
+        2362
+      ],
+      "IERC20Metadata": [
+        2387
+      ],
+      "IFFAContract": [
+        4262
+      ],
+      "LinkTokenInterface": [
+        1007
+      ],
+      "OperatorInterface": [
+        1089
+      ],
+      "OracleInterface": [
+        1128
+      ],
+      "Ownable": [
+        2192
+      ],
+      "Pausable": [
+        2284
+      ],
+      "PointerInterface": [
+        1136
+      ],
+      "SafeERC20": [
+        2611
+      ],
+      "SafeMath": [
+        3240
+      ]
+    },
+    "id": 3511,
+    "license": "UNLICENSED",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3417,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".6"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:20"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/access/Ownable.sol",
+        "file": "@openzeppelin/contracts/access/Ownable.sol",
+        "id": 3418,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 2193,
+        "src": "69:52:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "file": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "id": 3419,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 2363,
+        "src": "123:56:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "file": "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "id": 3420,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 2612,
+        "src": "181:65:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+        "file": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+        "id": 3421,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 2388,
+        "src": "248:75:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/security/Pausable.sol",
+        "file": "@openzeppelin/contracts/security/Pausable.sol",
+        "id": 3422,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 2285,
+        "src": "325:55:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "project:/contracts/FFAContract.sol",
+        "file": "./FFAContract.sol",
+        "id": 3423,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 4008,
+        "src": "384:27:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": true,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 3424,
+              "name": "Pausable",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 2284,
+              "src": "502:8:20"
+            },
+            "id": 3425,
+            "nodeType": "InheritanceSpecifier",
+            "src": "502:8:20"
+          },
+          {
+            "baseName": {
+              "id": 3426,
+              "name": "Ownable",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 2192,
+              "src": "512:7:20"
+            },
+            "id": 3427,
+            "nodeType": "InheritanceSpecifier",
+            "src": "512:7:20"
+          }
+        ],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 3510,
+        "linearizedBaseContracts": [
+          3510,
+          2192,
+          2284,
+          2928
+        ],
+        "name": "CollateralWallet",
+        "nameLocation": "482:16:20",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 3431,
+            "libraryName": {
+              "id": 3428,
+              "name": "SafeERC20",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 2611,
+              "src": "548:9:20"
+            },
+            "nodeType": "UsingForDirective",
+            "src": "542:27:20",
+            "typeName": {
+              "id": 3430,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 3429,
+                "name": "IERC20",
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 2362,
+                "src": "562:6:20"
+              },
+              "referencedDeclaration": 2362,
+              "src": "562:6:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IERC20_$2362",
+                "typeString": "contract IERC20"
+              }
+            }
+          },
+          {
+            "constant": false,
+            "id": 3435,
+            "mutability": "mutable",
+            "name": "tokens",
+            "nameLocation": "622:6:20",
+            "nodeType": "VariableDeclaration",
+            "scope": 3510,
+            "src": "605:23:20",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_storage",
+              "typeString": "contract IERC20[]"
+            },
+            "typeName": {
+              "baseType": {
+                "id": 3433,
+                "nodeType": "UserDefinedTypeName",
+                "pathNode": {
+                  "id": 3432,
+                  "name": "IERC20",
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 2362,
+                  "src": "605:6:20"
+                },
+                "referencedDeclaration": 2362,
+                "src": "605:6:20",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_contract$_IERC20_$2362",
+                  "typeString": "contract IERC20"
+                }
+              },
+              "id": 3434,
+              "nodeType": "ArrayTypeName",
+              "src": "605:8:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_storage_ptr",
+                "typeString": "contract IERC20[]"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "constant": false,
+            "id": 3437,
+            "mutability": "mutable",
+            "name": "name",
+            "nameLocation": "652:4:20",
+            "nodeType": "VariableDeclaration",
+            "scope": 3510,
+            "src": "637:19:20",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 3436,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "637:6:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "constant": false,
+            "id": 3443,
+            "mutability": "mutable",
+            "name": "ffaToPledgedCollateralMapping",
+            "nameLocation": "784:29:20",
+            "nodeType": "VariableDeclaration",
+            "scope": 3510,
+            "src": "728:85:20",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+              "typeString": "mapping(address => mapping(address => uint256))"
+            },
+            "typeName": {
+              "id": 3442,
+              "keyType": {
+                "id": 3438,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "736:7:20",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "728:47:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+                "typeString": "mapping(address => mapping(address => uint256))"
+              },
+              "valueType": {
+                "id": 3441,
+                "keyType": {
+                  "id": 3439,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "755:7:20",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "nodeType": "Mapping",
+                "src": "747:27:20",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                  "typeString": "mapping(address => uint256)"
+                },
+                "valueType": {
+                  "id": 3440,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "766:7:20",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                }
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "constant": false,
+            "id": 3449,
+            "mutability": "mutable",
+            "name": "pledgedCollateralToFFAMapping",
+            "nameLocation": "876:29:20",
+            "nodeType": "VariableDeclaration",
+            "scope": 3510,
+            "src": "820:85:20",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+              "typeString": "mapping(address => mapping(address => uint256))"
+            },
+            "typeName": {
+              "id": 3448,
+              "keyType": {
+                "id": 3444,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "828:7:20",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "820:47:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+                "typeString": "mapping(address => mapping(address => uint256))"
+              },
+              "valueType": {
+                "id": 3447,
+                "keyType": {
+                  "id": 3445,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "847:7:20",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "nodeType": "Mapping",
+                "src": "839:27:20",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                  "typeString": "mapping(address => uint256)"
+                },
+                "valueType": {
+                  "id": 3446,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "858:7:20",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                }
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "body": {
+              "id": 3466,
+              "nodeType": "Block",
+              "src": "998:58:20",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 3460,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 3458,
+                      "name": "name",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3437,
+                      "src": "1009:4:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 3459,
+                      "name": "_name",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3455,
+                      "src": "1016:5:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "1009:12:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 3461,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1009:12:20"
+                },
+                {
+                  "expression": {
+                    "id": 3464,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 3462,
+                      "name": "tokens",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3435,
+                      "src": "1032:6:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_storage",
+                        "typeString": "contract IERC20[] storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 3463,
+                      "name": "_tokens",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3453,
+                      "src": "1041:7:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_memory_ptr",
+                        "typeString": "contract IERC20[] memory"
+                      }
+                    },
+                    "src": "1032:16:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_storage",
+                      "typeString": "contract IERC20[] storage ref"
+                    }
+                  },
+                  "id": 3465,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1032:16:20"
+                }
+              ]
+            },
+            "id": 3467,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3456,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3453,
+                  "mutability": "mutable",
+                  "name": "_tokens",
+                  "nameLocation": "968:7:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3467,
+                  "src": "952:23:20",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_memory_ptr",
+                    "typeString": "contract IERC20[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 3451,
+                      "nodeType": "UserDefinedTypeName",
+                      "pathNode": {
+                        "id": 3450,
+                        "name": "IERC20",
+                        "nodeType": "IdentifierPath",
+                        "referencedDeclaration": 2362,
+                        "src": "952:6:20"
+                      },
+                      "referencedDeclaration": 2362,
+                      "src": "952:6:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_IERC20_$2362",
+                        "typeString": "contract IERC20"
+                      }
+                    },
+                    "id": 3452,
+                    "nodeType": "ArrayTypeName",
+                    "src": "952:8:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_storage_ptr",
+                      "typeString": "contract IERC20[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3455,
+                  "mutability": "mutable",
+                  "name": "_name",
+                  "nameLocation": "991:5:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3467,
+                  "src": "977:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 3454,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "977:6:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "951:46:20"
+            },
+            "returnParameters": {
+              "id": 3457,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "998:0:20"
+            },
+            "scope": 3510,
+            "src": "939:117:20",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 3492,
+              "nodeType": "Block",
+              "src": "2353:202:20",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 3482,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "baseExpression": {
+                        "baseExpression": {
+                          "id": 3476,
+                          "name": "ffaToPledgedCollateralMapping",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3443,
+                          "src": "2364:29:20",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+                            "typeString": "mapping(address => mapping(address => uint256))"
+                          }
+                        },
+                        "id": 3479,
+                        "indexExpression": {
+                          "id": 3477,
+                          "name": "ffaContractAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3469,
+                          "src": "2394:18:20",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "2364:49:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                          "typeString": "mapping(address => uint256)"
+                        }
+                      },
+                      "id": 3480,
+                      "indexExpression": {
+                        "id": 3478,
+                        "name": "collateralTokenAddress",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3471,
+                        "src": "2414:22:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "2364:73:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 3481,
+                      "name": "newBalance",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3473,
+                      "src": "2440:10:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "2364:86:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 3483,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2364:86:20"
+                },
+                {
+                  "expression": {
+                    "id": 3490,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "baseExpression": {
+                        "baseExpression": {
+                          "id": 3484,
+                          "name": "pledgedCollateralToFFAMapping",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3449,
+                          "src": "2461:29:20",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+                            "typeString": "mapping(address => mapping(address => uint256))"
+                          }
+                        },
+                        "id": 3487,
+                        "indexExpression": {
+                          "id": 3485,
+                          "name": "collateralTokenAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3471,
+                          "src": "2491:22:20",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "2461:53:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                          "typeString": "mapping(address => uint256)"
+                        }
+                      },
+                      "id": 3488,
+                      "indexExpression": {
+                        "id": 3486,
+                        "name": "ffaContractAddress",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3469,
+                        "src": "2515:18:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "2461:73:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 3489,
+                      "name": "newBalance",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3473,
+                      "src": "2537:10:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "2461:86:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 3491,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2461:86:20"
+                }
+              ]
+            },
+            "functionSelector": "dfeff661",
+            "id": 3493,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setNewBalance",
+            "nameLocation": "2250:13:20",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3474,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3469,
+                  "mutability": "mutable",
+                  "name": "ffaContractAddress",
+                  "nameLocation": "2272:18:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3493,
+                  "src": "2264:26:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3468,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2264:7:20",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3471,
+                  "mutability": "mutable",
+                  "name": "collateralTokenAddress",
+                  "nameLocation": "2300:22:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3493,
+                  "src": "2292:30:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3470,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2292:7:20",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3473,
+                  "mutability": "mutable",
+                  "name": "newBalance",
+                  "nameLocation": "2332:10:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3493,
+                  "src": "2324:18:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3472,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2324:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2263:80:20"
+            },
+            "returnParameters": {
+              "id": 3475,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2353:0:20"
+            },
+            "scope": 3510,
+            "src": "2241:314:20",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 3508,
+              "nodeType": "Block",
+              "src": "2681:99:20",
+              "statements": [
+                {
+                  "expression": {
+                    "baseExpression": {
+                      "baseExpression": {
+                        "id": 3502,
+                        "name": "ffaToPledgedCollateralMapping",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3443,
+                        "src": "2699:29:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+                          "typeString": "mapping(address => mapping(address => uint256))"
+                        }
+                      },
+                      "id": 3504,
+                      "indexExpression": {
+                        "id": 3503,
+                        "name": "ffaContractAddress",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3495,
+                        "src": "2729:18:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "2699:49:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                        "typeString": "mapping(address => uint256)"
+                      }
+                    },
+                    "id": 3506,
+                    "indexExpression": {
+                      "id": 3505,
+                      "name": "collateralTokenAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3497,
+                      "src": "2749:22:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "2699:73:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 3501,
+                  "id": 3507,
+                  "nodeType": "Return",
+                  "src": "2692:80:20"
+                }
+              ]
+            },
+            "functionSelector": "2a1e15e7",
+            "id": 3509,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getMappedBalance",
+            "nameLocation": "2572:16:20",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3498,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3495,
+                  "mutability": "mutable",
+                  "name": "ffaContractAddress",
+                  "nameLocation": "2597:18:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3509,
+                  "src": "2589:26:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3494,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2589:7:20",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3497,
+                  "mutability": "mutable",
+                  "name": "collateralTokenAddress",
+                  "nameLocation": "2625:22:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3509,
+                  "src": "2617:30:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3496,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2617:7:20",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2588:60:20"
+            },
+            "returnParameters": {
+              "id": 3501,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3500,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3509,
+                  "src": "2672:7:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3499,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2672:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2671:9:20"
+            },
+            "scope": 3510,
+            "src": "2563:217:20",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 3511,
+        "src": "464:2319:20",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:2741:20"
+  },
+  "legacyAST": {
+    "absolutePath": "project:/contracts/CollateralWallet.sol",
+    "exportedSymbols": {
+      "Address": [
+        2907
+      ],
+      "BokkyPooBahsDateTimeLibrary": [
+        5746
+      ],
+      "BufferChainlink": [
+        1653
+      ],
+      "CBORChainlink": [
+        2078
+      ],
+      "Chainlink": [
+        268
+      ],
+      "ChainlinkClient": [
+        799
+      ],
+      "ChainlinkOracle": [
+        3415
+      ],
+      "ChainlinkRequestInterface": [
+        832
+      ],
+      "CollateralWallet": [
+        3510
+      ],
+      "Context": [
+        2928
+      ],
+      "ENSInterface": [
+        912
+      ],
+      "ENSResolver_Chainlink": [
+        2088
+      ],
+      "FFAContract": [
+        4007
+      ],
+      "IERC20": [
+        2362
+      ],
+      "IERC20Metadata": [
+        2387
+      ],
+      "IFFAContract": [
+        4262
+      ],
+      "LinkTokenInterface": [
+        1007
+      ],
+      "OperatorInterface": [
+        1089
+      ],
+      "OracleInterface": [
+        1128
+      ],
+      "Ownable": [
+        2192
+      ],
+      "Pausable": [
+        2284
+      ],
+      "PointerInterface": [
+        1136
+      ],
+      "SafeERC20": [
+        2611
+      ],
+      "SafeMath": [
+        3240
+      ]
+    },
+    "id": 3511,
+    "license": "UNLICENSED",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3417,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".6"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "42:23:20"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/access/Ownable.sol",
+        "file": "@openzeppelin/contracts/access/Ownable.sol",
+        "id": 3418,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 2193,
+        "src": "69:52:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "file": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "id": 3419,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 2363,
+        "src": "123:56:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "file": "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "id": 3420,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 2612,
+        "src": "181:65:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+        "file": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+        "id": 3421,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 2388,
+        "src": "248:75:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/security/Pausable.sol",
+        "file": "@openzeppelin/contracts/security/Pausable.sol",
+        "id": 3422,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 2285,
+        "src": "325:55:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "project:/contracts/FFAContract.sol",
+        "file": "./FFAContract.sol",
+        "id": 3423,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3511,
+        "sourceUnit": 4008,
+        "src": "384:27:20",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": true,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 3424,
+              "name": "Pausable",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 2284,
+              "src": "502:8:20"
+            },
+            "id": 3425,
+            "nodeType": "InheritanceSpecifier",
+            "src": "502:8:20"
+          },
+          {
+            "baseName": {
+              "id": 3426,
+              "name": "Ownable",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 2192,
+              "src": "512:7:20"
+            },
+            "id": 3427,
+            "nodeType": "InheritanceSpecifier",
+            "src": "512:7:20"
+          }
+        ],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 3510,
+        "linearizedBaseContracts": [
+          3510,
+          2192,
+          2284,
+          2928
+        ],
+        "name": "CollateralWallet",
+        "nameLocation": "482:16:20",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 3431,
+            "libraryName": {
+              "id": 3428,
+              "name": "SafeERC20",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 2611,
+              "src": "548:9:20"
+            },
+            "nodeType": "UsingForDirective",
+            "src": "542:27:20",
+            "typeName": {
+              "id": 3430,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 3429,
+                "name": "IERC20",
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 2362,
+                "src": "562:6:20"
+              },
+              "referencedDeclaration": 2362,
+              "src": "562:6:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IERC20_$2362",
+                "typeString": "contract IERC20"
+              }
+            }
+          },
+          {
+            "constant": false,
+            "id": 3435,
+            "mutability": "mutable",
+            "name": "tokens",
+            "nameLocation": "622:6:20",
+            "nodeType": "VariableDeclaration",
+            "scope": 3510,
+            "src": "605:23:20",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_storage",
+              "typeString": "contract IERC20[]"
+            },
+            "typeName": {
+              "baseType": {
+                "id": 3433,
+                "nodeType": "UserDefinedTypeName",
+                "pathNode": {
+                  "id": 3432,
+                  "name": "IERC20",
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 2362,
+                  "src": "605:6:20"
+                },
+                "referencedDeclaration": 2362,
+                "src": "605:6:20",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_contract$_IERC20_$2362",
+                  "typeString": "contract IERC20"
+                }
+              },
+              "id": 3434,
+              "nodeType": "ArrayTypeName",
+              "src": "605:8:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_storage_ptr",
+                "typeString": "contract IERC20[]"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "constant": false,
+            "id": 3437,
+            "mutability": "mutable",
+            "name": "name",
+            "nameLocation": "652:4:20",
+            "nodeType": "VariableDeclaration",
+            "scope": 3510,
+            "src": "637:19:20",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_string_storage",
+              "typeString": "string"
+            },
+            "typeName": {
+              "id": 3436,
+              "name": "string",
+              "nodeType": "ElementaryTypeName",
+              "src": "637:6:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_string_storage_ptr",
+                "typeString": "string"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "constant": false,
+            "id": 3443,
+            "mutability": "mutable",
+            "name": "ffaToPledgedCollateralMapping",
+            "nameLocation": "784:29:20",
+            "nodeType": "VariableDeclaration",
+            "scope": 3510,
+            "src": "728:85:20",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+              "typeString": "mapping(address => mapping(address => uint256))"
+            },
+            "typeName": {
+              "id": 3442,
+              "keyType": {
+                "id": 3438,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "736:7:20",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "728:47:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+                "typeString": "mapping(address => mapping(address => uint256))"
+              },
+              "valueType": {
+                "id": 3441,
+                "keyType": {
+                  "id": 3439,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "755:7:20",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "nodeType": "Mapping",
+                "src": "747:27:20",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                  "typeString": "mapping(address => uint256)"
+                },
+                "valueType": {
+                  "id": 3440,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "766:7:20",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                }
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "constant": false,
+            "id": 3449,
+            "mutability": "mutable",
+            "name": "pledgedCollateralToFFAMapping",
+            "nameLocation": "876:29:20",
+            "nodeType": "VariableDeclaration",
+            "scope": 3510,
+            "src": "820:85:20",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+              "typeString": "mapping(address => mapping(address => uint256))"
+            },
+            "typeName": {
+              "id": 3448,
+              "keyType": {
+                "id": 3444,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "828:7:20",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "820:47:20",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+                "typeString": "mapping(address => mapping(address => uint256))"
+              },
+              "valueType": {
+                "id": 3447,
+                "keyType": {
+                  "id": 3445,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "847:7:20",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "nodeType": "Mapping",
+                "src": "839:27:20",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                  "typeString": "mapping(address => uint256)"
+                },
+                "valueType": {
+                  "id": 3446,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "858:7:20",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                }
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "body": {
+              "id": 3466,
+              "nodeType": "Block",
+              "src": "998:58:20",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 3460,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 3458,
+                      "name": "name",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3437,
+                      "src": "1009:4:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 3459,
+                      "name": "_name",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3455,
+                      "src": "1016:5:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "1009:12:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 3461,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1009:12:20"
+                },
+                {
+                  "expression": {
+                    "id": 3464,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 3462,
+                      "name": "tokens",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3435,
+                      "src": "1032:6:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_storage",
+                        "typeString": "contract IERC20[] storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 3463,
+                      "name": "_tokens",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3453,
+                      "src": "1041:7:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_memory_ptr",
+                        "typeString": "contract IERC20[] memory"
+                      }
+                    },
+                    "src": "1032:16:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_storage",
+                      "typeString": "contract IERC20[] storage ref"
+                    }
+                  },
+                  "id": 3465,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1032:16:20"
+                }
+              ]
+            },
+            "id": 3467,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3456,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3453,
+                  "mutability": "mutable",
+                  "name": "_tokens",
+                  "nameLocation": "968:7:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3467,
+                  "src": "952:23:20",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_memory_ptr",
+                    "typeString": "contract IERC20[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 3451,
+                      "nodeType": "UserDefinedTypeName",
+                      "pathNode": {
+                        "id": 3450,
+                        "name": "IERC20",
+                        "nodeType": "IdentifierPath",
+                        "referencedDeclaration": 2362,
+                        "src": "952:6:20"
+                      },
+                      "referencedDeclaration": 2362,
+                      "src": "952:6:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_IERC20_$2362",
+                        "typeString": "contract IERC20"
+                      }
+                    },
+                    "id": 3452,
+                    "nodeType": "ArrayTypeName",
+                    "src": "952:8:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_contract$_IERC20_$2362_$dyn_storage_ptr",
+                      "typeString": "contract IERC20[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3455,
+                  "mutability": "mutable",
+                  "name": "_name",
+                  "nameLocation": "991:5:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3467,
+                  "src": "977:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 3454,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "977:6:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "951:46:20"
+            },
+            "returnParameters": {
+              "id": 3457,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "998:0:20"
+            },
+            "scope": 3510,
+            "src": "939:117:20",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 3492,
+              "nodeType": "Block",
+              "src": "2353:202:20",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 3482,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "baseExpression": {
+                        "baseExpression": {
+                          "id": 3476,
+                          "name": "ffaToPledgedCollateralMapping",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3443,
+                          "src": "2364:29:20",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+                            "typeString": "mapping(address => mapping(address => uint256))"
+                          }
+                        },
+                        "id": 3479,
+                        "indexExpression": {
+                          "id": 3477,
+                          "name": "ffaContractAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3469,
+                          "src": "2394:18:20",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "2364:49:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                          "typeString": "mapping(address => uint256)"
+                        }
+                      },
+                      "id": 3480,
+                      "indexExpression": {
+                        "id": 3478,
+                        "name": "collateralTokenAddress",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3471,
+                        "src": "2414:22:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "2364:73:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 3481,
+                      "name": "newBalance",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3473,
+                      "src": "2440:10:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "2364:86:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 3483,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2364:86:20"
+                },
+                {
+                  "expression": {
+                    "id": 3490,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "baseExpression": {
+                        "baseExpression": {
+                          "id": 3484,
+                          "name": "pledgedCollateralToFFAMapping",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3449,
+                          "src": "2461:29:20",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+                            "typeString": "mapping(address => mapping(address => uint256))"
+                          }
+                        },
+                        "id": 3487,
+                        "indexExpression": {
+                          "id": 3485,
+                          "name": "collateralTokenAddress",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3471,
+                          "src": "2491:22:20",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "2461:53:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                          "typeString": "mapping(address => uint256)"
+                        }
+                      },
+                      "id": 3488,
+                      "indexExpression": {
+                        "id": 3486,
+                        "name": "ffaContractAddress",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3469,
+                        "src": "2515:18:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "2461:73:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 3489,
+                      "name": "newBalance",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3473,
+                      "src": "2537:10:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "2461:86:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 3491,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2461:86:20"
+                }
+              ]
+            },
+            "functionSelector": "dfeff661",
+            "id": 3493,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setNewBalance",
+            "nameLocation": "2250:13:20",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3474,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3469,
+                  "mutability": "mutable",
+                  "name": "ffaContractAddress",
+                  "nameLocation": "2272:18:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3493,
+                  "src": "2264:26:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3468,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2264:7:20",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3471,
+                  "mutability": "mutable",
+                  "name": "collateralTokenAddress",
+                  "nameLocation": "2300:22:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3493,
+                  "src": "2292:30:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3470,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2292:7:20",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3473,
+                  "mutability": "mutable",
+                  "name": "newBalance",
+                  "nameLocation": "2332:10:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3493,
+                  "src": "2324:18:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3472,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2324:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2263:80:20"
+            },
+            "returnParameters": {
+              "id": 3475,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2353:0:20"
+            },
+            "scope": 3510,
+            "src": "2241:314:20",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 3508,
+              "nodeType": "Block",
+              "src": "2681:99:20",
+              "statements": [
+                {
+                  "expression": {
+                    "baseExpression": {
+                      "baseExpression": {
+                        "id": 3502,
+                        "name": "ffaToPledgedCollateralMapping",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3443,
+                        "src": "2699:29:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$",
+                          "typeString": "mapping(address => mapping(address => uint256))"
+                        }
+                      },
+                      "id": 3504,
+                      "indexExpression": {
+                        "id": 3503,
+                        "name": "ffaContractAddress",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3495,
+                        "src": "2729:18:20",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "2699:49:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                        "typeString": "mapping(address => uint256)"
+                      }
+                    },
+                    "id": 3506,
+                    "indexExpression": {
+                      "id": 3505,
+                      "name": "collateralTokenAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3497,
+                      "src": "2749:22:20",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "2699:73:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 3501,
+                  "id": 3507,
+                  "nodeType": "Return",
+                  "src": "2692:80:20"
+                }
+              ]
+            },
+            "functionSelector": "2a1e15e7",
+            "id": 3509,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getMappedBalance",
+            "nameLocation": "2572:16:20",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3498,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3495,
+                  "mutability": "mutable",
+                  "name": "ffaContractAddress",
+                  "nameLocation": "2597:18:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3509,
+                  "src": "2589:26:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3494,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2589:7:20",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3497,
+                  "mutability": "mutable",
+                  "name": "collateralTokenAddress",
+                  "nameLocation": "2625:22:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3509,
+                  "src": "2617:30:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3496,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2617:7:20",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2588:60:20"
+            },
+            "returnParameters": {
+              "id": 3501,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3500,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3509,
+                  "src": "2672:7:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3499,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2672:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2671:9:20"
+            },
+            "scope": 3510,
+            "src": "2563:217:20",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 3511,
+        "src": "464:2319:20",
+        "usedErrors": []
+      }
+    ],
+    "src": "42:2741:20"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.6+commit.11564f7e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.2",
+  "updatedAt": "2021-08-10T11:55:16.918Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "paused()": {
+        "details": "Returns true if the contract is paused, and false otherwise."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
