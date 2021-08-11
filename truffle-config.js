@@ -13,6 +13,28 @@ module.exports = {
       network_id: "*",
       host: "127.0.0.1"
     },
+    kovan: {
+      provider: function() {
+        return new HDWalletProvider(
+          process.env.MNEMONIC,
+          process.env.INFURA_KOVAN_URL
+        )
+      }, 
+      gas: 5000000,
+      network_id: 42,
+      networkCheckTimeout: 20000
+    },
+    ropsten: {
+      provider: function() {
+        return new HDWalletProvider(
+          process.env.MNEMONIC, 
+          process.env.INFURA_ROPSTEN_URL
+        )
+      },
+      network_id: 3,
+      gas: 4000000,
+      networkCheckTimeout: 20000
+    },
     ganache_local: {
       provider: function() {
         return new HDWalletProvider(process.env.MNEMONIC, "http://127.0.0.1:7545", AccountIndex)

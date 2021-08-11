@@ -3,26 +3,6 @@ const { assert } = require("chai");
 const FFAFactory = artifacts.require("./FFAFactory.sol");
 const FFAContract = artifacts.require("./FFAContract.sol");
 
-/*
-//chai uses openzeppelin test helper
-var chai = require("chai");
-const BN = web3.utils.BN;
-const chaiBN = require("chai-bn")(BN);
-chai.use(chaiBN);
-
-var chaiAspromised = require("chai-as-promised");
-const { contracts_build_directory } = require("../truffle-config");
-chai.use(chaiAspromised);
-
-const expect = chai.expect;
-
-contracts_build_directory("Factory Test", async(accounts) => {
-    it("should create FFAContract", async () => {
-        let instance = await FFAFactory.deployed();
-        let 
-    })
-})*/
-
 contract("FFAFactory", accounts => {
     it("should be able to create FFAContract", async function() {
         const ffaFactoryInstance = await FFAFactory.deployed();
