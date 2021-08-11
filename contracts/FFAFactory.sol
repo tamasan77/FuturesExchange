@@ -13,8 +13,6 @@ contract FFAFactory {
     //hold address of FFA contracts
     address[] private ffaContracts;
 
-    //address _oracleAddress = 0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e;//temporary
-
     event Created(uint8 decimals, uint256 sizeOfContract);
 
     function createFFAContract(
@@ -36,8 +34,6 @@ contract FFAFactory {
             emit Created( _decimals, _sizeOfContract);
     }
 
-    //do i need modifier?
-    //could just send address and then use .at
     function getFFAContract(uint256 index) external view returns(FFAContract) {
         return FFAContract(ffaContracts[index]);
     }

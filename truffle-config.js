@@ -20,7 +20,7 @@ module.exports = {
           process.env.INFURA_KOVAN_URL
         )
       }, 
-      gas: 5000000,
+      gas: 3000000,
       network_id: 42,
       networkCheckTimeout: 20000
     },
