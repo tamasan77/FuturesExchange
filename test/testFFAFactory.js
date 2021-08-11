@@ -38,7 +38,15 @@ contract("FFAFactory", accounts => {
         
         const ffaContract = await ffaFactoryInstance.getFFAContract(0);
         const ffaContractInstance = await FFAContract.at(ffaContract);
+
         const ffaContractName = await ffaContractInstance.getName();
+        const ffaContractSymbol = await ffaContractInstance.getSymbol();
+        const ffaContractSize = await ffaContractInstance.getSizeOfContract();
+        const ffaContractDecimals = await ffaContractInstance.getDecimals();
         assert.equal(ffaContractName, name, "names should be equal");
+        assert.equal(ffaContractSymbol, symbol, "symbol should be equal");
+        assert.equal(ffaContractSize, sizeOfContract, "size should be equal");
+        assert.equal(ffaContractDecimals, decimals, "decimals should be equal");
+
     })
 });

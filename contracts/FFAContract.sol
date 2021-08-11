@@ -178,6 +178,14 @@ contract FFAContract is IFFAContract{
             return name;
         }
 
+        function getSymbol() external view returns(string memory) {
+            return symbol;
+        }
+        
+        function getSizeOfContract() external view returns(uint256) {
+            return sizeOfContract;
+        }
+
         function getDecimals() external view returns (uint8) {
             return decimals;
         }
