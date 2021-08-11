@@ -23,13 +23,6 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
 
     uint256 private fee;
 
-    /*
-    constructor(address _oracleAddress, bytes32 _jobId, uint256 _fee) {
-        setPublicChainlinkToken();
-        oracleAddress = _oracleAddress;
-        jobId = _jobId;
-        fee = _fee;
-    }*/
     constructor() {
         setPublicChainlinkToken();
         oracleAddress = 0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e;

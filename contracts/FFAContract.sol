@@ -44,8 +44,8 @@ contract FFAContract is IFFAContract{
         uint256 private valuationDate;
 
         //underlying index price oracle
-        address private oracleAddress;
-        bytes32 private jobId;
+        //address private oracleAddress;
+        //bytes32 private jobId;
         ChainlinkOracle internal valuationOracle;
 
         //add events to interface
@@ -53,19 +53,20 @@ contract FFAContract is IFFAContract{
         constructor(
             string memory _name, 
             string memory _symbol, 
-            address _oracleAddress,
-            bytes32 _jobId, 
+            //address _oracleAddress,
+            //bytes32 _jobId, 
             uint8 _decimals,
             uint256 _sizeOfContract
         ) {
             name = _name;
             symbol = _symbol;
-            oracleAddress = _oracleAddress;
-            jobId = _jobId;
+            //oracleAddress = _oracleAddress;
+            //jobId = _jobId;
             decimals = _decimals;
             sizeOfContract = _sizeOfContract;
             //valuationOracle = new ChainlinkOracle(oracleAddress, jobId);//not sure
             contractState = ContractState.Created;
+            emit CreatedContract(decimals, sizeOfContract);
         }
 
         //initiation

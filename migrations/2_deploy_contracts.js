@@ -1,7 +1,9 @@
 var FFAFactory = artifacts.require("./FFAFactory.sol");
-var ChainlinkOracle = artifacts.require("./ChainlinkOracle.sol");
+//var FFAContract = artifacts.require("./FFAContract.sol");
+//var ChainlinkOracle = artifacts.require("./ChainlinkOracle.sol");
 
-module.exports = function(deployer) {
-  deployer.deploy(FFAFactory);
-  deployer.deploy(ChainlinkOracle);
+module.exports = async function(deployer) {
+  await deployer.deploy(FFAFactory);
+  //await deployer.deploy(FFAContract);
+  //await deployer.deploy(ChainlinkOracle);
 };
