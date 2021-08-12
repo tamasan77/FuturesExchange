@@ -25,6 +25,12 @@ contract("FFAContract", accounts => {
 
         await ffaContractInstance.initiateFFA(long, short, forwardPrice, riskFreeRate, expirationDate, longWalletInstance.address, shortWalletInstance.address);
         assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
-
+        assert.equal(await ffaContractInstance.getLong(), long, "Long not correct");
+        assert.equal(await ffaContractInstance.getShort(), short, "Short not correct");
+        assert.equal(await ffaContractInstance.getForwardPrice(), forwardPrice, "Price not correct");
+        assert.equal(await ffaContractInstance.getRiskFreeRate(), riskFreeRate, "Rate not correct");
+        assert.equal(await ffaContractInstance.getExpirationDate(), expirationDate, "Expiration date not correct");
+        assert.equal(await ffaContractInstance.getLongWalletAddress(), longWalletInstance.address, "Long wallet not correct");
+        assert.equal(await ffaContractInstance.getShortWalletAddress(), shortWalletInstance.address, "Short wallet not correct");
     })
 });

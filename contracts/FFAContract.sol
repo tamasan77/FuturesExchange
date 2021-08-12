@@ -178,9 +178,9 @@ contract FFAContract is IFFAContract{
         }
         //////////////////////////////////////
 
-        //what about receive and fallback functions
+        //what about receive and fallback functions?
 
-        //include getter functions here
+        //getter functions
         function getContractState() external view returns(string memory) {
             if (contractState == ContractState.Created) {
                 return "Created";
@@ -214,6 +214,31 @@ contract FFAContract is IFFAContract{
         function getLong() external view returns (address) {
             return long;
         }
+
+        function getShort() external view returns (address) {
+            return short;
+        }
+
+        function getForwardPrice() external view returns (uint256) {
+            return forwardPrice;
+        }
+
+        function getRiskFreeRate() external view returns (uint8) {
+            return riskFreeRate;
+        }
+
+        function getExpirationDate() external view returns (uint256) {
+            return expirationDate;
+        }
+
+        function getLongWalletAddress() external view returns (address) {
+            return longWallet;
+        }
+
+        function getShortWalletAddress() external view returns (address) {
+            return shortWallet;
+        }
+
 
 
 
