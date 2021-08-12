@@ -7,9 +7,15 @@ const CollateralWallet = artifacts.require("./CollateralWallet.sol");
 contract("FFAContract", accounts => {
     it("should be able to initiate FFAContract", async function() {
         const ffaContractInstance = await FFAContract.deployed();
-        const 
-        const longWallet = await CollateralWallet.at(await ffaContractInstance.createCollateralWallet("long wallet"));
-        const shortWallet = await CollateralWallet.at(await ffaContractInstance.createCollateralWallet("short wallet"));
+
+        await ffaContractInstance.createCollateralWallet("long wallet");
+        await ffaContractInstance.createCollateralWallet("short wallet");
+        
+        const longWallet = await ffaContractInstance.getCollateralWallets(0);
+        const shortWallet = await ffaContractInstance.getCollateralWallets(1);
+
+        const longWalletInstance = await CollateralWallet.at(longWallet);
+        const shortWalletInstance = await CollateralWallet.at(shortWallet);
 
         const long = accounts[3];
         const short = accounts[4];
@@ -17,8 +23,8 @@ contract("FFAContract", accounts => {
         const riskFreeRate = 7;
         const expirationDate = 1628948407;//14 Aug.
 
-        const initiated = ffaContractInstance.initiateFFA(long, short, forwardPrice, riskFreeRate, expirationDate, longWallet, shortWallet);
-        assert.equal(initiated, true, "not inititated");
+        await ffaContractInstance.initiateFFA(long, short, forwardPrice, riskFreeRate, expirationDate, longWalletInstance.address, shortWalletInstance.address);
+        assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
 
     })
 });

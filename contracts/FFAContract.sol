@@ -31,8 +31,8 @@ contract FFAContract is IFFAContract{
         uint256 private expirationDate;
 
         //collateral wallets
-        CollateralWallet private longWallet;
-        CollateralWallet private shortWallet;
+        address private longWallet;
+        address private shortWallet;
 
 
         //margin requirements
@@ -49,6 +49,13 @@ contract FFAContract is IFFAContract{
         ChainlinkOracle internal valuationOracle;
 
         //add events to interface
+        /*
+        event CreatedContract(uint8 decimals, uint256 sizeOfContract);
+        event Initiated(address indexed long, address indexed short, uint256 forwardPrice, uint8 riskFreeRate, uint256 expirationDate);
+        event Valuated(uint8 riskFreeRate, int256 indexPrice, uint256 valuationDate, int256 forwardValue);
+        event MarkedToMarket(uint256 mtmDate, int256 dailyPayoff, address long, address short);
+        event Settled(address long, address short, uint256 expirationDate);
+        event Defaulted(uint256 defaultDate, address defaultingParty);*/
 
         constructor(
             string memory _name, 
@@ -72,7 +79,7 @@ contract FFAContract is IFFAContract{
         //initiation
         function initiateFFA(address _long, address _short, uint256 _forwardPrice, 
                              uint8 _riskFreeRate, uint256 _expirationDate,
-                             CollateralWallet _longWallet, CollateralWallet _shortWallet) 
+                             address _longWallet, address _shortWallet) 
                              external override returns (bool initiated_) {
             require(_long != address(0), "Long can't be zero address");
             require(_short != address(0), "Short can't be zero address");
@@ -157,9 +164,19 @@ contract FFAContract is IFFAContract{
             transfered_ = true;
         }
 
+        //these are for testing
+        /////////////////////////////////////
+        address[] private collateralWallets;
+
         function createCollateralWallet(string memory _name) external returns(address walletAddress_) {
             walletAddress_ = address(new CollateralWallet(_name));
+            collateralWallets.push(walletAddress_);
         }
+
+        function getCollateralWallets(uint256 index) external view returns(CollateralWallet) {
+            return CollateralWallet(collateralWallets[index]);
+        }
+        //////////////////////////////////////
 
         //what about receive and fallback functions
 
@@ -192,6 +209,10 @@ contract FFAContract is IFFAContract{
 
         function getDecimals() external view returns (uint8) {
             return decimals;
+        }
+
+        function getLong() external view returns (address) {
+            return long;
         }
 
 

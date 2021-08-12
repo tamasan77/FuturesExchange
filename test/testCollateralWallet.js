@@ -1,4 +1,4 @@
-const { assert } = require("chai");
+
 
 const CollateralWallet = artifacts.require("./CollateralWallet.sol");
 const TestERC20Token = artifacts.require("./TestERC20Token.sol");

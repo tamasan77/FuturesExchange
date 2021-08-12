@@ -13,8 +13,8 @@ interface IFFAContract {
     event Defaulted(uint256 defaultDate, address defaultingParty);
 
     function initiateFFA(address _long, address _short, uint256 _forwardPrice, 
-                             uint8 _riskFreeRate, uint256 _expirationDate,
-                             CollateralWallet _longWallet, CollateralWallet _shortWallet) 
+                            uint8 _riskFreeRate, uint256 _expirationDate,
+                             address _longWallet, address _shortWallet) 
                              external returns (bool initiated_);
     function calcFFAValue() external returns (uint256 value_);
     function markToMarket() external returns (bool markedToMarket_);

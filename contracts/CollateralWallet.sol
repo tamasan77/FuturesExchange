@@ -64,4 +64,8 @@ contract CollateralWallet is Pausable, Ownable{//IERC20Metadata
     function getMappedBalance(address ffaContractAddress, address collateralTokenAddress) external view returns (uint256) {
         return ffaToPledgedCollateralMapping[ffaContractAddress][collateralTokenAddress];
     }
+
+    function getName() external view returns(string memory) {
+        return name;
+    }
 }
