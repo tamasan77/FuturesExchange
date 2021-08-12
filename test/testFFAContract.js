@@ -41,13 +41,16 @@ contract("FFAContract", accounts => {
         const testERC20TokenInstance = await TestERC20Token.deployed();
         await longWalletInstance.setNewBalance(ffaContractInstance.address, testERC20TokenInstance.address, 100);
         await shortWalletInstance.setNewBalance(ffaContractInstance.address, testERC20TokenInstance.address, 100);
-        //transfeer 100 tokens to each wallet
-        
+        //transfer 100 tokens to each wallet
+        await testERC20TokenInstance.transfer(longWalletInstance.address, 100);
+        await testERC20TokenInstance.transfer(shortWalletInstance.address, 100);
+        console.log(await testERC20TokenInstance.balanceOf(longWalletInstance.address));
         //transfer 25 tokens from long to short wallet
+        /*
         await ffaContractInstance.transferCollateralFrom(longWalletInstance.address, shortWalletInstance.address, 25, testERC20TokenInstance.address);
         const longWalletBalance = await longWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
         const shortWalletBalance = await shortWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
         assert.equal(longWalletBalance, 75, "transfer failed");
-        assert.equal(shortWalletBalance, 125, "transfer failed");
+        assert.equal(shortWalletBalance, 125, "transfer failed");*/
     })
 });
