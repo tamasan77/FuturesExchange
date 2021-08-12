@@ -15,7 +15,7 @@ abstract contract CollateralWallet is Pausable, Ownable{//IERC20Metadata
     using SafeERC20 for IERC20;
 
     //do i even need this?
-    IERC20[] private tokens;
+    //IERC20[] private tokens;
 
     string private name;
 
@@ -25,9 +25,9 @@ abstract contract CollateralWallet is Pausable, Ownable{//IERC20Metadata
 
     //add events here
 
-    constructor (IERC20[] memory _tokens, string memory _name) {
+    constructor (/*IERC20[] memory _tokens,*/ string memory _name) {
         name = _name;
-        tokens = _tokens;
+        //tokens = _tokens;
     }
 
     //deposit

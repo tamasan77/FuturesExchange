@@ -1,5 +1,3 @@
-const { assert } = require("chai");
-
 const FFAFactory = artifacts.require("./FFAFactory.sol");
 const FFAContract = artifacts.require("./FFAContract.sol");
 
