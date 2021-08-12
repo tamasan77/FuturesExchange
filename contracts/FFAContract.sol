@@ -109,13 +109,13 @@ contract FFAContract is IFFAContract{
         //mark to market
         function markToMarket() external override returns (bool markedToMarket_) {
             require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
-            //require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate) > 0, "M to m can only happen before expiration");
-            //check allowance if neccessary here
+            require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate) > 0, "M to m can only happen before expiration");
 
             //calculate net daily payoff
             int256 dailyPayoff = 0;
 
             //delivery within collateral wallets
+            
 
             //emit event
             emit MarkedToMarket(block.timestamp, dailyPayoff, long, short);

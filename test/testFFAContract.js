@@ -7,7 +7,7 @@ const TestERC20Token = artifacts.require("./TestERC20Token.sol");
 
 
 contract("FFAContract", accounts => {
-    it("should be able to initiate FFAContract", async function() {
+    it("FFA contract works", async function() {
         const ffaContractInstance = await FFAContract.deployed();
 
         await ffaContractInstance.createCollateralWallet("long wallet");
