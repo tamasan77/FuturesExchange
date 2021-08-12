@@ -150,7 +150,8 @@ contract FFAContract is IFFAContract{
             uint256 originalSenderMappedBalance = senderWallet.getMappedBalance(address(this), collateralTokenAddress);
             require(originalSenderMappedBalance >= amount, "collateral balance not sufficient");
 
-            senderWalletAddress.approve(address(this), amount);
+            //approval might need fixing
+            senderWallet.approveSpender(collateralTokenAddress, address(this), amount);
             IERC20(collateralTokenAddress).transferFrom(senderWalletAddress, recipientWalletAddress, amount);
 
             //deduct from sender balance mapping
