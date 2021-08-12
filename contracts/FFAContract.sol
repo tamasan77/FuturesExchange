@@ -108,7 +108,6 @@ contract FFAContract is IFFAContract{
 
         //mark to market
         function markToMarket() external override returns (bool markedToMarket_) {
-            //check requirements
             require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
             //require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate) > 0, "M to m can only happen before expiration");
             //check allowance if neccessary here
@@ -145,7 +144,9 @@ contract FFAContract is IFFAContract{
             defaulted_ = true;
         }
 
-        function transferCollateralFrom(CollateralWallet senderWallet, CollateralWallet recipientWallet, uint256 amount, address collateralTokenAddress) internal returns (bool transfered_){
+        function transferCollateralFrom(address senderWalletAddress, address recipientWalletAddress, uint256 amount, address collateralTokenAddress) public returns (bool transfered_){
+            CollateralWallet senderWallet = CollateralWallet(senderWalletAddress);
+            CollateralWallet recipientWallet = CollateralWallet(recipientWalletAddress);
             uint256 originalSenderMappedBalance = senderWallet.getMappedBalance(address(this), collateralTokenAddress);
             require(originalSenderMappedBalance >= amount, "collateral balance not sufficient");
 
@@ -160,7 +161,7 @@ contract FFAContract is IFFAContract{
             //add to recipient balance mapping
             uint256 newRecipientMappedBalance = recipientWallet.getMappedBalance(address(this), collateralTokenAddress) + amount;
             recipientWallet.setNewBalance(address(this), collateralTokenAddress, newRecipientMappedBalance);
-
+ 
             transfered_ = true;
         }
 

@@ -1,7 +1,9 @@
 const { assert } = require("chai");
 
+
 const FFAContract = artifacts.require("./FFAContract.sol");
 const CollateralWallet = artifacts.require("./CollateralWallet.sol");
+const TestERC20Token = artifacts.require("./TestERC20Token.sol");
 
 
 contract("FFAContract", accounts => {
@@ -23,6 +25,7 @@ contract("FFAContract", accounts => {
         const riskFreeRate = 7;
         const expirationDate = 1628948407;//14 Aug.
 
+        //testing inititation
         await ffaContractInstance.initiateFFA(long, short, forwardPrice, riskFreeRate, expirationDate, longWalletInstance.address, shortWalletInstance.address);
         assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
         assert.equal(await ffaContractInstance.getLong(), long, "Long not correct");
@@ -32,5 +35,19 @@ contract("FFAContract", accounts => {
         assert.equal(await ffaContractInstance.getExpirationDate(), expirationDate, "Expiration date not correct");
         assert.equal(await ffaContractInstance.getLongWalletAddress(), longWalletInstance.address, "Long wallet not correct");
         assert.equal(await ffaContractInstance.getShortWalletAddress(), shortWalletInstance.address, "Short wallet not correct");
+
+        //testing transferCollateralFrom
+        //set balances: 100 TestERC20Tokens each
+        const testERC20TokenInstance = await TestERC20Token.deployed();
+        await longWalletInstance.setNewBalance(ffaContractInstance.address, testERC20TokenInstance.address, 100);
+        await shortWalletInstance.setNewBalance(ffaContractInstance.address, testERC20TokenInstance.address, 100);
+        //transfeer 100 tokens to each wallet
+        
+        //transfer 25 tokens from long to short wallet
+        await ffaContractInstance.transferCollateralFrom(longWalletInstance.address, shortWalletInstance.address, 25, testERC20TokenInstance.address);
+        const longWalletBalance = await longWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
+        const shortWalletBalance = await shortWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
+        assert.equal(longWalletBalance, 75, "transfer failed");
+        assert.equal(shortWalletBalance, 125, "transfer failed");
     })
 });
