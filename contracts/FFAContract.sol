@@ -157,6 +157,10 @@ contract FFAContract is IFFAContract{
             transfered_ = true;
         }
 
+        function createCollateralWallet(string memory _name) external returns(address walletAddress_) {
+            walletAddress_ = address(new CollateralWallet(_name));
+        }
+
         //what about receive and fallback functions
 
         //include getter functions here
