@@ -141,6 +141,9 @@ contract FFAContract is IFFAContract{
                 transferCollateralFrom(longWallet, shortWallet, uint256(-1 * contractValueChange), collateralTokenAddress);
             }
 
+            //update prevDayClosingPrice to current price
+            prevDayClosingPrice = currentForwardPrice;
+
             //emit event
             emit MarkedToMarket(block.timestamp, contractValueChange, long, short);
             markedToMarket_ = true;
