@@ -21,7 +21,7 @@ contract("FFAContract", accounts => {
 
         const long = accounts[3];
         const short = accounts[4];
-        const forwardPrice = 123;
+        const initialForwardPrice = 123;
         const riskFreeRate = 7;
         const expirationDate = 1628948407;//14 Aug.
 
@@ -30,7 +30,7 @@ contract("FFAContract", accounts => {
         assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
         assert.equal(await ffaContractInstance.getLong(), long, "Long not correct");
         assert.equal(await ffaContractInstance.getShort(), short, "Short not correct");
-        assert.equal(await ffaContractInstance.getForwardPrice(), forwardPrice, "Price not correct");
+        assert.equal(await ffaContractInstance.getInitialForwardPrice(), initialForwardPrice, "Price not correct");
         assert.equal(await ffaContractInstance.getRiskFreeRate(), riskFreeRate, "Rate not correct");
         assert.equal(await ffaContractInstance.getExpirationDate(), expirationDate, "Expiration date not correct");
         assert.equal(await ffaContractInstance.getLongWalletAddress(), longWalletInstance.address, "Long wallet not correct");

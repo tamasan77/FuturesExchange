@@ -6,7 +6,7 @@ import "../contracts/CollateralWallet.sol";
 interface IFFAContract {
 
     event CreatedContract(uint8 decimals, uint256 sizeOfContract);
-    event Initiated(address indexed long, address indexed short, uint256 forwardPrice, uint8 riskFreeRate, uint256 expirationDate);
+    event Initiated(address indexed long, address indexed short, uint256 initialForwardPrice, uint8 riskFreeRate, uint256 expirationDate, uint256 sizeOfContract);
     event Valuated(uint8 riskFreeRate, int256 indexPrice, uint256 valuationDate, int256 forwardValue);
     event MarkedToMarket(uint256 mtmDate, int256 dailyPayoff, address long, address short);
     event Settled(address long, address short, uint256 expirationDate);

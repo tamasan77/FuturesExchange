@@ -26,7 +26,7 @@ contract FFAContract is IFFAContract{
         uint256 private sizeOfContract;
         address private long;
         address private short;
-        uint256 private forwardPrice;
+        uint256 private initialForwardPrice;
         uint8 private riskFreeRate;
         uint256 private expirationDate;
 
@@ -36,26 +36,20 @@ contract FFAContract is IFFAContract{
 
 
         //margin requirements
-        uint256 private initialMargin;
+        uint256 private exposureMargin;
         uint256 private maintenanceMargin;
 
+        //M2M
+        uint256 private prevDayClosingPrice;
+
         //valuation
-        int256 private value;
+        int256 private contractValue;
         uint256 private valuationDate;
 
         //underlying index price oracle
         //address private oracleAddress;
         //bytes32 private jobId;
         ChainlinkOracle internal valuationOracle;
-
-        //add events to interface
-        /*
-        event CreatedContract(uint8 decimals, uint256 sizeOfContract);
-        event Initiated(address indexed long, address indexed short, uint256 forwardPrice, uint8 riskFreeRate, uint256 expirationDate);
-        event Valuated(uint8 riskFreeRate, int256 indexPrice, uint256 valuationDate, int256 forwardValue);
-        event MarkedToMarket(uint256 mtmDate, int256 dailyPayoff, address long, address short);
-        event Settled(address long, address short, uint256 expirationDate);
-        event Defaulted(uint256 defaultDate, address defaultingParty);*/
 
         constructor(
             string memory _name, 
@@ -77,7 +71,7 @@ contract FFAContract is IFFAContract{
         }
 
         //initiation
-        function initiateFFA(address _long, address _short, uint256 _forwardPrice, 
+        function initiateFFA(address _long, address _short, uint256 _initialForwardPrice, 
                              uint8 _riskFreeRate, uint256 _expirationDate,
                              address _longWallet, address _shortWallet) 
                              external override returns (bool initiated_) {
@@ -87,14 +81,16 @@ contract FFAContract is IFFAContract{
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate) > 0, "FFA contract has to expire in the future");
             long = _long;
             short = _short;
-            forwardPrice = _forwardPrice;
+            //call valuation API to get initialForwardPrice
+            initialForwardPrice = _initialForwardPrice;
+            prevDayClosingPrice = initialForwardPrice;
             riskFreeRate = _riskFreeRate;
             expirationDate = _expirationDate;
             longWallet = _longWallet;
             shortWallet = _shortWallet;
             contractState = ContractState.Initiated;
             //Do i need to deal with allowance?
-            emit Initiated(long, short, forwardPrice, riskFreeRate, expirationDate);
+            emit Initiated(long, short, initialForwardPrice, riskFreeRate, expirationDate, sizeOfContract);
             initiated_ = true;
         }
 
@@ -106,16 +102,25 @@ contract FFAContract is IFFAContract{
             value_ = 0;
         }
 
+        /*
+        * Initial Margin = Maintenance Margin + Exposure Margin
+        * A margin call is issued when a party's cash balance drops below the maintenance margin.
+        * M2M is calculated based on the previous day's closing price. Based on the M2M each party's
+        * account is credited or debited daily. 
+        * At settlement calculate the P&L = Final Contract Value - Initial Contract Value
+        */
         //mark to market
         function markToMarket() external override returns (bool markedToMarket_) {
             require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate) > 0, "M to m can only happen before expiration");
 
+            //valuation
+            uint256 closingPrice = 
             //calculate net daily payoff
             int256 dailyPayoff = 0;
 
             //delivery within collateral wallets
-            
+
 
             //emit event
             emit MarkedToMarket(block.timestamp, dailyPayoff, long, short);
@@ -222,8 +227,8 @@ contract FFAContract is IFFAContract{
             return short;
         }
 
-        function getForwardPrice() external view returns (uint256) {
-            return forwardPrice;
+        function getInitialForwardPrice() external view returns (uint256) {
+            return initialForwardPrice;
         }
 
         function getRiskFreeRate() external view returns (uint8) {
