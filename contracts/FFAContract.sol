@@ -33,6 +33,7 @@ contract FFAContract is IFFAContract{
         //collateral wallets
         address private longWallet;
         address private shortWallet;
+        address private collateralTokenAddress;
 
 
         //margin requirements
@@ -43,8 +44,8 @@ contract FFAContract is IFFAContract{
         uint256 private prevDayClosingPrice;
 
         //valuation
-        int256 private contractValue;
-        uint256 private valuationDate;
+        //int256 private contractValue;
+        uint256 private pricingDate;
 
         //underlying index price oracle
         //address private oracleAddress;
@@ -57,7 +58,8 @@ contract FFAContract is IFFAContract{
             //address _oracleAddress,
             //bytes32 _jobId, 
             uint8 _decimals,
-            uint256 _sizeOfContract
+            uint256 _sizeOfContract,
+            address _collateralTokenAddress
         ) {
             name = _name;
             symbol = _symbol;
@@ -65,6 +67,7 @@ contract FFAContract is IFFAContract{
             //jobId = _jobId;
             decimals = _decimals;
             sizeOfContract = _sizeOfContract;
+            collateralTokenAddress = _collateralTokenAddress;
             //valuationOracle = new ChainlinkOracle(oracleAddress, jobId);//not sure
             contractState = ContractState.Created;
             emit CreatedContract(decimals, sizeOfContract);
@@ -96,10 +99,18 @@ contract FFAContract is IFFAContract{
 
         //calculate value of contract
         function calcFFAValue() external override returns (uint256 value_) {
-            valuationDate = block.timestamp;
+            pricingDate = block.timestamp;
             //use valuation oracle here
             
             value_ = 0;
+        }
+
+        //calculate forward price
+        function calcForwardPrice() public returns (uint256 price_) {
+            pricingDate = block.timestamp;
+
+            //call valuation oracle here
+            price_ = 243;
         }
 
         /*
@@ -108,6 +119,7 @@ contract FFAContract is IFFAContract{
         * M2M is calculated based on the previous day's closing price. Based on the M2M each party's
         * account is credited or debited daily. 
         * At settlement calculate the P&L = Final Contract Value - Initial Contract Value
+        * https://zerodha.com/varsity/chapter/margin-m2m/
         */
         //mark to market
         function markToMarket() external override returns (bool markedToMarket_) {
@@ -115,15 +127,22 @@ contract FFAContract is IFFAContract{
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate) > 0, "M to m can only happen before expiration");
 
             //valuation
-            uint256 closingPrice = 
-            //calculate net daily payoff
-            int256 dailyPayoff = 0;
+            uint256 currentForwardPrice = calcForwardPrice();
+            uint256 newContractValue = currentForwardPrice * sizeOfContract;
+            uint256 oldContractValue = prevDayClosingPrice * sizeOfContract;
+            //contract value change
+            int256 contractValueChange = int256(newContractValue - oldContractValue);
 
             //delivery within collateral wallets
-
+            if (contractValueChange > 0) {
+                transferCollateralFrom(shortWallet, longWallet, uint256(contractValueChange), collateralTokenAddress);
+            }
+            if (contractValueChange < 0) {
+                transferCollateralFrom(longWallet, shortWallet, uint256(-1 * contractValueChange), collateralTokenAddress);
+            }
 
             //emit event
-            emit MarkedToMarket(block.timestamp, dailyPayoff, long, short);
+            emit MarkedToMarket(block.timestamp, contractValueChange, long, short);
             markedToMarket_ = true;
         }
 
@@ -149,25 +168,25 @@ contract FFAContract is IFFAContract{
             defaulted_ = true;
         }
 
-        function transferCollateralFrom(address senderWalletAddress, address recipientWalletAddress, uint256 amount, address collateralTokenAddress) public returns (bool transfered_){
+        function transferCollateralFrom(address senderWalletAddress, address recipientWalletAddress, uint256 amount, address _collateralTokenAddress) public returns (bool transfered_){
             CollateralWallet senderWallet = CollateralWallet(senderWalletAddress);
             CollateralWallet recipientWallet = CollateralWallet(recipientWalletAddress);
-            uint256 originalSenderMappedBalance = senderWallet.getMappedBalance(address(this), collateralTokenAddress);
+            uint256 originalSenderMappedBalance = senderWallet.getMappedBalance(address(this), _collateralTokenAddress);
             require(originalSenderMappedBalance >= amount, "collateral balance not sufficient");
 
             //approval might need fixing
-            senderWallet.approveSpender(collateralTokenAddress, address(this), amount);
-            IERC20(collateralTokenAddress).transferFrom(senderWalletAddress, recipientWalletAddress, amount);
+            senderWallet.approveSpender(_collateralTokenAddress, address(this), amount);
+            IERC20(_collateralTokenAddress).transferFrom(senderWalletAddress, recipientWalletAddress, amount);
 
             //deduct from sender balance mapping
             unchecked {
                 uint256 newSenderMappedBalance = originalSenderMappedBalance - amount;
-                senderWallet.setNewBalance(address(this), collateralTokenAddress, newSenderMappedBalance);
+                senderWallet.setNewBalance(address(this), _collateralTokenAddress, newSenderMappedBalance);
             }
 
             //add to recipient balance mapping
-            uint256 newRecipientMappedBalance = recipientWallet.getMappedBalance(address(this), collateralTokenAddress) + amount;
-            recipientWallet.setNewBalance(address(this), collateralTokenAddress, newRecipientMappedBalance);
+            uint256 newRecipientMappedBalance = recipientWallet.getMappedBalance(address(this), _collateralTokenAddress) + amount;
+            recipientWallet.setNewBalance(address(this), _collateralTokenAddress, newRecipientMappedBalance);
  
             transfered_ = true;
         }
