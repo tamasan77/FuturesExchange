@@ -37,8 +37,8 @@ contract FFAContract is IFFAContract{
 
 
         //margin requirements
-        uint256 private exposureMargin;
-        uint256 private maintenanceMargin;
+        uint256 private exposureMarginRate;
+        uint256 private maintenanceMarginRate;
 
         //M2M
         uint256 private prevDayClosingPrice;
@@ -98,12 +98,13 @@ contract FFAContract is IFFAContract{
         }
 
         //calculate value of contract
+        /*
         function calcFFAValue() external override returns (uint256 value_) {
             pricingDate = block.timestamp;
             //use valuation oracle here
             
             value_ = 0;
-        }
+        }*/
 
         //calculate forward price
         function calcForwardPrice() public returns (uint256 price_) {
@@ -114,12 +115,12 @@ contract FFAContract is IFFAContract{
         }
 
         /*
-        * Initial Margin = Maintenance Margin + Exposure Margin
-        * A margin call is issued when a party's cash balance drops below the maintenance margin.
-        * M2M is calculated based on the previous day's closing price. Based on the M2M each party's
-        * account is credited or debited daily. 
-        * At settlement calculate the P&L = Final Contract Value - Initial Contract Value
-        * https://zerodha.com/varsity/chapter/margin-m2m/
+            * Initial Margin = Maintenance Margin + Exposure Margin
+            * A margin call is issued when a party's cash balance drops below the maintenance margin.
+            * M2M is calculated based on the previous day's closing price. Based on the M2M each party's
+            * account is credited or debited daily. 
+            * At settlement calculate the P&L = Final Contract Value - Initial Contract Value
+            * https://zerodha.com/varsity/chapter/margin-m2m/
         */
         //mark to market
         function markToMarket() external override returns (bool markedToMarket_) {
@@ -149,14 +150,27 @@ contract FFAContract is IFFAContract{
             markedToMarket_ = true;
         }
 
-        //settle contract 
-        function settleAtExpiration() public override returns (bool settled_) {
+        //payoff at settlement
+        /*
+        function settlementPayoff() private returns (bool settlementPayoff_) {
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(expirationDate, block.timestamp) >= 0, "Settlement cannot occure before expiration date" );
             require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
 
+        }*/
+
+        //settle contract 
+        function settleAtExpiration() external override returns (bool settled_) {
+            require(BokkyPooBahsDateTimeLibrary.diffSeconds(expirationDate, block.timestamp) >= 0, "Settlement cannot occure before expiration date" );
+            require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
+
+            //calculate P&L
+            uint256 initialContractValue = initialForwardPrice * sizeOfContract;
+            uint256 finalContractValue = prevDayClosingPrice * sizeOfContract;
+            int256 profitAndLoss = int256(finalContractValue - initialContractValue);
+
             //change contract state and emit event
             contractState = ContractState.Settled;
-            emit Settled(long, short, expirationDate);
+            emit Settled(long, short, expirationDate, profitAndLoss);
             settled_ = true;
         }
 
