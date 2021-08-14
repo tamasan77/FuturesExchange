@@ -58,8 +58,8 @@ contract FFAContract is IFFAContract{
             //address _oracleAddress,
             //bytes32 _jobId, 
             uint8 _decimals,
-            uint256 _sizeOfContract,
-            address _collateralTokenAddress
+            uint256 _sizeOfContract
+            //address _collateralTokenAddress
         ) {
             name = _name;
             symbol = _symbol;
@@ -67,7 +67,7 @@ contract FFAContract is IFFAContract{
             //jobId = _jobId;
             decimals = _decimals;
             sizeOfContract = _sizeOfContract;
-            collateralTokenAddress = _collateralTokenAddress;
+            //collateralTokenAddress = _collateralTokenAddress;
             //valuationOracle = new ChainlinkOracle(oracleAddress, jobId);//not sure
             contractState = ContractState.Created;
             emit CreatedContract(decimals, sizeOfContract);
@@ -84,7 +84,7 @@ contract FFAContract is IFFAContract{
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate) > 0, "FFA contract has to expire in the future");
             long = _long;
             short = _short;
-            //call valuation API to get initialForwardPrice
+            //call valuation API to get initialForwardPrice!!!!!!!!!!!!!11
             initialForwardPrice = _initialForwardPrice;
             prevDayClosingPrice = initialForwardPrice;
             riskFreeRate = _riskFreeRate;

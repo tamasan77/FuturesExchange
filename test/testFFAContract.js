@@ -26,7 +26,7 @@ contract("FFAContract", accounts => {
         const expirationDate = 1628948407;//14 Aug.
 
         //testing inititation
-        await ffaContractInstance.initiateFFA(long, short, forwardPrice, riskFreeRate, expirationDate, longWalletInstance.address, shortWalletInstance.address);
+        await ffaContractInstance.initiateFFA(long, short, initialForwardPrice, riskFreeRate, expirationDate, longWalletInstance.address, shortWalletInstance.address);
         assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
         assert.equal(await ffaContractInstance.getLong(), long, "Long not correct");
         assert.equal(await ffaContractInstance.getShort(), short, "Short not correct");

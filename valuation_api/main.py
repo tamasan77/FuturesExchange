@@ -50,7 +50,7 @@ class Pricing(Resource):
     """
     def get(self, underlying_price, annual_risk_free_rate, valuation_date, expiration_date):
         ffaPrice = Valuate.price_forward(underlying_price, annual_risk_free_rate, valuation_date, expiration_date)
-        return {"price" : ffaPrice}
+        return {"price" : int(ffaPrice)}
 
 """
 * Questions left:

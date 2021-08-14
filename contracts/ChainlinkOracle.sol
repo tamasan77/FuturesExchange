@@ -19,31 +19,29 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
     address private oracleAddress;
     bytes32 private jobId;
 
-    uint8 private decimals;
+    //uint8 private decimals;
 
     uint256 private fee;
 
     constructor() {
         setPublicChainlinkToken();
-        oracleAddress = 0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e;
-        jobId = "29fa9aa13bf1468788b7cc4a500a45b8";
-        fee =  0.1 * 10 ** 18;
+        oracleAddress = 0xcd955CF975fBb52C13426BaA2022f8dB6093bDd0;
+        jobId = "1e9f083e038144749052a5877b8871a7";
+        fee =  0.1 * 10 ** 18; //0.1 LINK
     }
 
     //Create Chainlink request with uint256 job
     function requestIndexPrice() external returns (bytes32 requestId) {
 
-        //inlcude callback address and callback function as parameters
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
-        //set URL for get request
-        //string url = append("http://127.0.0.1:5000/valuate/", "1100.0/"0/6912000/1300.0/0.00000000221968544", c, d, e, f);
-        request.add("get", "http://127.0.0.1:5000/vauate/1100.0/0/6912000/1300.0/0.00000000221968544");
+
+        request.add("get", "http://127.0.0.1:5000/price/45.0/0.1/0/15778476");
         //set path to data
         request.add("path", "value");
         //depending on the format of the price data, multiply by 10^decimals
         //find out how to do exponentials
         //to remove decimals
-        int numScale = 10; //this needs adjustment!!!!!!!!!!!!!!!!!!!1
+        int numScale = 1; //this needs adjustment!!!!!!!!!!!!!!!!!!!1
         request.addInt("times", numScale);
         //send request with given fee to the oracle
         return sendChainlinkRequestTo(oracleAddress, request, fee);
@@ -51,8 +49,7 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
 
     //receive response as uint256
     //recordChainlinkFulffilment ensures that only requesting oracle can fulfill
-    function fulfill(bytes32 _requestId, uint256 _price) external recordChainlinkFulfillment(_requestId)
-    {
+    function fulfill(bytes32 _requestId, uint256 _price) external recordChainlinkFulfillment(_requestId){
         result = _price;
     }
 
@@ -67,6 +64,10 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
     //for the time being this function can only concatenate 6 strings
     function append(string memory a, string memory b, string memory c, string memory d, string memory e, string memory f) internal pure returns (string memory) {
         return string(abi.encodePacked(a, b, c, d, e, f));
+    }
+
+    function getResult() external view returns (uint256) {
+        return result;
     }
 }
 

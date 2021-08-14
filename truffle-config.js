@@ -13,6 +13,17 @@ module.exports = {
       network_id: "*",
       host: "127.0.0.1"
     },
+    rinkeby: {
+      provider: function() {
+        return new HDWalletProvider(
+          process.env.MNEMONIC,
+          process.env.INFURA_RINKEBY_URL
+        )
+      },
+      gas: 3000000,
+      network_id: 4, 
+      networkCheckTimeout: 20000
+    },
     kovan: {
       provider: function() {
         return new HDWalletProvider(
