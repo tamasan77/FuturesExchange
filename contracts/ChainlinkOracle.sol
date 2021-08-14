@@ -37,7 +37,7 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
 
         request.add("get", "http://127.0.0.1:5000/price/45.0/0.1/0/15778476");
         //set path to data
-        request.add("path", "value");
+        request.add("path", "price");
         //depending on the format of the price data, multiply by 10^decimals
         //find out how to do exponentials
         //to remove decimals
