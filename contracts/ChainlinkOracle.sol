@@ -14,7 +14,7 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
 
 
     //store answer from oracle
-    uint256 public result;
+    uint256 private result;
 
     address private oracleAddress;
     bytes32 private jobId;
@@ -23,10 +23,23 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
 
     uint256 private fee;
 
+    //event Received(message.sender, msg.value);
+
     constructor() {
-        setPublicChainlinkToken();
-        oracleAddress = 0xcd955CF975fBb52C13426BaA2022f8dB6093bDd0;
-        jobId = "1e9f083e038144749052a5877b8871a7";
+        address _rinkeby = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709;
+        if (_rinkeby ==address(0)) {
+            setPublicChainlinkToken();
+        } else {
+            setChainlinkToken(_rinkeby);
+        }
+
+        //kovan node oracle
+        //oracleAddress = 0x56dd6586DB0D08c6Ce7B2f2805af28616E082455;
+        //jobId = "b6602d14e4734c49a5e1ce19d45a4632";
+
+        //rinkeby node oracle
+        oracleAddress = 0x3CE9f959d2961b7CE7f7C5AaBbA11fBCA23868a7;
+        jobId = "70282998bad444c0a42aba1eb5a31cea";
         fee =  0.1 * 10 ** 18; //0.1 LINK
     }
 
@@ -62,9 +75,17 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
     }
 
     //for the time being this function can only concatenate 6 strings
+    /*
     function append(string memory a, string memory b, string memory c, string memory d, string memory e, string memory f) internal pure returns (string memory) {
         return string(abi.encodePacked(a, b, c, d, e, f));
     }
+    */
+
+    //fallback function to receive eth
+    receive() external payable {
+
+    }
+
 
     function getResult() external view returns (uint256) {
         return result;
