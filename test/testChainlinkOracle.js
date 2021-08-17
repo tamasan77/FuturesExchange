@@ -1,3 +1,4 @@
+/*
 const ChainlinkOracle = artifacts.require("./ChainlinkOracle.sol");
 
 contract("ChainlinkOracle", accounts => {
@@ -9,3 +10,4 @@ contract("ChainlinkOracle", accounts => {
         assert.equal(result, 47, "price result incorrect");
     })
 });
+*/
