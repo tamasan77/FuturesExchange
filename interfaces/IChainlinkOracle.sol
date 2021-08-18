@@ -3,6 +3,7 @@
 pragma solidity ^0.8.6;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
+import "../interfaces/IChainlinkOracle.sol";
 
 interface IChainlinkOracle {
     event RequestSent(address oracleAddress, address jobId, uint256 fee);

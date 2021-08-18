@@ -5,10 +5,12 @@ pragma solidity ^0.8.6;
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+import "../interfaces/IChainlinkOracle.sol";
+
 /* Following the documentation at:
  * https://docs.chain.link/docs/make-a-http-get-request/
  */
-contract ChainlinkOracle is ChainlinkClient, Ownable {
+contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     //after v0.7 it is neccessary to repeat using statement in all of the derived contracts
     using Chainlink for Chainlink.Request;
 
@@ -16,11 +18,17 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
     //store answer from oracle
     uint256 private result;
 
+    //oracle and job info
     address private oracleAddress;
     bytes32 private jobId;
 
-    //uint8 private decimals;
+    //address of the link contract address for given network
+    address private linkAddress;
 
+    //deal with decimals
+    uint8 private decimals;
+
+    //fee is usually 0.1Link (0.1 * 10 ** 18)
     uint256 private fee;
 
     //event Received(message.sender, msg.value);
@@ -47,7 +55,7 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
     }
 
     //Create Chainlink request with uint256 job
-    function requestIndexPrice() external returns (bytes32 requestId) {
+    function requestIndexPrice() external override returns (bytes32 requestId) {
 
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
 
@@ -65,14 +73,14 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
 
     //receive response as uint256
     //recordChainlinkFulffilment ensures that only requesting oracle can fulfill
-    function fulfill(bytes32 _requestId, uint256 _price) external recordChainlinkFulfillment(_requestId){
+    function fulfill(bytes32 _requestId, uint256 _price) external override recordChainlinkFulfillment(_requestId){
         result = _price;
     }
 
     // withdrawLink allows the owner to withdraw any extra LINK on the contract
     //taken from documentation:
     //https://remix.ethereum.org/#version=soljson-v0.6.12+commit.27d51765.js&optimize=false&gist=7cae2cc64026ea69073ee76a32dd0268&evmVersion=null&runs=200
-    function withdrawLink() external onlyOwner {
+    function withdrawLink() external override onlyOwner {
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
         require(link.transfer(msg.sender, link.balanceOf(address(this))), "Unable to withdraw");
     }
