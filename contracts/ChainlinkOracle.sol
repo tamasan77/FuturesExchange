@@ -26,20 +26,23 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
     //event Received(message.sender, msg.value);
 
     constructor() {
-        address _rinkeby = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709;
-        if (_rinkeby ==address(0)) {
+        //Kovan link address
+        address _link = 0xa36085F69e2889c224210F603D836748e7dC0088;
+        if (_link ==address(0)) {
             setPublicChainlinkToken();
         } else {
-            setChainlinkToken(_rinkeby);
+            setChainlinkToken(_link);
         }
 
         //kovan node oracle
-        //oracleAddress = 0x56dd6586DB0D08c6Ce7B2f2805af28616E082455;
-        //jobId = "b6602d14e4734c49a5e1ce19d45a4632";
+        oracleAddress = 0x56dd6586DB0D08c6Ce7B2f2805af28616E082455;
+        jobId = "b6602d14e4734c49a5e1ce19d45a4632";
 
         //rinkeby node oracle
+        /*
         oracleAddress = 0x3CE9f959d2961b7CE7f7C5AaBbA11fBCA23868a7;
         jobId = "70282998bad444c0a42aba1eb5a31cea";
+        */
         fee =  0.1 * 10 ** 18; //0.1 LINK
     }
 
@@ -48,7 +51,7 @@ contract ChainlinkOracle is ChainlinkClient, Ownable {
 
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
 
-        request.add("get", "http://127.0.0.1:5000/price/45.0/0.1/0/15778476");
+        request.add("get", "https://valuation-api.herokuapp.com/price/45.0/0.1/0/15778476");
         //set path to data
         request.add("path", "price");
         //depending on the format of the price data, multiply by 10^decimals
