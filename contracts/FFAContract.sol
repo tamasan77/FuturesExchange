@@ -39,6 +39,7 @@ contract FFAContract is IFFAContract{
         //margin requirements
         uint256 private exposureMarginRate;
         uint256 private maintenanceMarginRate;
+        /* When do I update margins? Should I have a separate API+oracle for it?*/
 
         //M2M
         uint256 private prevDayClosingPrice;

@@ -13,9 +13,11 @@ contract("FFAContract", accounts => {
         await ffaContractInstance.createCollateralWallet("long wallet");
         await ffaContractInstance.createCollateralWallet("short wallet");
         
+        //Fix this, have long short in contract
         const longWallet = await ffaContractInstance.getCollateralWallets(0);
         const shortWallet = await ffaContractInstance.getCollateralWallets(1);
-
+        
+        //fixe checksum and return address at creation
         const longWalletInstance = await CollateralWallet.at(longWallet);
         const shortWalletInstance = await CollateralWallet.at(shortWallet);
 
