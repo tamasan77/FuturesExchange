@@ -117,6 +117,7 @@ contract FFAContract is IFFAContract{
         /*
             * Initial Margin = Maintenance Margin + Exposure Margin
             * A margin call is issued when a party's cash balance drops below the maintenance margin.
+            * A party will be allowed to hold their position as long as the maintenance margin is satisfied.
             * M2M is calculated based on the previous day's closing price. Based on the M2M each party's
             * account is credited or debited daily. 
             * At settlement calculate the P&L = Final Contract Value - Initial Contract Value

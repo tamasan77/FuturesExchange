@@ -6,9 +6,10 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "../interfaces/IChainlinkOracle.sol";
 
 interface IChainlinkOracle {
-    event RequestSent(address oracleAddress, address jobId, uint256 fee);
+    event RequestSent(address oracleAddress, bytes32 jobId, uint256 fee);
     event Fulfilled(bytes32 requestId);
     event LinkWithdrawn(address withdrawer, uint256 amount);
+    event Received(address sender, uint256 amount);
 
     function requestIndexPrice() external returns (bytes32 requestId);
     function fulfill(bytes32 _requestId, uint256 _price) external;

@@ -7,9 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "../interfaces/IChainlinkOracle.sol";
 
-/* Following the documentation at:
- * https://docs.chain.link/docs/make-a-http-get-request/
- */
+
 contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     //after v0.7 it is neccessary to repeat using statement in all of the derived contracts
     using Chainlink for Chainlink.Request;
@@ -22,36 +20,47 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     address private oracleAddress;
     bytes32 private jobId;
 
+    //could these be bytes(x) instead of string?
+
+    //URL to make GET request from
+    string private apiURL;
+
+    //path for API response
+    string private apiPath;
+
     //address of the link contract address for given network
     address private linkAddress;
 
     //deal with decimals
-    uint8 private decimals;
+    int8 private decimals;
 
-    //fee is usually 0.1Link (0.1 * 10 ** 18)
+    //fee is usually 0.1Link which is equal to (0.1 * 10 ** 18)
     uint256 private fee;
 
-    //event Received(message.sender, msg.value);
-
-    constructor() {
-        //Kovan link address
-        address _link = 0xa36085F69e2889c224210F603D836748e7dC0088;
-        if (_link ==address(0)) {
-            setPublicChainlinkToken();
-        } else {
-            setChainlinkToken(_link);
-        }
-
-        //kovan node oracle
-        oracleAddress = 0x56dd6586DB0D08c6Ce7B2f2805af28616E082455;
-        jobId = "b6602d14e4734c49a5e1ce19d45a4632";
-
-        //rinkeby node oracle
+    constructor(address _oracleAddress, bytes32 _jobId, string memory _apiURL, string memory _apiPath, address _linkAddress, uint256 _fee, int8 _decimals) {  
+        //Kovan link
         /*
-        oracleAddress = 0x3CE9f959d2961b7CE7f7C5AaBbA11fBCA23868a7;
-        jobId = "70282998bad444c0a42aba1eb5a31cea";
+            address _link = 0xa36085F69e2889c224210F603D836748e7dC0088;
+            if (_link ==address(0)) {
+                setPublicChainlinkToken();
+            } else {
+                setChainlinkToken(_link);
+            }
+
+            //kovan node oracle
+            oracleAddress = 0x56dd6586DB0D08c6Ce7B2f2805af28616E082455;
+            jobId = "b6602d14e4734c49a5e1ce19d45a4632";
+
+            fee =  0.1 * 10 ** 18; //0.1 LINK
         */
-        fee =  0.1 * 10 ** 18; //0.1 LINK
+
+        oracleAddress = _oracleAddress;
+        jobId = _jobId;
+        apiURL = _apiURL;
+        apiPath = _apiPath;
+        linkAddress = _linkAddress;
+        fee = _fee;
+        decimals = _decimals;
     }
 
     //Create Chainlink request with uint256 job
@@ -59,42 +68,33 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
 
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
 
-        request.add("get", "https://valuation-api.herokuapp.com/price/45.0/0.1/0/15778476");
+        request.add("get", apiURL);
         //set path to data
-        request.add("path", "price");
-        //depending on the format of the price data, multiply by 10^decimals
-        //find out how to do exponentials
-        //to remove decimals
-        int numScale = 1; //this needs adjustment!!!!!!!!!!!!!!!!!!!1
-        request.addInt("times", numScale);
+        request.add("path", apiPath);
+        request.addInt("times", decimals);
         //send request with given fee to the oracle
-        return sendChainlinkRequestTo(oracleAddress, request, fee);
+        requestId = sendChainlinkRequestTo(oracleAddress, request, fee);
+        emit RequestSent(oracleAddress, jobId, fee);
     }
 
     //receive response as uint256
     //recordChainlinkFulffilment ensures that only requesting oracle can fulfill
-    function fulfill(bytes32 _requestId, uint256 _price) external override recordChainlinkFulfillment(_requestId){
-        result = _price;
+    function fulfill(bytes32 _requestId, uint256 _result) external override recordChainlinkFulfillment(_requestId){
+        result = _result;
+        emit Fulfilled(_requestId);
     }
 
     // withdrawLink allows the owner to withdraw any extra LINK on the contract
-    //taken from documentation:
-    //https://remix.ethereum.org/#version=soljson-v0.6.12+commit.27d51765.js&optimize=false&gist=7cae2cc64026ea69073ee76a32dd0268&evmVersion=null&runs=200
     function withdrawLink() external override onlyOwner {
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
-        require(link.transfer(msg.sender, link.balanceOf(address(this))), "Unable to withdraw");
+        uint256 linkBalance = link.balanceOf(address(this));
+        require(link.transfer(msg.sender, linkBalance), "Unable to withdraw");
+        emit LinkWithdrawn(msg.sender, linkBalance);
     }
-
-    //for the time being this function can only concatenate 6 strings
-    /*
-    function append(string memory a, string memory b, string memory c, string memory d, string memory e, string memory f) internal pure returns (string memory) {
-        return string(abi.encodePacked(a, b, c, d, e, f));
-    }
-    */
 
     //fallback function to receive eth
     receive() external payable {
-
+        emit Received(msg.sender, msg.value);
     }
 
 
