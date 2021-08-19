@@ -37,9 +37,9 @@ contract FFAContract is IFFAContract{
 
 
         //margin requirements
-        uint256 private exposureMarginRate;
-        uint256 private maintenanceMarginRate;
-        /* When do I update margins? Should I have a separate API+oracle for it?*/
+        //MM(8%) + EM (2%) = IM (10%)
+        uint8 private exposureMarginRate;
+        uint8 private maintenanceMarginRate;
 
         //M2M
         uint256 private prevDayClosingPrice;
@@ -59,8 +59,10 @@ contract FFAContract is IFFAContract{
             //address _oracleAddress,
             //bytes32 _jobId, 
             uint8 _decimals,
-            uint256 _sizeOfContract
-            //address _collateralTokenAddress
+            uint256 _sizeOfContract,
+            //address _collateralTokenAddress,
+            uint8 _exposureMarginRate,
+            uint8 _maintenanceMarginRate
         ) {
             name = _name;
             symbol = _symbol;
@@ -70,6 +72,8 @@ contract FFAContract is IFFAContract{
             sizeOfContract = _sizeOfContract;
             //collateralTokenAddress = _collateralTokenAddress;
             //valuationOracle = new ChainlinkOracle(oracleAddress, jobId);//not sure
+            exposureMarginRate = _exposureMarginRate;
+            maintenanceMarginRate = _maintenanceMarginRate;
             contractState = ContractState.Created;
             emit CreatedContract(decimals, sizeOfContract);
         }
@@ -224,7 +228,16 @@ contract FFAContract is IFFAContract{
         }
         //////////////////////////////////////
 
-        //what about receive and fallback functions?
+        //receive and fallback functions
+        /*
+        receive () external payable {
+    
+        }
+
+        fallback () external payable {
+
+        }*/
+
 
         //getter functions
         function getContractState() external view returns(string memory) {

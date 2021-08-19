@@ -6,5 +6,7 @@ import "../ChainlinkOracle.sol";
 
 contract UnderlyingPriceOracle is ChainlinkOracle {
 
-    constructor(address)
+    
+
+    constructor()
 }

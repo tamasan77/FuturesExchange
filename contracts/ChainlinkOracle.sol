@@ -17,8 +17,8 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     uint256 private result;
 
     //oracle and job info
-    address private oracleAddress;
-    bytes32 private jobId;
+    address public oracleAddress;
+    bytes32 public jobId;
 
     //could these be bytes(x) instead of string?
 
@@ -29,13 +29,13 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     string private apiPath;
 
     //address of the link contract address for given network
-    address private linkAddress;
+    address public linkAddress;
 
     //deal with decimals
-    int8 private decimals;
+    int8 public decimals;
 
     //fee is usually 0.1Link which is equal to (0.1 * 10 ** 18)
-    uint256 private fee;
+    uint256 public fee;
 
     constructor(address _oracleAddress, bytes32 _jobId, string memory _apiURL, string memory _apiPath, address _linkAddress, uint256 _fee, int8 _decimals) {  
         //Kovan link
@@ -96,6 +96,11 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     receive() external payable {
         emit Received(msg.sender, msg.value);
     }
+
+    fallback () external payable {
+
+    }
+
 
 
     function getResult() external view returns (uint256) {

@@ -34,23 +34,16 @@ contract CollateralWallet is Pausable, Ownable{//IERC20Metadata
 
     //withdraw
 
-    //transferCollateral moved to FFAContract.sol
+    
+    //receive and fallback functions
     /*
-    function transferCollateral(CollateralWallet recipientWallet, uint256 amount, address ffaContractAddress, address collateralTokenAddress) external returns (bool transfered_){
-        require(ffaToPledgedCollateralMapping[ffaContractAddress][collateralTokenAddress] >= amount, "collateral balance not sufficient");
-        require(pledgedCollateralToFFAMapping[collateralTokenAddress][ffaContractAddress] >= amount, "collateral balance not sufficient");
+    receive () external payable {
+    
+    }
+    */
+    /*
+    fallback () external payable {
 
-        IERC20(collateralTokenAddress).safeTransfer(address(recipientWallet), amount);
-
-        //deduct from sender balance mapping
-        unchecked {
-            ffaToPledgedCollateralMapping[ffaContractAddress][collateralTokenAddress] -= amount;
-            pledgedCollateralToFFAMapping[collateralTokenAddress][ffaContractAddress] -= amount;
-        }
-        //add to recipient balance mapping
-        recipientWallet.ffaToPledgedCollateralMapping[ffaContractAddress][collateralTokenAddress] += amount;
-
-        transfered_ = true;
     }*/
 
 
