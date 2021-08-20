@@ -17,6 +17,9 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     uint256 private result;
 
     //oracle and job info
+    /* The reason I don't set these to a constant value is because
+     * sometimes different chainlink nodes and jobs stop/start working.
+     */
     address public oracleAddress;
     bytes32 public jobId;
 
@@ -29,7 +32,7 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     string private apiPath;
 
     //address of the link contract address for given network
-    address public linkAddress;
+    address public linkAddress;//I could set this here as a constant as it wouldn't change--------------
 
     //deal with decimals
     int8 public decimals;
