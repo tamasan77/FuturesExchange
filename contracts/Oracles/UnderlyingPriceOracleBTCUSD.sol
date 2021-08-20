@@ -7,7 +7,6 @@ import "../ChainlinkOracle.sol";
 contract UnderlyingPriceOracleBTCUSD is ChainlinkOracle {
     string private constant apiURL = "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,JPY,EUR";
     string public constant apiPath = "USD";
-    int8 decimals = 10 ** 2;
     
 
     constructor(
@@ -22,7 +21,7 @@ contract UnderlyingPriceOracleBTCUSD is ChainlinkOracle {
             apiPath,
             linkAddress,
             fee,
-            decimals
+            100
         ) {
     }
 }

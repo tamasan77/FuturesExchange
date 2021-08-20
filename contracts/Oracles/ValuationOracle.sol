@@ -10,7 +10,7 @@ contract ValuationOracle is ChainlinkOracle {
     string public urlParameters;
 
     //figure out decimals for future contract price
-    int8 decimals = 10 ** 2;
+
     
     /* fixed-point representation scaled 1/100
      * Examples of internal representation of values
@@ -33,7 +33,7 @@ contract ValuationOracle is ChainlinkOracle {
             apiPath, 
             linkAddress, 
             fee, 
-            decimals
+            100
         ) {
     }
     

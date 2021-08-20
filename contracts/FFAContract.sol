@@ -58,8 +58,8 @@ contract FFAContract is IFFAContract{
         constructor(
             string memory _name, 
             string memory _symbol, 
-            address _oracleAddress,
-            bytes32 _jobId, 
+            //address _oracleAddress,
+            //bytes32 _jobId, 
             uint8 _decimals,
             uint256 _sizeOfContract,
             //address _collateralTokenAddress,
@@ -68,8 +68,8 @@ contract FFAContract is IFFAContract{
         ) {
             name = _name;
             symbol = _symbol;
-            oracleAddress = _oracleAddress;
-            jobId = _jobId;
+            //oracleAddress = _oracleAddress;
+            //jobId = _jobId;
             decimals = _decimals;
             sizeOfContract = _sizeOfContract;
             //collateralTokenAddress = _collateralTokenAddress;
@@ -161,14 +161,6 @@ contract FFAContract is IFFAContract{
             markedToMarket_ = true;
         }
 
-        //payoff at settlement
-        /*
-        function settlementPayoff() private returns (bool settlementPayoff_) {
-            require(BokkyPooBahsDateTimeLibrary.diffSeconds(expirationDate, block.timestamp) >= 0, "Settlement cannot occure before expiration date" );
-            require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
-
-        }*/
-
         //settle contract 
         function settleAtExpiration() external override returns (bool settled_) {
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(expirationDate, block.timestamp) >= 0, "Settlement cannot occure before expiration date" );
@@ -221,15 +213,10 @@ contract FFAContract is IFFAContract{
 
         //these are for testing
         /////////////////////////////////////
-        address[] private collateralWallets;
 
         function createCollateralWallet(string memory _name) external returns(address walletAddress_) {
-            walletAddress_ = address(new CollateralWallet(_name));
-            collateralWallets.push(walletAddress_);
-        }
-
-        function getCollateralWallets(uint256 index) external view returns(CollateralWallet) {
-            return CollateralWallet(collateralWallets[index]);
+            CollateralWallet newCollateralWallet = new CollateralWallet(_name);
+            walletAddress_ = address(newCollateralWallet);
         }
         //////////////////////////////////////
 

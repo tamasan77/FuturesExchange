@@ -18,8 +18,8 @@ contract FFAFactory {
     function createFFAContract(
         string calldata name, 
         string calldata symbol, 
-        address oracleAddress,
-        bytes32 jobId, 
+        //address oracleAddress,
+        //bytes32 jobId, 
         uint8 decimals,
         uint256 sizeOfContract, 
         uint8 exposureMarginRate,//scaled 1/100 for fixed-point arithemtics
@@ -27,13 +27,13 @@ contract FFAFactory {
         ) 
         external returns (address ffaContractAddress_) {
             
-            require (oracleAddress != address(0), "oracle address cannot be zero address");
-            require(jobId != "", "jobId cannot be empty string");
+            //require (oracleAddress != address(0), "oracle address cannot be zero address");
+            //require(jobId != "", "jobId cannot be empty string");
             require(sizeOfContract > 0, "contract size cannot be zero");
             require(maintenanceMarginRate >0, "maintenance margin rate cannot be zero");
 
             
-            ffaContractAddress_ = address(new FFAContract(name, symbol, oracleAddress, jobId, decimals, sizeOfContract, exposureMarginRate, maintenanceMarginRate));
+            ffaContractAddress_ = address(new FFAContract(name, symbol, decimals, sizeOfContract, exposureMarginRate, maintenanceMarginRate));
             require(keccak256(abi.encodePacked(FFAContract(ffaContractAddress_).getContractState())) == keccak256(abi.encodePacked("Created")), "contract not created");
             ffaContracts.push(ffaContractAddress_);
             uint8 initialMarginRate = exposureMarginRate + maintenanceMarginRate;
