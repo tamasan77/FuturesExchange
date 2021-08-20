@@ -13,25 +13,31 @@ contract FFAFactory {
     //hold address of FFA contracts
     address[] private ffaContracts;
 
-    event Created(uint8 decimals, uint256 sizeOfContract);
+    event Created(string name, string symbol, uint256 sizeOfContract, uint8 initialMarginRate, uint8 maintenanceMarginRate);
 
     function createFFAContract(
-        string calldata _name, 
-        string calldata _symbol, 
-        //address _oracleAddress,
-        //bytes32 _jobId, 
-        uint8 _decimals,
-        uint256 _sizeOfContract
+        string calldata name, 
+        string calldata symbol, 
+        address oracleAddress,
+        bytes32 jobId, 
+        uint8 decimals,
+        uint256 sizeOfContract, 
+        uint8 exposureMarginRate,//scaled 1/100 for fixed-point arithemtics
+        uint8 maintenanceMarginRate//scaled 1/100 for fixed-point arithemtics
         ) 
         external returns (address ffaContractAddress_) {
-            //check valid oracleAddress and jobId
-            //require (_oracleAddress != address(0), "oracle address cannot be zero address");
-            //require(_jobId != "", "jobId cannot be empty string");
             
-            ffaContractAddress_ = address(new FFAContract(_name, _symbol, _decimals, _sizeOfContract));
+            require (oracleAddress != address(0), "oracle address cannot be zero address");
+            require(jobId != "", "jobId cannot be empty string");
+            require(sizeOfContract > 0, "contract size cannot be zero");
+            require(maintenanceMarginRate >0, "maintenance margin rate cannot be zero");
+
+            
+            ffaContractAddress_ = address(new FFAContract(name, symbol, oracleAddress, jobId, decimals, sizeOfContract, exposureMarginRate, maintenanceMarginRate));
             require(keccak256(abi.encodePacked(FFAContract(ffaContractAddress_).getContractState())) == keccak256(abi.encodePacked("Created")), "contract not created");
             ffaContracts.push(ffaContractAddress_);
-            emit Created( _decimals, _sizeOfContract);
+            uint8 initialMarginRate = exposureMarginRate + maintenanceMarginRate;
+            emit Created(name, symbol, sizeOfContract, initialMarginRate, maintenanceMarginRate);
     }
 
     function getFFAContract(uint256 index) external view returns(FFAContract) {

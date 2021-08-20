@@ -45,19 +45,21 @@ contract FFAContract is IFFAContract{
         uint256 private prevDayClosingPrice;
 
         //valuation
-        //int256 private contractValue;
         uint256 private pricingDate;
 
         //underlying index price oracle
-        //address private oracleAddress;
-        //bytes32 private jobId;
+        /* Sometimes oracles and jobs start and stop working so
+         * we need to be able to set oracle address and job
+         */
+        address private oracleAddress;
+        bytes32 private jobId;
         ChainlinkOracle internal valuationOracle;
 
         constructor(
             string memory _name, 
             string memory _symbol, 
-            //address _oracleAddress,
-            //bytes32 _jobId, 
+            address _oracleAddress,
+            bytes32 _jobId, 
             uint8 _decimals,
             uint256 _sizeOfContract,
             //address _collateralTokenAddress,
@@ -66,8 +68,8 @@ contract FFAContract is IFFAContract{
         ) {
             name = _name;
             symbol = _symbol;
-            //oracleAddress = _oracleAddress;
-            //jobId = _jobId;
+            oracleAddress = _oracleAddress;
+            jobId = _jobId;
             decimals = _decimals;
             sizeOfContract = _sizeOfContract;
             //collateralTokenAddress = _collateralTokenAddress;
@@ -86,6 +88,9 @@ contract FFAContract is IFFAContract{
             require(_long != address(0), "Long can't be zero address");
             require(_short != address(0), "Short can't be zero address");
             require(_long != _short, "Long and short can't be same party");
+            require(_longWallet != address(0), "Long wallet cannot have zero address");
+            require(_shortWallet != address(0), "Short wallet cannot have zero address");
+            require(_longWallet != _shortWallet, "long and short wallets cannot be the same");
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate) > 0, "FFA contract has to expire in the future");
             long = _long;
             short = _short;
