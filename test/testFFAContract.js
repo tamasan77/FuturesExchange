@@ -7,28 +7,20 @@ const TestERC20Token = artifacts.require("./TestERC20Token.sol");
 
 
 contract("FFAContract", accounts => {
-    it("FFA contract works", async function() {
+    it("should initiate FFA and catch incorrect parameters", async function() {
         const ffaContractInstance = await FFAContract.deployed();
-
-        await ffaContractInstance.createCollateralWallet("long wallet");
-        await ffaContractInstance.createCollateralWallet("short wallet");
         
-        //Fix this, have long short in contract
-        const longWallet = await ffaContractInstance.getCollateralWallets(0);
-        const shortWallet = await ffaContractInstance.getCollateralWallets(1);
-        
-        //fixe checksum and return address at creation
-        const longWalletInstance = await CollateralWallet.at(longWallet);
-        const shortWalletInstance = await CollateralWallet.at(shortWallet);
+        let longWallet = await web3.utils.toChecksumAddress(ffaContractInstance.createCollateralWallet("long wallet"));
+        let shortWallet = await web3.utils.toChecksumAddress(ffaContractInstance.createCollateralWallet("short wallet"));
 
-        const long = accounts[3];
-        const short = accounts[4];
-        const initialForwardPrice = 123;
-        const riskFreeRate = 7;
-        const expirationDate = 1628948407;//14 Aug.
+        let long = accounts[3];
+        let short = accounts[4];
+        let initialForwardPrice = 4500;
+        let riskFreeRate = 10;
+        let expirationDate = 1628948407;//14 Aug.
 
         //testing inititation
-        await ffaContractInstance.initiateFFA(long, short, initialForwardPrice, riskFreeRate, expirationDate, longWalletInstance.address, shortWalletInstance.address);
+        await ffaContractInstance.initiateFFA(long, short, initialForwardPrice, riskFreeRate, expirationDate, longWallet, shortWallet);
         assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
         assert.equal(await ffaContractInstance.getLong(), long, "Long not correct");
         assert.equal(await ffaContractInstance.getShort(), short, "Short not correct");
@@ -37,6 +29,9 @@ contract("FFAContract", accounts => {
         assert.equal(await ffaContractInstance.getExpirationDate(), expirationDate, "Expiration date not correct");
         assert.equal(await ffaContractInstance.getLongWalletAddress(), longWalletInstance.address, "Long wallet not correct");
         assert.equal(await ffaContractInstance.getShortWalletAddress(), shortWalletInstance.address, "Short wallet not correct");
+    });
+
+    it("transferCollateralFrom should work and catch incorrect parameters", async function() {
 
         //testing transferCollateralFrom
         //set balances: 100 TestERC20Tokens each
@@ -52,5 +47,5 @@ contract("FFAContract", accounts => {
         const shortWalletBalance = await shortWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
         assert.equal(longWalletBalance, 75, "transfer failed");
         assert.equal(shortWalletBalance, 125, "transfer failed");
-    })
+    });
 });
