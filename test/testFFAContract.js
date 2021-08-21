@@ -23,6 +23,16 @@ contract("FFAContract", accounts => {
         let riskFreeRate = 10;
         let expirationDate = 16295802270;
 
+        //catch some errors
+        longParty = 0;
+        try {
+            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address));
+        } catch(error) {
+            let Error = error;
+        }
+        assert.notEqual(Error, undefined, "Error must be thrown");
+        longParty = accounts[3];
+
         //testing inititation
         await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address));
         assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
