@@ -214,10 +214,19 @@ contract FFAContract is IFFAContract{
         //these are for testing
         /////////////////////////////////////
 
-        function createCollateralWallet(string memory _name) external returns(address walletAddress_) {
-            CollateralWallet newCollateralWallet = new CollateralWallet(_name);
-            walletAddress_ = address(newCollateralWallet);
+        CollateralWallet public longTestWallet;
+        CollateralWallet public shortTestWallet;
+
+        function createLongCollateralWallet(string memory _name) external returns(address walletAddress_) {
+            longTestWallet = new CollateralWallet(_name);
+            walletAddress_ = address(longTestWallet);
         }
+
+        function createShortCollateralWallet(string memory _name) external returns(address walletAddress_) {
+            shortTestWallet = new CollateralWallet(_name);
+            walletAddress_ = address(shortTestWallet);
+        }
+
         //////////////////////////////////////
 
         //receive and fallback functions

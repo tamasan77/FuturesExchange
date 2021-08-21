@@ -12371,7 +12371,7 @@
         2088
       ],
       "IChainlinkOracle": [
-        5296
+        5333
       ],
       "LinkTokenInterface": [
         1007
@@ -12389,15 +12389,15 @@
         1136
       ],
       "UnderlyingPriceOracleBTCUSD": [
-        5047
+        5084
       ]
     },
-    "id": 5048,
+    "id": 5085,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 5016,
+        "id": 5053,
         "literals": [
           "solidity",
           "^",
@@ -12410,10 +12410,10 @@
       {
         "absolutePath": "project:/contracts/ChainlinkOracle.sol",
         "file": "../ChainlinkOracle.sol",
-        "id": 5017,
+        "id": 5054,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 5048,
+        "scope": 5085,
         "sourceUnit": 4007,
         "src": "69:32:25",
         "symbolAliases": [],
@@ -12424,13 +12424,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 5018,
+              "id": 5055,
               "name": "ChainlinkOracle",
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 4006,
               "src": "145:15:25"
             },
-            "id": 5019,
+            "id": 5056,
             "nodeType": "InheritanceSpecifier",
             "src": "145:15:25"
           }
@@ -12438,11 +12438,11 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 5047,
+        "id": 5084,
         "linearizedBaseContracts": [
-          5047,
+          5084,
           4006,
-          5296,
+          5333,
           2192,
           3474,
           799
@@ -12453,12 +12453,12 @@
         "nodes": [
           {
             "constant": true,
-            "id": 5022,
+            "id": 5059,
             "mutability": "constant",
             "name": "apiURL",
             "nameLocation": "192:6:25",
             "nodeType": "VariableDeclaration",
-            "scope": 5047,
+            "scope": 5084,
             "src": "168:106:25",
             "stateVariable": true,
             "storageLocation": "default",
@@ -12467,7 +12467,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 5020,
+              "id": 5057,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "168:6:25",
@@ -12478,7 +12478,7 @@
             },
             "value": {
               "hexValue": "68747470733a2f2f6d696e2d6170692e63727970746f636f6d706172652e636f6d2f646174612f70726963653f6673796d3d425443267473796d733d5553442c4a50592c455552",
-              "id": 5021,
+              "id": 5058,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -12497,12 +12497,12 @@
           {
             "constant": true,
             "functionSelector": "6dff2c0b",
-            "id": 5025,
+            "id": 5062,
             "mutability": "constant",
             "name": "apiPath",
             "nameLocation": "304:7:25",
             "nodeType": "VariableDeclaration",
-            "scope": 5047,
+            "scope": 5084,
             "src": "281:38:25",
             "stateVariable": true,
             "storageLocation": "default",
@@ -12511,7 +12511,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 5023,
+              "id": 5060,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "281:6:25",
@@ -12522,7 +12522,7 @@
             },
             "value": {
               "hexValue": "555344",
-              "id": 5024,
+              "id": 5061,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -12540,23 +12540,23 @@
           },
           {
             "body": {
-              "id": 5045,
+              "id": 5082,
               "nodeType": "Block",
               "src": "647:8:25",
               "statements": []
             },
-            "id": 5046,
+            "id": 5083,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [
               {
                 "arguments": [
                   {
-                    "id": 5036,
+                    "id": 5073,
                     "name": "oracleAddress",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5027,
+                    "referencedDeclaration": 5064,
                     "src": "496:13:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -12564,11 +12564,11 @@
                     }
                   },
                   {
-                    "id": 5037,
+                    "id": 5074,
                     "name": "jobId",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5029,
+                    "referencedDeclaration": 5066,
                     "src": "524:5:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
@@ -12576,11 +12576,11 @@
                     }
                   },
                   {
-                    "id": 5038,
+                    "id": 5075,
                     "name": "apiURL",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5022,
+                    "referencedDeclaration": 5059,
                     "src": "544:6:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_memory_ptr",
@@ -12588,11 +12588,11 @@
                     }
                   },
                   {
-                    "id": 5039,
+                    "id": 5076,
                     "name": "apiPath",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5025,
+                    "referencedDeclaration": 5062,
                     "src": "566:7:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_memory_ptr",
@@ -12600,11 +12600,11 @@
                     }
                   },
                   {
-                    "id": 5040,
+                    "id": 5077,
                     "name": "linkAddress",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5031,
+                    "referencedDeclaration": 5068,
                     "src": "588:11:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -12612,11 +12612,11 @@
                     }
                   },
                   {
-                    "id": 5041,
+                    "id": 5078,
                     "name": "fee",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5033,
+                    "referencedDeclaration": 5070,
                     "src": "614:3:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
@@ -12625,7 +12625,7 @@
                   },
                   {
                     "hexValue": "313030",
-                    "id": 5042,
+                    "id": 5079,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -12640,10 +12640,10 @@
                     "value": "100"
                   }
                 ],
-                "id": 5043,
+                "id": 5080,
                 "kind": "baseConstructorSpecifier",
                 "modifierName": {
-                  "id": 5035,
+                  "id": 5072,
                   "name": "ChainlinkOracle",
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 4006,
@@ -12657,17 +12657,17 @@
             "nameLocation": "-1:-1:-1",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 5034,
+              "id": 5071,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 5027,
+                  "id": 5064,
                   "mutability": "mutable",
                   "name": "oracleAddress",
                   "nameLocation": "364:13:25",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5046,
+                  "scope": 5083,
                   "src": "356:21:25",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12676,7 +12676,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 5026,
+                    "id": 5063,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "356:7:25",
@@ -12690,12 +12690,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 5029,
+                  "id": 5066,
                   "mutability": "mutable",
                   "name": "jobId",
                   "nameLocation": "396:5:25",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5046,
+                  "scope": 5083,
                   "src": "388:13:25",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12704,7 +12704,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 5028,
+                    "id": 5065,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "388:7:25",
@@ -12717,12 +12717,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 5031,
+                  "id": 5068,
                   "mutability": "mutable",
                   "name": "linkAddress",
                   "nameLocation": "420:11:25",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5046,
+                  "scope": 5083,
                   "src": "412:19:25",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12731,7 +12731,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 5030,
+                    "id": 5067,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "412:7:25",
@@ -12745,12 +12745,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 5033,
+                  "id": 5070,
                   "mutability": "mutable",
                   "name": "fee",
                   "nameLocation": "450:3:25",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5046,
+                  "scope": 5083,
                   "src": "442:11:25",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12759,7 +12759,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 5032,
+                    "id": 5069,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "442:7:25",
@@ -12774,19 +12774,19 @@
               "src": "345:109:25"
             },
             "returnParameters": {
-              "id": 5044,
+              "id": 5081,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "647:0:25"
             },
-            "scope": 5047,
+            "scope": 5084,
             "src": "334:321:25",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 5048,
+        "scope": 5085,
         "src": "105:553:25",
         "usedErrors": []
       }
@@ -12824,7 +12824,7 @@
         2088
       ],
       "IChainlinkOracle": [
-        5296
+        5333
       ],
       "LinkTokenInterface": [
         1007
@@ -12842,15 +12842,15 @@
         1136
       ],
       "UnderlyingPriceOracleBTCUSD": [
-        5047
+        5084
       ]
     },
-    "id": 5048,
+    "id": 5085,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 5016,
+        "id": 5053,
         "literals": [
           "solidity",
           "^",
@@ -12863,10 +12863,10 @@
       {
         "absolutePath": "project:/contracts/ChainlinkOracle.sol",
         "file": "../ChainlinkOracle.sol",
-        "id": 5017,
+        "id": 5054,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 5048,
+        "scope": 5085,
         "sourceUnit": 4007,
         "src": "69:32:25",
         "symbolAliases": [],
@@ -12877,13 +12877,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 5018,
+              "id": 5055,
               "name": "ChainlinkOracle",
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 4006,
               "src": "145:15:25"
             },
-            "id": 5019,
+            "id": 5056,
             "nodeType": "InheritanceSpecifier",
             "src": "145:15:25"
           }
@@ -12891,11 +12891,11 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 5047,
+        "id": 5084,
         "linearizedBaseContracts": [
-          5047,
+          5084,
           4006,
-          5296,
+          5333,
           2192,
           3474,
           799
@@ -12906,12 +12906,12 @@
         "nodes": [
           {
             "constant": true,
-            "id": 5022,
+            "id": 5059,
             "mutability": "constant",
             "name": "apiURL",
             "nameLocation": "192:6:25",
             "nodeType": "VariableDeclaration",
-            "scope": 5047,
+            "scope": 5084,
             "src": "168:106:25",
             "stateVariable": true,
             "storageLocation": "default",
@@ -12920,7 +12920,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 5020,
+              "id": 5057,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "168:6:25",
@@ -12931,7 +12931,7 @@
             },
             "value": {
               "hexValue": "68747470733a2f2f6d696e2d6170692e63727970746f636f6d706172652e636f6d2f646174612f70726963653f6673796d3d425443267473796d733d5553442c4a50592c455552",
-              "id": 5021,
+              "id": 5058,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -12950,12 +12950,12 @@
           {
             "constant": true,
             "functionSelector": "6dff2c0b",
-            "id": 5025,
+            "id": 5062,
             "mutability": "constant",
             "name": "apiPath",
             "nameLocation": "304:7:25",
             "nodeType": "VariableDeclaration",
-            "scope": 5047,
+            "scope": 5084,
             "src": "281:38:25",
             "stateVariable": true,
             "storageLocation": "default",
@@ -12964,7 +12964,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 5023,
+              "id": 5060,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "281:6:25",
@@ -12975,7 +12975,7 @@
             },
             "value": {
               "hexValue": "555344",
-              "id": 5024,
+              "id": 5061,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -12993,23 +12993,23 @@
           },
           {
             "body": {
-              "id": 5045,
+              "id": 5082,
               "nodeType": "Block",
               "src": "647:8:25",
               "statements": []
             },
-            "id": 5046,
+            "id": 5083,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [
               {
                 "arguments": [
                   {
-                    "id": 5036,
+                    "id": 5073,
                     "name": "oracleAddress",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5027,
+                    "referencedDeclaration": 5064,
                     "src": "496:13:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -13017,11 +13017,11 @@
                     }
                   },
                   {
-                    "id": 5037,
+                    "id": 5074,
                     "name": "jobId",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5029,
+                    "referencedDeclaration": 5066,
                     "src": "524:5:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
@@ -13029,11 +13029,11 @@
                     }
                   },
                   {
-                    "id": 5038,
+                    "id": 5075,
                     "name": "apiURL",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5022,
+                    "referencedDeclaration": 5059,
                     "src": "544:6:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_memory_ptr",
@@ -13041,11 +13041,11 @@
                     }
                   },
                   {
-                    "id": 5039,
+                    "id": 5076,
                     "name": "apiPath",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5025,
+                    "referencedDeclaration": 5062,
                     "src": "566:7:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_memory_ptr",
@@ -13053,11 +13053,11 @@
                     }
                   },
                   {
-                    "id": 5040,
+                    "id": 5077,
                     "name": "linkAddress",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5031,
+                    "referencedDeclaration": 5068,
                     "src": "588:11:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -13065,11 +13065,11 @@
                     }
                   },
                   {
-                    "id": 5041,
+                    "id": 5078,
                     "name": "fee",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5033,
+                    "referencedDeclaration": 5070,
                     "src": "614:3:25",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
@@ -13078,7 +13078,7 @@
                   },
                   {
                     "hexValue": "313030",
-                    "id": 5042,
+                    "id": 5079,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -13093,10 +13093,10 @@
                     "value": "100"
                   }
                 ],
-                "id": 5043,
+                "id": 5080,
                 "kind": "baseConstructorSpecifier",
                 "modifierName": {
-                  "id": 5035,
+                  "id": 5072,
                   "name": "ChainlinkOracle",
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 4006,
@@ -13110,17 +13110,17 @@
             "nameLocation": "-1:-1:-1",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 5034,
+              "id": 5071,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 5027,
+                  "id": 5064,
                   "mutability": "mutable",
                   "name": "oracleAddress",
                   "nameLocation": "364:13:25",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5046,
+                  "scope": 5083,
                   "src": "356:21:25",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -13129,7 +13129,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 5026,
+                    "id": 5063,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "356:7:25",
@@ -13143,12 +13143,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 5029,
+                  "id": 5066,
                   "mutability": "mutable",
                   "name": "jobId",
                   "nameLocation": "396:5:25",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5046,
+                  "scope": 5083,
                   "src": "388:13:25",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -13157,7 +13157,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 5028,
+                    "id": 5065,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "388:7:25",
@@ -13170,12 +13170,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 5031,
+                  "id": 5068,
                   "mutability": "mutable",
                   "name": "linkAddress",
                   "nameLocation": "420:11:25",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5046,
+                  "scope": 5083,
                   "src": "412:19:25",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -13184,7 +13184,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 5030,
+                    "id": 5067,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "412:7:25",
@@ -13198,12 +13198,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 5033,
+                  "id": 5070,
                   "mutability": "mutable",
                   "name": "fee",
                   "nameLocation": "450:3:25",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5046,
+                  "scope": 5083,
                   "src": "442:11:25",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -13212,7 +13212,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 5032,
+                    "id": 5069,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "442:7:25",
@@ -13227,19 +13227,19 @@
               "src": "345:109:25"
             },
             "returnParameters": {
-              "id": 5044,
+              "id": 5081,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "647:0:25"
             },
-            "scope": 5047,
+            "scope": 5084,
             "src": "334:321:25",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 5048,
+        "scope": 5085,
         "src": "105:553:25",
         "usedErrors": []
       }
@@ -13252,7 +13252,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.2",
-  "updatedAt": "2021-08-20T14:58:04.844Z",
+  "updatedAt": "2021-08-21T21:36:28.631Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
