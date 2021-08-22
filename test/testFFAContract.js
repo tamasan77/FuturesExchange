@@ -7,6 +7,10 @@ const TestERC20Token = artifacts.require("./TestERC20Token.sol");
 
 
 contract("FFAContract", accounts => {
+    async function isContract(address) {
+        const bytecode = await web3.eth.getCode(address);
+        return bytecode != "0x";
+    };
     it("should initiate FFA and catch incorrect parameters", async function() {
         const ffaContractInstance = await FFAContract.deployed();
 
@@ -17,21 +21,78 @@ contract("FFAContract", accounts => {
         const longWalletInstance = await CollateralWallet.at(longWallet);
         const shortWalletInstance = await CollateralWallet.at(shortWallet);
 
-        let longParty = accounts[3];
-        let shortParty = accounts[4];
-        let initialForwardPrice = 4500;
-        let riskFreeRate = 10;
-        let expirationDate = 16295802270;
+        let initialForwardPrice = 4378;
+        let riskFreeRate = 124;
 
-        //catch some errors
-        longParty = 0;
+        //catch zero address error
+        let longParty = 0;
         try {
             await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address));
         } catch(error) {
-            let Error = error;
+            lpZeroErr = error;
         }
-        assert.notEqual(Error, undefined, "Error must be thrown");
+        assert.notEqual(lpZeroErr, undefined, "Error must be thrown");
         longParty = accounts[3];
+
+        //catch zero address error
+        let shortParty = 0;
+        try {
+            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address));
+        } catch(error) {
+            spZeroErr = error;
+        }
+        assert.notEqual(spZeroErr, undefined, "Error must be thrown");
+
+        //catch same address error
+        shortParty = accounts[3];
+        try {
+            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address));
+        } catch(error) {
+            slpEqualErr = error;
+        }
+        assert.notEqual(slpEqualErr, undefined, "Error must be thrown");
+
+        shortParty = accounts[4];
+
+        //catch zero wallet addresses and same wallet addresses
+        let longWalletAddress = 0;
+        try {
+            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, longWalletAddress, web3.utils.toChecksumAddress(shortWalletInstance.address));
+        } catch(error) {
+            lwZeroErr = error;
+        }
+        assert.notEqual(lwZeroErr, undefined, "Error must be thrown");
+
+        longWalletAddress = web3.utils.toChecksumAddress(longWalletInstance.address);
+
+        let shortWalletAddress = 0;
+        try {
+            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, longWalletAddress, shortWalletAddress);
+        } catch(error) {
+            swZeroErr = error;
+        }
+        assert.notEqual(swZeroErr, undefined, "Error must be thrown");
+
+        shortWalletAddress = longWalletAddress;
+        try {
+            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, longWalletAddress, shortWalletAddress);
+        } catch(error) {
+            slwSameErr = error;
+        }
+        assert.notEqual(slwSameErr, undefined, "Error must be thrown");
+
+        shortWalletAddress = web3.utils.toChecksumAddress(shortWalletInstance.address);
+
+        //check error for expiration date after initiation date
+        let expirationDate = 935285085; //1999 date
+        try {
+            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, longWalletAddress, shortWalletAddress);
+        } catch(error) {
+            expDateErr = error;
+        }
+        assert.notEqual(expDateErr, undefined, "Error must be thrown");
+
+        expirationDate = 16295802270;
 
         //testing inititation
         await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address));

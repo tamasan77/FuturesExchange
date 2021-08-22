@@ -15,7 +15,7 @@ contract ValuationOracle is ChainlinkOracle {
     /* fixed-point representation scaled 1/100
      * Examples of internal representation of values
      * - underlyingPrice: $43.78 -> 4378
-     * - annualRiskFreeRate: 1.24% -> 124
+     * - annualRiskFreeRate: 1.24% -> 124%
      */
     constructor(
         address oracleAddress, 
