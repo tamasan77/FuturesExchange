@@ -22,13 +22,13 @@ contract FFAContract is IFFAContract{
         //contract detail
         string private name;
         string private symbol;
-        uint private decimals;
+        uint private decimals = 100;//as each price is given to precision of cent
         ContractState public contractState;
         uint256 private sizeOfContract;
         address private long;
         address private short;
         uint256 private initialForwardPrice;
-        uint private riskFreeRate;
+        uint private annualRiskFreeRate;
         uint256 private expirationDate;
         uint256 private underlyingPrice;//scaled 1/100 ie. 45.07 -> 4507
 
@@ -85,7 +85,7 @@ contract FFAContract is IFFAContract{
 
         //initiateFFA: initiates futures contract with given parameters
         function initiateFFA(address _long, address _short, uint256 _initialForwardPrice, 
-                             uint _riskFreeRate, uint256 _expirationDate,
+                             uint _annualRiskFreeRate, uint256 _expirationDate,
                              address _longWallet, address _shortWallet, address _oracleAddress, 
                              bytes32 _jobId, uint256 _fee, address _linkAddress) 
                              external override returns (bool initiated_) {
@@ -103,7 +103,7 @@ contract FFAContract is IFFAContract{
             //call valuation API to get initialForwardPrice!!!!!!!!!!!!!11
             initialForwardPrice = _initialForwardPrice;
             prevDayClosingPrice = initialForwardPrice;
-            riskFreeRate = _riskFreeRate;
+            annualRiskFreeRate = _annualRiskFreeRate;
             expirationDate = _expirationDate;
             longWallet = _longWallet;
             shortWallet = _shortWallet;
@@ -113,7 +113,7 @@ contract FFAContract is IFFAContract{
             linkAddress = _linkAddress;
             contractState = ContractState.Initiated;
             //Do i need to deal with allowance?
-            emit Initiated(long, short, initialForwardPrice, riskFreeRate, expirationDate, sizeOfContract);
+            emit Initiated(long, short, initialForwardPrice, annualRiskFreeRate, expirationDate, sizeOfContract);
             initiated_ = true;
         }
 
@@ -129,10 +129,10 @@ contract FFAContract is IFFAContract{
         //calculate forward price
         function calcForwardPrice() public returns (uint256 price_) {
             pricingDate = block.timestamp;
-            underlyingPrice = underlyingPrice
+            underlyingPrice = ChainlinkOracle()
 
             //call valuation oracle here
-            price_ = LinkPoolValuationOracle(underlyingPrice, );
+            price_ = ValuationOracle(oracleAddress, jobId, linkAddress, fee, underlyingPrice, annualRiskFreeRate, pricingDate, expirationDate);
         }
 
         /*
