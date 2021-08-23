@@ -128,6 +128,7 @@ contract("FFAContract", accounts => {
         const testERC20TokenInstance = await TestERC20Token.deployed();
         await longWalletInstance.setNewBalance(ffaContractInstance.address, testERC20TokenInstance.address, 100);
         await shortWalletInstance.setNewBalance(ffaContractInstance.address, testERC20TokenInstance.address, 100);
+
         //transfer 100 tokens to each wallet
         await testERC20TokenInstance.transfer(longWalletInstance.address, 100);
         await testERC20TokenInstance.transfer(shortWalletInstance.address, 100);
@@ -137,5 +138,13 @@ contract("FFAContract", accounts => {
         const shortWalletBalance = await shortWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
         assert.equal(longWalletBalance, 75, "transfer failed");
         assert.equal(shortWalletBalance, 125, "transfer failed");
+
+        //check error of insufficient balance
+        try{
+            await ffaContractInstance.transferCollateralFrom(web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address), 125, web3.utils.toChecksumAddress(testERC20TokenInstance.address));
+        } catch(error) {
+            balErr = error;
+        }
+        assert.notEqual(balErr, undefined, "Error must be thrown");
     });
 });

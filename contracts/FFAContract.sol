@@ -21,13 +21,13 @@ contract FFAContract is IFFAContract{
         //contract detail
         string private name;
         string private symbol;
-        uint8 private decimals;
+        uint private decimals;
         ContractState public contractState;
         uint256 private sizeOfContract;
         address private long;
         address private short;
         uint256 private initialForwardPrice;
-        uint8 private riskFreeRate;
+        uint private riskFreeRate;
         uint256 private expirationDate;
 
         //collateral wallets
@@ -38,8 +38,8 @@ contract FFAContract is IFFAContract{
 
         //margin requirements
         //MM(8%) + EM (2%) = IM (10%)
-        uint8 private exposureMarginRate;
-        uint8 private maintenanceMarginRate;
+        uint private exposureMarginRate;
+        uint private maintenanceMarginRate;
 
         //M2M
         uint256 private prevDayClosingPrice;
@@ -60,11 +60,11 @@ contract FFAContract is IFFAContract{
             string memory _symbol, 
             //address _oracleAddress,
             //bytes32 _jobId, 
-            uint8 _decimals,
+            uint _decimals,
             uint256 _sizeOfContract,
             //address _collateralTokenAddress,
-            uint8 _exposureMarginRate,
-            uint8 _maintenanceMarginRate
+            uint _exposureMarginRate,
+            uint _maintenanceMarginRate
         ) {
             name = _name;
             symbol = _symbol;
@@ -80,9 +80,9 @@ contract FFAContract is IFFAContract{
             emit CreatedContract(decimals, sizeOfContract);
         }
 
-        //initiation
+        //initiateFFA: initiates futures contract with given parameters
         function initiateFFA(address _long, address _short, uint256 _initialForwardPrice, 
-                             uint8 _riskFreeRate, uint256 _expirationDate,
+                             uint _riskFreeRate, uint256 _expirationDate,
                              address _longWallet, address _shortWallet) 
                              external override returns (bool initiated_) {
             require(_long != address(0), "Long can't be zero address");
@@ -188,6 +188,7 @@ contract FFAContract is IFFAContract{
             defaulted_ = true;
         }
 
+        /* transferCollateralFrom: transfers given amount of given token from one collateral wallet to the other*/
         function transferCollateralFrom(address senderWalletAddress, address recipientWalletAddress, uint256 amount, address _collateralTokenAddress) public returns (bool transfered_){
             CollateralWallet senderWallet = CollateralWallet(senderWalletAddress);
             CollateralWallet recipientWallet = CollateralWallet(recipientWalletAddress);
@@ -267,7 +268,7 @@ contract FFAContract is IFFAContract{
             return sizeOfContract;
         }
 
-        function getDecimals() external view returns (uint8) {
+        function getDecimals() external view returns (uint) {
             return decimals;
         }
 
@@ -283,7 +284,7 @@ contract FFAContract is IFFAContract{
             return initialForwardPrice;
         }
 
-        function getRiskFreeRate() external view returns (uint8) {
+        function getRiskFreeRate() external view returns (uint) {
             return riskFreeRate;
         }
 
