@@ -11,7 +11,8 @@ module.exports = {
     development: {
       port: 7545,
       network_id: "*",
-      host: "127.0.0.1"
+      host: "127.0.0.1",
+      gas: 4000000
     },
     rinkeby: {
       provider: function() {

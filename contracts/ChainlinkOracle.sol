@@ -35,12 +35,12 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     address public linkAddress;//I could set this here as a constant as it wouldn't change--------------
 
     //deal with decimals
-    int8 public decimals;
+    int public decimals;
 
     //fee is usually 0.1Link which is equal to (0.1 * 10 ** 18)
     uint256 public fee;
 
-    constructor(address _oracleAddress, bytes32 _jobId, string memory _apiURL, string memory _apiPath, address _linkAddress, uint256 _fee, int8 _decimals) {  
+    constructor(address _oracleAddress, bytes32 _jobId, string memory _apiURL, string memory _apiPath, address _linkAddress, uint256 _fee, int _decimals) {  
         //Kovan link
         /*
             address _link = 0xa36085F69e2889c224210F603D836748e7dC0088;

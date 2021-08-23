@@ -23,7 +23,7 @@ contract ValuationOracle is ChainlinkOracle {
         address linkAddress, 
         uint256 fee, 
         uint256 underlyingPrice, 
-        uint8 annualRiskFreeRate, 
+        uint annualRiskFreeRate, 
         uint256 valuationDate, 
         uint256 expirationDate) 
         ChainlinkOracle (

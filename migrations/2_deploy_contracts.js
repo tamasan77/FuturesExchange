@@ -19,5 +19,5 @@ module.exports = async function(deployer) {
   
   await deployer.deploy(CollateralWallet, "Test Wallet");
   await deployer.deploy(TestERC20Token, 1000000);
-  //await deployer.deploy(ChainlinkOracle);
+  await deployer.deploy(ChainlinkOracle);
 };

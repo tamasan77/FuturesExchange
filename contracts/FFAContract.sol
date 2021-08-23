@@ -22,7 +22,7 @@ contract FFAContract is IFFAContract{
         //contract detail
         string private name;
         string private symbol;
-        uint private decimals = 100;//as each price is given to precision of cent
+        int private decimals = 100;//as each price is given to precision of cent
         ContractState public contractState;
         uint256 private sizeOfContract;
         address private long;
@@ -57,28 +57,39 @@ contract FFAContract is IFFAContract{
         bytes32 public jobId;
         uint256 public fee;
         address public linkAddress;
+        string private underlyingApiURL;
+        string private underlyingApiPath;
+
+        ValuationOracle myValuationOracle;
+        ChainlinkOracle underlyingOracle;
 
         constructor(
             string memory _name, 
             string memory _symbol, 
-            //address _oracleAddress,
-            //bytes32 _jobId, 
-            uint _decimals,
-            uint256 _sizeOfContract,
+            address _oracleAddress,
+            bytes32 _jobId, 
+            uint256 _fee,
+            address _linkAddress,
+            string memory _underlyingApiURL,
+            string memory _underlyingApiPath,
+            int _decimals,
+            uint256 _sizeOfContract
             //address _collateralTokenAddress,
-            uint _exposureMarginRate,
-            uint _maintenanceMarginRate
         ) {
             name = _name;
             symbol = _symbol;
-            //oracleAddress = _oracleAddress;
-            //jobId = _jobId;
+            oracleAddress = _oracleAddress;
+            jobId = _jobId;
+            fee = _fee;
+            linkAddress = _linkAddress;
+            underlyingApiURL = _underlyingApiURL;
+            underlyingApiPath = _underlyingApiPath;
             decimals = _decimals;
             sizeOfContract = _sizeOfContract;
             //collateralTokenAddress = _collateralTokenAddress;
-            //valuationOracle = new ChainlinkOracle(oracleAddress, jobId);//not sure
-            exposureMarginRate = _exposureMarginRate;
-            maintenanceMarginRate = _maintenanceMarginRate;
+
+            myValuationOracle = new ValuationOracle(oracleAddress, jobId, linkAddress, fee, underlyingPrice, annualRiskFreeRate, pricingDate, expirationDate);
+            underlyingOracle = new ChainlinkOracle(oracleAddress, jobId, underlyingApiURL, underlyingApiPath, linkAddress, fee, decimals);
             contractState = ContractState.Created;
             emit CreatedContract(decimals, sizeOfContract);
         }
@@ -86,8 +97,8 @@ contract FFAContract is IFFAContract{
         //initiateFFA: initiates futures contract with given parameters
         function initiateFFA(address _long, address _short, uint256 _initialForwardPrice, 
                              uint _annualRiskFreeRate, uint256 _expirationDate,
-                             address _longWallet, address _shortWallet, address _oracleAddress, 
-                             bytes32 _jobId, uint256 _fee, address _linkAddress) 
+                             address _longWallet, address _shortWallet, uint _exposureMarginRate,
+                             uint _maintenanceMarginRate) 
                              external override returns (bool initiated_) {
             require(_long != address(0), "Long can't be zero address");
             require(_short != address(0), "Short can't be zero address");
@@ -95,8 +106,7 @@ contract FFAContract is IFFAContract{
             require(_longWallet != address(0), "Long wallet cannot have zero address");
             require(_shortWallet != address(0), "Short wallet cannot have zero address");
             require(_longWallet != _shortWallet, "long and short wallets cannot be the same");
-            require(_oracleAddress != address(0), "oracleAddress cannot be zero");
-            require(_linkAddress != address(0), "linkAddress cannot be zero");
+            require(maintenanceMarginRate >0, "maintenance margin rate cannot be zero");
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate) > 0, "FFA contract has to expire in the future");
             long = _long;
             short = _short;
@@ -107,32 +117,27 @@ contract FFAContract is IFFAContract{
             expirationDate = _expirationDate;
             longWallet = _longWallet;
             shortWallet = _shortWallet;
-            oracleAddress = _oracleAddress;
-            jobId = _jobId;
-            fee = _fee;
-            linkAddress = _linkAddress;
+            exposureMarginRate = _exposureMarginRate;
+            maintenanceMarginRate = _maintenanceMarginRate;
             contractState = ContractState.Initiated;
             //Do i need to deal with allowance?
-            emit Initiated(long, short, initialForwardPrice, annualRiskFreeRate, expirationDate, sizeOfContract);
+            uint initialMarginRate = exposureMarginRate + maintenanceMarginRate;
+            emit Initiated(long, short, initialForwardPrice, annualRiskFreeRate, expirationDate, sizeOfContract, initialMarginRate);
             initiated_ = true;
         }
 
-        //calculate value of contract
-        /*
-        function calcFFAValue() external override returns (uint256 value_) {
-            pricingDate = block.timestamp;
-            //use valuation oracle here
-            
-            value_ = 0;
-        }*/
+        //get underlying price
+        function setUnderlyingPrice() public {
+            underlyingOracle.requestIndexPrice();
+            underlyingPrice = underlyingOracle.getResult();
+        }
 
         //calculate forward price
         function calcForwardPrice() public returns (uint256 price_) {
             pricingDate = block.timestamp;
-            underlyingPrice = ChainlinkOracle()
-
-            //call valuation oracle here
-            price_ = ValuationOracle(oracleAddress, jobId, linkAddress, fee, underlyingPrice, annualRiskFreeRate, pricingDate, expirationDate);
+            setUnderlyingPrice();
+            myValuationOracle.requestIndexPrice();
+            price_ = myValuationOracle.getResult();
         }
 
         /*
@@ -279,7 +284,7 @@ contract FFAContract is IFFAContract{
             return sizeOfContract;
         }
 
-        function getDecimals() external view returns (uint) {
+        function getDecimals() external view returns (int) {
             return decimals;
         }
 
@@ -296,7 +301,7 @@ contract FFAContract is IFFAContract{
         }
 
         function getRiskFreeRate() external view returns (uint) {
-            return riskFreeRate;
+            return annualRiskFreeRate;
         }
 
         function getExpirationDate() external view returns (uint256) {
