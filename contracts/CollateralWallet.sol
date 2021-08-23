@@ -30,11 +30,6 @@ contract CollateralWallet is Pausable, Ownable{//IERC20Metadata
         //tokens = _tokens;
     }
 
-    //deposit
-
-    //withdraw
-
-    
     //receive and fallback functions
     /*
     receive () external payable {
@@ -50,17 +45,24 @@ contract CollateralWallet is Pausable, Ownable{//IERC20Metadata
     //setters
     //ADD MODIFIERS FOR SAFETY!!!!!!!!!!!!
     function setNewBalance(address ffaContractAddress, address collateralTokenAddress, uint256 newBalance) external {
+        require(ffaContractAddress != address(0), "contract address cannot be zero");
+        require(collateralTokenAddress != address(0), "token address cannot be zero");
         ffaToPledgedCollateralMapping[ffaContractAddress][collateralTokenAddress] = newBalance;
         pledgedCollateralToFFAMapping[collateralTokenAddress][ffaContractAddress] = newBalance;
     }
 
     function getMappedBalance(address ffaContractAddress, address collateralTokenAddress) external view returns (uint256) {
+        require(ffaContractAddress != address(0), "contract address cannot be zero");
+        require(collateralTokenAddress != address(0), "token address cannot be zero");
         return ffaToPledgedCollateralMapping[ffaContractAddress][collateralTokenAddress];
     }
 
     function approveSpender(address collateralTokenAddress, address spender, uint256 amount) external {
+        require(spender != address(0), "spender address cannot be zero");
+        require(collateralTokenAddress != address(0), "token address cannot be zero");
         IERC20(collateralTokenAddress).approve(spender, amount);
     }
+
     function getName() external view returns(string memory) {
         return name;
     }

@@ -14,7 +14,7 @@ module.exports = async function(deployer) {
    * sizeOfContract: 1000
    * exposureMargin: 2%
    * maintenanceMargin: 8%
-  */
+   */
   await deployer.deploy(FFAContract, "Test Contract", "TSTC", 100, 1000, 2, 8);
   
   await deployer.deploy(CollateralWallet, "Test Wallet");
