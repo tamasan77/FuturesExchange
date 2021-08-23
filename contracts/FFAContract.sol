@@ -11,6 +11,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "../interfaces/IFFAContract.sol";
 import "./ChainlinkOracle.sol";
 import "./CollateralWallet.sol";
+import "./Oracles/ValuationOracle.sol";
 
 contract FFAContract is IFFAContract{
         using SafeERC20 for IERC20;
@@ -29,6 +30,7 @@ contract FFAContract is IFFAContract{
         uint256 private initialForwardPrice;
         uint private riskFreeRate;
         uint256 private expirationDate;
+        uint256 private underlyingPrice;//scaled 1/100 ie. 45.07 -> 4507
 
         //collateral wallets
         address private longWallet;
@@ -51,9 +53,10 @@ contract FFAContract is IFFAContract{
         /* Sometimes oracles and jobs start and stop working so
          * we need to be able to set oracle address and job
          */
-        address private oracleAddress;
-        bytes32 private jobId;
-        ChainlinkOracle internal valuationOracle;
+        address public oracleAddress;
+        bytes32 public jobId;
+        uint256 public fee;
+        address public linkAddress;
 
         constructor(
             string memory _name, 
@@ -83,7 +86,8 @@ contract FFAContract is IFFAContract{
         //initiateFFA: initiates futures contract with given parameters
         function initiateFFA(address _long, address _short, uint256 _initialForwardPrice, 
                              uint _riskFreeRate, uint256 _expirationDate,
-                             address _longWallet, address _shortWallet) 
+                             address _longWallet, address _shortWallet, address _oracleAddress, 
+                             bytes32 _jobId, uint256 _fee, address _linkAddress) 
                              external override returns (bool initiated_) {
             require(_long != address(0), "Long can't be zero address");
             require(_short != address(0), "Short can't be zero address");
@@ -91,6 +95,8 @@ contract FFAContract is IFFAContract{
             require(_longWallet != address(0), "Long wallet cannot have zero address");
             require(_shortWallet != address(0), "Short wallet cannot have zero address");
             require(_longWallet != _shortWallet, "long and short wallets cannot be the same");
+            require(_oracleAddress != address(0), "oracleAddress cannot be zero");
+            require(_linkAddress != address(0), "linkAddress cannot be zero");
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate) > 0, "FFA contract has to expire in the future");
             long = _long;
             short = _short;
@@ -101,6 +107,10 @@ contract FFAContract is IFFAContract{
             expirationDate = _expirationDate;
             longWallet = _longWallet;
             shortWallet = _shortWallet;
+            oracleAddress = _oracleAddress;
+            jobId = _jobId;
+            fee = _fee;
+            linkAddress = _linkAddress;
             contractState = ContractState.Initiated;
             //Do i need to deal with allowance?
             emit Initiated(long, short, initialForwardPrice, riskFreeRate, expirationDate, sizeOfContract);
@@ -119,9 +129,10 @@ contract FFAContract is IFFAContract{
         //calculate forward price
         function calcForwardPrice() public returns (uint256 price_) {
             pricingDate = block.timestamp;
+            underlyingPrice = underlyingPrice
 
             //call valuation oracle here
-            price_ = 243;
+            price_ = LinkPoolValuationOracle(underlyingPrice, );
         }
 
         /*

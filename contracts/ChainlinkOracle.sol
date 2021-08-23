@@ -104,8 +104,6 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
 
     }
 
-
-
     function getResult() external view returns (uint256) {
         return result;
     }
