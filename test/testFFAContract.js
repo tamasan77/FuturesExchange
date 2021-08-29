@@ -25,6 +25,8 @@ contract("FFAContract", accounts => {
         let riskFreeRate = 124;
         let shortParty = accounts[4];
         let expirationDate = 16295802270;
+        let exposureMarginRate = 200;
+        let maintenanceMarginRate = 800;
 
         //catch zero address error
         let longParty = 0;
@@ -33,7 +35,7 @@ contract("FFAContract", accounts => {
                                                   initialForwardPrice, expirationDate, 
                                                   web3.utils.toChecksumAddress(longWalletInstance.address), 
                                                   web3.utils.toChecksumAddress(shortWalletInstance.address), 
-                                                  200, 800);
+                                                  exposureMarginRate, maintenanceMarginRate);
         } catch(error) {
             lpZeroErr = error;
         }
@@ -47,7 +49,7 @@ contract("FFAContract", accounts => {
                                                   initialForwardPrice, expirationDate, 
                                                   web3.utils.toChecksumAddress(longWalletInstance.address), 
                                                   web3.utils.toChecksumAddress(shortWalletInstance.address), 
-                                                  200, 800);
+                                                  exposureMarginRate, maintenanceMarginRate);
         } catch(error) {
             spZeroErr = error;
         }
@@ -60,7 +62,7 @@ contract("FFAContract", accounts => {
                                                   initialForwardPrice, expirationDate, 
                                                   web3.utils.toChecksumAddress(longWalletInstance.address), 
                                                   web3.utils.toChecksumAddress(shortWalletInstance.address), 
-                                                  200, 800);
+                                                  exposureMarginRate, maintenanceMarginRate);
         } catch(error) {
             slpEqualErr = error;
         }
@@ -75,7 +77,7 @@ contract("FFAContract", accounts => {
                                                   initialForwardPrice, expirationDate, 
                                                   longWalletAddress, 
                                                   web3.utils.toChecksumAddress(shortWalletInstance.address), 
-                                                  200, 800);
+                                                  exposureMarginRate, maintenanceMarginRate);
         } catch(error) {
             lwZeroErr = error;
         }
@@ -88,7 +90,7 @@ contract("FFAContract", accounts => {
             await ffaContractInstance.initiateFFA(longParty, shortParty, 
                                                   initialForwardPrice, expirationDate, 
                                                   longWalletAddress, shortWalletAddress, 
-                                                  200, 800);
+                                                  exposureMarginRate, maintenanceMarginRate);
         } catch(error) {
             swZeroErr = error;
         }
@@ -99,7 +101,7 @@ contract("FFAContract", accounts => {
             await ffaContractInstance.initiateFFA(longParty, shortParty, 
                                                   initialForwardPrice, expirationDate, 
                                                   longWalletAddress, shortWalletAddress, 
-                                                  200, 800);
+                                                  exposureMarginRate, maintenanceMarginRate);
         } catch(error) {
             slwSameErr = error;
         }
@@ -113,7 +115,7 @@ contract("FFAContract", accounts => {
             await ffaContractInstance.initiateFFA(longParty, shortParty, 
                                                   initialForwardPrice, expirationDate,
                                                    longWalletAddress, shortWalletAddress, 
-                                                   200, 800);
+                                                   exposureMarginRate, maintenanceMarginRate);
         } catch(error) {
             expDateErr = error;
         }
@@ -121,12 +123,28 @@ contract("FFAContract", accounts => {
 
         expirationDate = 16295802270;
 
+        //check erro for zero maintenance margin rate
+        maintenanceMarginRate = 0;
+        try {
+            await ffaContractInstance.initiateFFA(longParty, shortParty, 
+                                                  initialForwardPrice, expirationDate,
+                                                   longWalletAddress, shortWalletAddress, 
+                                                   exposureMarginRate, maintenanceMarginRate);
+        } catch(error) {
+            mMZeroErr = error;
+        }
+        assert.notEqual(mMZeroErr, undefined, "Error must be thrown");
+        
+        maintenanceMarginRate = 800;
+
+
+
         //testing inititation
         await ffaContractInstance.initiateFFA(longParty, shortParty, 
                                               initialForwardPrice, expirationDate, 
                                               longWalletAddress, shortWalletAddress,
                                               200, 800);
-                                                      
+
         assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
         assert.equal(await ffaContractInstance.getLong(), longParty, "Long not correct");
         assert.equal(await ffaContractInstance.getShort(), shortParty, "Short not correct");
