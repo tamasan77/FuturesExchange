@@ -15,7 +15,7 @@ module.exports = async function(deployer) {
    * exposureMargin: 2%
    * maintenanceMargin: 8%
    */
-  await deployer.deploy(FFAContract, "Test Contract", "TSTC", "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,JPY,EUR", "USD", 100, 1000);
+  await deployer.deploy(FFAContract, "Test Contract", "TSTC", 100, "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,JPY,EUR", "USD", 100);
   
   //await deployer.deploy(CollateralWallet, "Test Wallet");
   //await deployer.deploy(TestERC20Token, 1000000);

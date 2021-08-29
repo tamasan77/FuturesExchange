@@ -19,8 +19,8 @@ contract FFAFactory {
         string memory name, 
         string memory symbol,
         uint256 sizeOfContract,
-        string memory underlyingApiURL,
-        string memory underlyingApiPath,
+        //string memory underlyingApiURL,
+        //string memory underlyingApiPath,
         int underlyingDecimals
         /* margin rate representation:
          * Scaled 1/100
@@ -35,7 +35,7 @@ contract FFAFactory {
             require(sizeOfContract > 0, "contract size cannot be zero");
 
             
-            ffaContractAddress_ = address(new FFAContract(name, symbol, sizeOfContract, underlyingApiURL, underlyingApiPath, underlyingDecimals));
+            ffaContractAddress_ = address(new FFAContract(name, symbol, sizeOfContract, "wahetever", "whatever", underlyingDecimals));
             require(keccak256(abi.encodePacked(FFAContract(ffaContractAddress_).getContractState())) == keccak256(abi.encodePacked("Created")), "contract not created");
             ffaContracts.push(ffaContractAddress_);
             emit Created(name, symbol, sizeOfContract);

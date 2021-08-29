@@ -23,17 +23,17 @@ contract("FFAContract", accounts => {
 
         let initialForwardPrice = 4378;
         let riskFreeRate = 124;
-        let shortParty = accoutns[4];
+        let shortParty = accounts[4];
         let expirationDate = 16295802270;
-        let oracleAddress = 0x56dd6586DB0D08c6Ce7B2f2805af28616E082455;
-        let jobId = "b6602d14e4734c49a5e1ce19d45a4632";
-        let linkAddress = 0xa36085F69e2889c224210F603D836748e7dC0088;
-        let fee = 0.1 * 10 ** 18;
 
         //catch zero address error
         let longParty = 0;
         try {
-            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address), web3.utils.toChecksumAddress(oracleAddress), jobId, fee, linkAddress);
+            await ffaContractInstance.initiateFFA(longParty, shortParty, 
+                                                  initialForwardPrice, expirationDate, 
+                                                  web3.utils.toChecksumAddress(longWalletInstance.address), 
+                                                  web3.utils.toChecksumAddress(shortWalletInstance.address), 
+                                                  200, 800);
         } catch(error) {
             lpZeroErr = error;
         }
@@ -43,7 +43,11 @@ contract("FFAContract", accounts => {
         //catch zero address error
         shortParty = 0;
         try {
-            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address), web3.utils.toChecksumAddress(oracleAddress), jobId, fee, linkAddress);
+            await ffaContractInstance.initiateFFA(longParty, shortParty, 
+                                                  initialForwardPrice, expirationDate, 
+                                                  web3.utils.toChecksumAddress(longWalletInstance.address), 
+                                                  web3.utils.toChecksumAddress(shortWalletInstance.address), 
+                                                  200, 800);
         } catch(error) {
             spZeroErr = error;
         }
@@ -52,7 +56,11 @@ contract("FFAContract", accounts => {
         //catch same address error
         shortParty = accounts[3];
         try {
-            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address), web3.utils.toChecksumAddress(oracleAddress), jobId, fee, linkAddress);
+            await ffaContractInstance.initiateFFA(longParty, shortParty, 
+                                                  initialForwardPrice, expirationDate, 
+                                                  web3.utils.toChecksumAddress(longWalletInstance.address), 
+                                                  web3.utils.toChecksumAddress(shortWalletInstance.address), 
+                                                  200, 800);
         } catch(error) {
             slpEqualErr = error;
         }
@@ -63,7 +71,11 @@ contract("FFAContract", accounts => {
         //catch zero wallet addresses and same wallet addresses
         let longWalletAddress = 0;
         try {
-            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, longWalletAddress, web3.utils.toChecksumAddress(shortWalletInstance.address), web3.utils.toChecksumAddress(oracleAddress), jobId, fee, linkAddress);
+            await ffaContractInstance.initiateFFA(longParty, shortParty, 
+                                                  initialForwardPrice, expirationDate, 
+                                                  longWalletAddress, 
+                                                  web3.utils.toChecksumAddress(shortWalletInstance.address), 
+                                                  200, 800);
         } catch(error) {
             lwZeroErr = error;
         }
@@ -73,7 +85,10 @@ contract("FFAContract", accounts => {
 
         let shortWalletAddress = 0;
         try {
-            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, longWalletAddress, shortWalletAddress, web3.utils.toChecksumAddress(oracleAddress), jobId, fee, linkAddress);
+            await ffaContractInstance.initiateFFA(longParty, shortParty, 
+                                                  initialForwardPrice, expirationDate, 
+                                                  longWalletAddress, shortWalletAddress, 
+                                                  200, 800);
         } catch(error) {
             swZeroErr = error;
         }
@@ -81,7 +96,10 @@ contract("FFAContract", accounts => {
 
         shortWalletAddress = longWalletAddress;
         try {
-            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, longWalletAddress, shortWalletAddress, web3.utils.toChecksumAddress(oracleAddress), jobId, fee, linkAddress);
+            await ffaContractInstance.initiateFFA(longParty, shortParty, 
+                                                  initialForwardPrice, expirationDate, 
+                                                  longWalletAddress, shortWalletAddress, 
+                                                  200, 800);
         } catch(error) {
             slwSameErr = error;
         }
@@ -92,7 +110,10 @@ contract("FFAContract", accounts => {
         //check error for expiration date after initiation date
         expirationDate = 935285085; //1999 date
         try {
-            await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, longWalletAddress, shortWalletAddress, web3.utils.toChecksumAddress(oracleAddress), jobId, fee, linkAddress);
+            await ffaContractInstance.initiateFFA(longParty, shortParty, 
+                                                  initialForwardPrice, expirationDate,
+                                                   longWalletAddress, shortWalletAddress, 
+                                                   200, 800);
         } catch(error) {
             expDateErr = error;
         }
@@ -101,17 +122,22 @@ contract("FFAContract", accounts => {
         expirationDate = 16295802270;
 
         //testing inititation
-        await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address));
+        await ffaContractInstance.initiateFFA(longParty, shortParty, 
+                                              initialForwardPrice, expirationDate, 
+                                              longWalletAddress, shortWalletAddress,
+                                              200, 800);
+                                                      
         assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
         assert.equal(await ffaContractInstance.getLong(), longParty, "Long not correct");
         assert.equal(await ffaContractInstance.getShort(), shortParty, "Short not correct");
         assert.equal(await ffaContractInstance.getInitialForwardPrice(), initialForwardPrice, "Price not correct");
-        assert.equal(await ffaContractInstance.getRiskFreeRate(), riskFreeRate, "Rate not correct");
+        assert.equal(await ffaContractInstance.maintenanceMarginRate(), 800, "Rate not correct");
         assert.equal(await ffaContractInstance.getExpirationDate(), expirationDate, "Expiration date not correct");
         assert.equal(await ffaContractInstance.getLongWalletAddress(), longWalletInstance.address, "Long wallet not correct");
         assert.equal(await ffaContractInstance.getShortWalletAddress(), shortWalletInstance.address, "Short wallet not correct");
+        
     });
-    
+    /*
     it("transferCollateralFrom should work and catch incorrect parameters", async function() {
         const ffaContractInstance = await FFAContract.deployed();
 
@@ -152,5 +178,5 @@ contract("FFAContract", accounts => {
             balErr = error;
         }
         assert.notEqual(balErr, undefined, "Error must be thrown");
-    });
+    });*/
 });

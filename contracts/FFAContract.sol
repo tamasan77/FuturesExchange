@@ -35,8 +35,8 @@ contract FFAContract is IFFAContract{
     address private collateralTokenAddress;
     //margin requirements
     //MM(8%) + EM (2%) = IM (10%)
-    uint private exposureMarginRate;
-    uint private maintenanceMarginRate;
+    uint public exposureMarginRate;
+    uint public maintenanceMarginRate;
     //M2M
     uint256 private prevDayClosingPrice;
     //underlying index price oracle
@@ -80,7 +80,7 @@ contract FFAContract is IFFAContract{
         require(_longWallet != address(0), "Long wallet cannot have zero address");
         require(_shortWallet != address(0), "Short wallet cannot have zero address");
         require(_longWallet != _shortWallet, "long and short wallets cannot be the same");
-        require(maintenanceMarginRate >0, "maintenance margin rate cannot be zero");
+        require(_maintenanceMarginRate != 0, "maintenance margin rate cannot be zero");
         require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate) > 0, "FFA contract has to expire in the future");
         long = _long;
         short = _short;
