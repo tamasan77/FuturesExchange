@@ -215,6 +215,10 @@ contract FFAContract is IFFAContract{
 
         /* transferCollateralFrom: transfers given amount of given token from one collateral wallet to the other*/
         function transferCollateralFrom(address senderWalletAddress, address recipientWalletAddress, uint256 amount, address _collateralTokenAddress) public returns (bool transfered_){
+            require(senderWalletAddress != address(0), "Sender wallet address cannot be zero");
+            require(recipientWalletAddress != address(0), "Recipient wallet address cannot be zero");
+            require(recipientWalletAddress != senderWalletAddress, "Sender and recipient wallets cannot be the same");
+            require(amount > 0, "Amount transferred has to be greater than zero");
             CollateralWallet senderWallet = CollateralWallet(senderWalletAddress);
             CollateralWallet recipientWallet = CollateralWallet(recipientWalletAddress);
             uint256 originalSenderMappedBalance = senderWallet.getMappedBalance(address(this), _collateralTokenAddress);

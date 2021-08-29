@@ -11,6 +11,7 @@ contract("FFAContract", accounts => {
         const bytecode = await web3.eth.getCode(address);
         return bytecode != "0x";
     };
+
     it("should initiate FFA and catch incorrect parameters", async function() {
         const ffaContractInstance = await FFAContract.deployed();
 
@@ -137,14 +138,11 @@ contract("FFAContract", accounts => {
         
         maintenanceMarginRate = 800;
 
-
-
         //testing inititation
         await ffaContractInstance.initiateFFA(longParty, shortParty, 
                                               initialForwardPrice, expirationDate, 
                                               longWalletAddress, shortWalletAddress,
                                               200, 800);
-
         assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
         assert.equal(await ffaContractInstance.getLong(), longParty, "Long not correct");
         assert.equal(await ffaContractInstance.getShort(), shortParty, "Short not correct");
@@ -153,9 +151,8 @@ contract("FFAContract", accounts => {
         assert.equal(await ffaContractInstance.getExpirationDate(), expirationDate, "Expiration date not correct");
         assert.equal(await ffaContractInstance.getLongWalletAddress(), longWalletInstance.address, "Long wallet not correct");
         assert.equal(await ffaContractInstance.getShortWalletAddress(), shortWalletInstance.address, "Short wallet not correct");
-        
     });
-    /*
+    
     it("transferCollateralFrom should work and catch incorrect parameters", async function() {
         const ffaContractInstance = await FFAContract.deployed();
 
@@ -169,11 +166,15 @@ contract("FFAContract", accounts => {
         let longParty = accounts[3];
         let shortParty = accounts[4];
         let initialForwardPrice = 4500;
-        let riskFreeRate = 10;
         let expirationDate = 16295802270;
-        await ffaContractInstance.initiateFFA(longParty, shortParty, initialForwardPrice, riskFreeRate, expirationDate, web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address));
+        let exposureMarginRate = 200;
+        let maintenanceMarginRate = 800;
+        await ffaContractInstance.initiateFFA(longParty, shortParty, 
+                                              initialForwardPrice, expirationDate, 
+                                              web3.utils.toChecksumAddress(longWalletInstance.address), 
+                                              web3.utils.toChecksumAddress(shortWalletInstance.address), 
+                                              exposureMarginRate, maintenanceMarginRate);
 
-        //testing transferCollateralFrom
         //set balances: 100 TestERC20Tokens each
         const testERC20TokenInstance = await TestERC20Token.deployed();
         await longWalletInstance.setNewBalance(ffaContractInstance.address, testERC20TokenInstance.address, 100);
@@ -191,10 +192,58 @@ contract("FFAContract", accounts => {
 
         //check error of insufficient balance
         try{
-            await ffaContractInstance.transferCollateralFrom(web3.utils.toChecksumAddress(longWalletInstance.address), web3.utils.toChecksumAddress(shortWalletInstance.address), 125, web3.utils.toChecksumAddress(testERC20TokenInstance.address));
+            await ffaContractInstance.transferCollateralFrom(
+                web3.utils.toChecksumAddress(longWalletInstance.address), 
+                web3.utils.toChecksumAddress(shortWalletInstance.address), 
+                125, web3.utils.toChecksumAddress(testERC20TokenInstance.address));
         } catch(error) {
             balErr = error;
         }
         assert.notEqual(balErr, undefined, "Error must be thrown");
-    });*/
+
+        //check error for zero wallet addresses
+        try{
+            await ffaContractInstance.transferCollateralFrom(
+                address(0), 
+                web3.utils.toChecksumAddress(shortWalletInstance.address), 
+                25, web3.utils.toChecksumAddress(testERC20TokenInstance.address));
+        } catch(error) {
+            zeroLongErr = error;
+        }
+        assert.notEqual(zeroLongErr, undefined, "Error must be thrown");
+
+        try{
+            await ffaContractInstance.transferCollateralFrom(
+                web3.utils.toChecksumAddress(longWalletInstance.address), 
+                address(0), 
+                25, web3.utils.toChecksumAddress(testERC20TokenInstance.address));
+        } catch(error) {
+            zeroShortErr = error;
+        }
+        assert.notEqual(zeroShortErr, undefined, "Error must be thrown");
+
+        //check error for same wallet addreses
+        try{
+            await ffaContractInstance.transferCollateralFrom(
+                web3.utils.toChecksumAddress(longWalletInstance.address), 
+                web3.utils.toChecksumAddress(longWalletInstance.address),
+                25, web3.utils.toChecksumAddress(testERC20TokenInstance.address));
+        } catch(error) {
+            sameAddrErr = error;
+        }
+        assert.notEqual(sameAddrErr, undefined, "Error must be thrown");
+
+        //check error for zero amount transfer
+        try{
+            await ffaContractInstance.transferCollateralFrom(
+                web3.utils.toChecksumAddress(longWalletInstance.address), 
+                web3.utils.toChecksumAddress(shortWalletInstance.address), 
+                0, web3.utils.toChecksumAddress(testERC20TokenInstance.address));
+        } catch(error) {
+            zeroAmountErr = error;
+        }
+        assert.notEqual(zeroAmountErr, undefined, "Error must be thrown");
+    });
+
+    
 });
