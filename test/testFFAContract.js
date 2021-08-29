@@ -23,7 +23,6 @@ contract("FFAContract", accounts => {
         const shortWalletInstance = await CollateralWallet.at(shortWallet);
 
         let initialForwardPrice = 4378;
-        let riskFreeRate = 124;
         let shortParty = accounts[4];
         let expirationDate = 16295802270;
         let exposureMarginRate = 200;
@@ -138,6 +137,15 @@ contract("FFAContract", accounts => {
         
         maintenanceMarginRate = 800;
 
+        /*Checking some functions that cannot be called before initiation*/
+        //check error for mToM which cannot be called before initiation
+        try {
+            await ffaContractInstance.markToMarket(4600);
+        } catch(error) {
+            beforeInitError = error;
+        }
+        assert.notEqual(beforeInitError, undefined, "Error must be thrown");
+
         //testing inititation
         await ffaContractInstance.initiateFFA(longParty, shortParty, 
                                               initialForwardPrice, expirationDate, 
@@ -156,24 +164,10 @@ contract("FFAContract", accounts => {
     it("transferCollateralFrom should work and catch incorrect parameters", async function() {
         const ffaContractInstance = await FFAContract.deployed();
 
-        await ffaContractInstance.createLongCollateralWallet("long wallet");
-        await ffaContractInstance.createShortCollateralWallet("short wallet");
         const longWallet = await ffaContractInstance.longTestWallet();
         const shortWallet = await ffaContractInstance.shortTestWallet();
         const longWalletInstance = await CollateralWallet.at(longWallet);
         const shortWalletInstance = await CollateralWallet.at(shortWallet);
-
-        let longParty = accounts[3];
-        let shortParty = accounts[4];
-        let initialForwardPrice = 4500;
-        let expirationDate = 16295802270;
-        let exposureMarginRate = 200;
-        let maintenanceMarginRate = 800;
-        await ffaContractInstance.initiateFFA(longParty, shortParty, 
-                                              initialForwardPrice, expirationDate, 
-                                              web3.utils.toChecksumAddress(longWalletInstance.address), 
-                                              web3.utils.toChecksumAddress(shortWalletInstance.address), 
-                                              exposureMarginRate, maintenanceMarginRate);
 
         //set balances: 100 TestERC20Tokens each
         const testERC20TokenInstance = await TestERC20Token.deployed();
@@ -245,5 +239,17 @@ contract("FFAContract", accounts => {
         assert.notEqual(zeroAmountErr, undefined, "Error must be thrown");
     });
 
-    
+    it("markToMarket should work and catch incorrect parameters", async function() {
+        const ffaContractInstance = await FFAContract.deployed();
+        const testERC20TokenInstance = await TestERC20Token.deployed();
+
+        const longWallet = await ffaContractInstance.longTestWallet();
+        const shortWallet = await ffaContractInstance.shortTestWallet();
+        const longWalletInstance = await CollateralWallet.at(longWallet);
+        const shortWalletInstance = await CollateralWallet.at(shortWallet);
+
+        
+
+
+    });
 });

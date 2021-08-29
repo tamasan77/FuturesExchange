@@ -149,45 +149,47 @@ contract FFAContract is IFFAContract{
         return string(bstr);
     }
 
-        /*
-            * Initial Margin = Maintenance Margin + Exposure Margin
-            * A margin call is issued when a party's cash balance drops below the maintenance margin.
-            * A party will be allowed to hold their position as long as the maintenance margin is satisfied.
-            * M2M is calculated based on the previous day's closing price. Based on the M2M each party's
-            * account is credited or debited daily. 
-            * At settlement calculate the P&L = Final Contract Value - Initial Contract Value
-            * https://zerodha.com/varsity/chapter/margin-m2m/
-        */
-        //mark to market
-        function markToMarket(uint256 currentForwardPrice) external override returns (bool markedToMarket_) {
-            require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
-            require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate) > 0, "M to m can only happen before expiration");
+    /*  Margin calculation
+        * Initial Margin = Maintenance Margin + Exposure Margin
+        * A margin call is issued when a party's cash balance drops below the maintenance margin.
+        * A party will be allowed to hold their position as long as the maintenance margin is satisfied.
+        * M2M is calculated based on the previous day's closing price. Based on the M2M each party's
+        * account is credited or debited daily. 
+        * At settlement calculate the P&L = Final Contract Value - Initial Contract Value
+        * https://zerodha.com/varsity/chapter/margin-m2m/
+    */
 
-            //valuation
-            //uint256 currentForwardPrice = calcForwardPrice();
-            uint256 newContractValue = currentForwardPrice * sizeOfContract;
-            uint256 oldContractValue = prevDayClosingPrice * sizeOfContract;
-            //contract value change
-            int256 contractValueChange = int256(newContractValue - oldContractValue);
-
-            //delivery within collateral wallets
-            if (contractValueChange > 0) {
-                transferCollateralFrom(shortWallet, longWallet, uint256(contractValueChange), collateralTokenAddress);
-            }
-            if (contractValueChange < 0) {
-                transferCollateralFrom(longWallet, shortWallet, uint256(-1 * contractValueChange), collateralTokenAddress);
-            }
-
-            //update prevDayClosingPrice to current price
-            prevDayClosingPrice = currentForwardPrice;
-
-            //emit event
-            emit MarkedToMarket(block.timestamp, contractValueChange, long, short);
-            markedToMarket_ = true;
+    /* markToMarket : does mark to market daily */
+    function markToMarket(uint256 currentForwardPrice) external override returns (bool markedToMarket_) {
+        require(contractState == ContractState.Initiated, 
+                "Contract has to be in Initiated state");
+        require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate) > 0, 
+                "M to m can only happen before expiration");
+        
+        //current forward price needs to be updated
+        uint256 newContractValue = currentForwardPrice * sizeOfContract;
+        uint256 oldContractValue = prevDayClosingPrice * sizeOfContract;
+        //contract value change
+        int256 contractValueChange = int256(newContractValue - oldContractValue);
+        //delivery within collateral wallets
+        if (contractValueChange > 0) {
+            transferCollateralFrom(shortWallet, longWallet, 
+                                   uint256(contractValueChange), collateralTokenAddress);
+        }
+        if (contractValueChange < 0) {
+            transferCollateralFrom(longWallet, shortWallet, 
+                                   uint256(-1 * contractValueChange), 
+                                   collateralTokenAddress);
         }
 
-        //settle contract 
-        function settleAtExpiration() external override returns (bool settled_) {
+        //update prevDayClosingPrice to current price
+        prevDayClosingPrice = currentForwardPrice;
+        
+        emit MarkedToMarket(block.timestamp, contractValueChange, long, short);
+        markedToMarket_ = true;
+    }
+    //settle contract 
+    function settleAtExpiration() external override returns (bool settled_) {
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(expirationDate, block.timestamp) >= 0, "Settlement cannot occure before expiration date" );
             require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
 
@@ -200,10 +202,9 @@ contract FFAContract is IFFAContract{
             contractState = ContractState.Settled;
             emit Settled(long, short, expirationDate, profitAndLoss);
             settled_ = true;
-        }
-
-        //default contract
-        function defaultContract(address _defaultingParty) public override returns (bool defaulted_) {
+    }
+    //default contract
+    function defaultContract(address _defaultingParty) public override returns (bool defaulted_) {
             require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate) > 0, "Defaulting can only happen before expiration");
 
@@ -211,67 +212,75 @@ contract FFAContract is IFFAContract{
             contractState = ContractState.Defaulted;
             emit Defaulted(block.timestamp, _defaultingParty);
             defaulted_ = true;
-        }
+    }
+    /* transferCollateralFrom: transfers given amount of given token from one 
+     *collateral wallet to the other*/
+    function transferCollateralFrom(address senderWalletAddress, 
+            address recipientWalletAddress, uint256 amount, 
+            address _collateralTokenAddress) public returns (bool transfered_){
 
-        /* transferCollateralFrom: transfers given amount of given token from one collateral wallet to the other*/
-        function transferCollateralFrom(address senderWalletAddress, address recipientWalletAddress, uint256 amount, address _collateralTokenAddress) public returns (bool transfered_){
-            require(senderWalletAddress != address(0), "Sender wallet address cannot be zero");
-            require(recipientWalletAddress != address(0), "Recipient wallet address cannot be zero");
-            require(recipientWalletAddress != senderWalletAddress, "Sender and recipient wallets cannot be the same");
-            require(amount > 0, "Amount transferred has to be greater than zero");
+            require(senderWalletAddress != address(0), 
+                    "Sender wallet address cannot be zero");
+            require(recipientWalletAddress != address(0), 
+                    "Recipient wallet address cannot be zero");
+            require(recipientWalletAddress != senderWalletAddress, 
+                    "Sender and recipient wallets cannot be the same");
+            require(amount > 0, 
+                    "Amount transferred has to be greater than zero");
             CollateralWallet senderWallet = CollateralWallet(senderWalletAddress);
             CollateralWallet recipientWallet = CollateralWallet(recipientWalletAddress);
-            uint256 originalSenderMappedBalance = senderWallet.getMappedBalance(address(this), _collateralTokenAddress);
-            require(originalSenderMappedBalance >= amount, "collateral balance not sufficient");
+            uint256 originalSenderMappedBalance = senderWallet.getMappedBalance(
+                                                                address(this), 
+                                                                _collateralTokenAddress);
+            require(originalSenderMappedBalance >= amount, 
+                    "collateral balance not sufficient");
 
             //approval might need fixing
-            senderWallet.approveSpender(_collateralTokenAddress, address(this), amount);
-            IERC20(_collateralTokenAddress).transferFrom(senderWalletAddress, recipientWalletAddress, amount);
+            senderWallet.approveSpender(_collateralTokenAddress, 
+                                        address(this), amount);
+            IERC20(_collateralTokenAddress).transferFrom(senderWalletAddress, 
+                                                         recipientWalletAddress, 
+                                                         amount);
 
             //deduct from sender balance mapping
             unchecked {
                 uint256 newSenderMappedBalance = originalSenderMappedBalance - amount;
-                senderWallet.setNewBalance(address(this), _collateralTokenAddress, newSenderMappedBalance);
+                senderWallet.setNewBalance(address(this), _collateralTokenAddress, 
+                                           newSenderMappedBalance);
             }
 
             //add to recipient balance mapping
-            uint256 newRecipientMappedBalance = recipientWallet.getMappedBalance(address(this), _collateralTokenAddress) + amount;
-            recipientWallet.setNewBalance(address(this), _collateralTokenAddress, newRecipientMappedBalance);
+            uint256 newRecipientMappedBalance = recipientWallet.getMappedBalance(
+                                                                    address(this), 
+                                                                    _collateralTokenAddress) 
+                                                                    + amount;
+            recipientWallet.setNewBalance(address(this), _collateralTokenAddress, 
+                                          newRecipientMappedBalance);
  
             transfered_ = true;
-        }
-
-        //these are for testing
-        /////////////////////////////////////
-
-        CollateralWallet public longTestWallet;
-        CollateralWallet public shortTestWallet;
-
-        function createLongCollateralWallet(string memory _name) external returns(address walletAddress_) {
+    }
+    //these are for testing
+    /////////////////////////////////////
+    CollateralWallet public longTestWallet;
+    CollateralWallet public shortTestWallet;
+    function createLongCollateralWallet(string memory _name) external returns(address walletAddress_) {
             longTestWallet = new CollateralWallet(_name);
             walletAddress_ = address(longTestWallet);
-        }
-
-        function createShortCollateralWallet(string memory _name) external returns(address walletAddress_) {
+    }
+    function createShortCollateralWallet(string memory _name) external returns(address walletAddress_) {
             shortTestWallet = new CollateralWallet(_name);
             walletAddress_ = address(shortTestWallet);
-        }
+    }
+    //////////////////////////////////////
+    //receive and fallback functions
+    /*
+    receive () external payable {
 
-        //////////////////////////////////////
-
-        //receive and fallback functions
-        /*
-        receive () external payable {
-    
-        }
-
-        fallback () external payable {
-
-        }*/
-
-
-        //getter functions
-        function getContractState() external view returns(string memory) {
+    }
+    fallback () external payable {
+    }*/
+    //getter functions
+    function getContractState() external view returns(string memory) {
             if (contractState == ContractState.Created) {
                 return "Created";
             } else if (contractState == ContractState.Initiated) {
@@ -283,47 +292,38 @@ contract FFAContract is IFFAContract{
             } else {
                 return "state error";
             }
-        }
-
-        function getName() external view returns(string memory) {
-            return name;
-        }
-
-        function getSymbol() external view returns(string memory) {
-            return symbol;
-        }
-        
-        function getSizeOfContract() external view returns(uint256) {
-            return sizeOfContract;
-        }
-
-        function getUnderlyingDecimals() external view returns (int) {
-            return underlyingDecimals;
-        }
-
-        function getLong() external view returns (address) {
+    }
+    function getName() external view returns(string memory) {
+        return name;
+    }
+    function getSymbol() external view returns(string memory) {
+        return symbol;
+    }
+    
+    function getSizeOfContract() external view returns(uint256) {
+        return sizeOfContract;
+    }
+    function getUnderlyingDecimals() external view returns (int) {
+        return underlyingDecimals;
+    }
+    function getLong() external view returns (address) {
             return long;
-        }
-
-        function getShort() external view returns (address) {
+    }
+    function getShort() external view returns (address) {
             return short;
-        }
-
-        function getInitialForwardPrice() external view returns (uint256) {
+    }
+    function getInitialForwardPrice() external view returns (uint256) {
             return initialForwardPrice;
-        }
-
-        function getExpirationDate() external view returns (uint256) {
+    }
+    function getExpirationDate() external view returns (uint256) {
             return expirationDate;
-        }
-
-        function getLongWalletAddress() external view returns (address) {
+    }
+    function getLongWalletAddress() external view returns (address) {
             return longWallet;
-        }
-
-        function getShortWalletAddress() external view returns (address) {
+    }
+    function getShortWalletAddress() external view returns (address) {
             return shortWallet;
-        }
+    }
 
 
 
