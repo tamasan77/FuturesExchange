@@ -6,7 +6,7 @@ import "./LinkPoolOracle.sol";
 
 contract LinkPoolValuationOracle is LinkPoolOracle {
     int public _decimals = 10 ** 2;
-    string private constant _apiBaseURL = "http://valuation-api.herokuapp.com/price";
+    string private constant _apiBaseURL = "http://valuation-api.herokuapp.com/price/";
     string public constant _apiPath = "price";
 
     constructor() 

@@ -15,113 +15,139 @@ import "./Oracles/LinkPoolOracles/LinkPoolValuationOracle.sol";
 import "./Oracles/LinkPoolOracles/LinkPoolOracle.sol";
 
 contract FFAContract is IFFAContract{
-        using SafeERC20 for IERC20;
+    using SafeERC20 for IERC20;
+    //state of contract
+    enum ContractState {Created, Initiated, Settled, Defaulted}
+    //contract detail
+    string private name;
+    string private symbol;
+    ContractState public contractState;
+    uint256 private sizeOfContract;
+    address private long;
+    address private short;
+    uint256 private initialForwardPrice;
+    uint public annualRiskFreeRate;
+    uint256 private expirationDate;
+    uint256 private underlyingPrice;//scaled 1/100 ie. 45.07 -> 4507
+    //collateral wallets
+    address private longWallet;
+    address private shortWallet;
+    address private collateralTokenAddress;
+    //margin requirements
+    //MM(8%) + EM (2%) = IM (10%)
+    uint private exposureMarginRate;
+    uint private maintenanceMarginRate;
+    //M2M
+    uint256 private prevDayClosingPrice;
+    //underlying index price oracle
+    string private underlyingApiURL;
+    string private underlyingApiPath;
+    int public underlyingDecimals;
+    LinkPoolValuationOracle valuationOracle;
+    LinkPoolOracle underlyingOracle;
 
-        //state of contract
-        enum ContractState {Created, Initiated, Settled, Defaulted}
-
-        //contract detail
-        string private name;
-        string private symbol;
-        ContractState public contractState;
-        uint256 private sizeOfContract;
-        address private long;
-        address private short;
-        uint256 private initialForwardPrice;
-        uint private annualRiskFreeRate;
-        uint256 private expirationDate;
-        uint256 private underlyingPrice;//scaled 1/100 ie. 45.07 -> 4507
-
-        //collateral wallets
-        address private longWallet;
-        address private shortWallet;
-        address private collateralTokenAddress;
-
-
-        //margin requirements
-        //MM(8%) + EM (2%) = IM (10%)
-        uint private exposureMarginRate;
-        uint private maintenanceMarginRate;
-
-        //M2M
-        uint256 private prevDayClosingPrice;
-
-        //valuation
-        uint256 private pricingDate;
-
-        //underlying index price oracle
-        string private underlyingApiURL;
-        string private underlyingApiPath;
-
-        LinkPoolValuationOracle valuationOracle;
-        LinkPoolOracle underlyingOracle;
-
-        constructor(
+    constructor(
             string memory _name, 
             string memory _symbol, 
             uint256 _sizeOfContract,
             string memory _underlyingApiURL,
-            stirng memory _underlyingApiPath
+            string memory _underlyingApiPath,
+            int _underlyingDecimals
             //address _collateralTokenAddress,
-        ) {
-            name = _name;
-            symbol = _symbol;
-            sizeOfContract = _sizeOfContract;
-            underlyingApiPath = _underlyingApiPath;
-            underlyingApiURL = _underlyingApiURL;
-            //collateralTokenAddress = _collateralTokenAddress;
+    ) {
+        name = _name;
+        symbol = _symbol;
+        sizeOfContract = _sizeOfContract;
+        underlyingApiPath = _underlyingApiPath;
+        underlyingApiURL = _underlyingApiURL;
+        underlyingDecimals = _underlyingDecimals;
+        //collateralTokenAddress = _collateralTokenAddress;
+        valuationOracle = new LinkPoolValuationOracle();
+        underlyingOracle = new LinkPoolOracle(underlyingDecimals, underlyingApiURL, underlyingApiPath);
+        contractState = ContractState.Created;
+        //emit CreatedContract(decimals, sizeOfContract);
+    }
 
-            valuationOracle = new LinkPoolValuationOracle();
-            underlyingOracle = new ChainlinkOracle(oracleAddress, jobId, underlyingApiURL, underlyingApiPath, linkAddress, fee, decimals);
-            contractState = ContractState.Created;
-            emit CreatedContract(decimals, sizeOfContract);
-        }
+    //initiateFFA: initiates futures contract with given parameters
+    function initiateFFA(address _long, address _short, uint256 _initialForwardPrice, 
+                         uint256 _expirationDate,
+                         address _longWallet, address _shortWallet, uint _exposureMarginRate,
+                         uint _maintenanceMarginRate) 
+                         external override returns (bool initiated_) {
+        require(_long != address(0), "Long can't be zero address");
+        require(_short != address(0), "Short can't be zero address");
+        require(_long != _short, "Long and short can't be same party");
+        require(_longWallet != address(0), "Long wallet cannot have zero address");
+        require(_shortWallet != address(0), "Short wallet cannot have zero address");
+        require(_longWallet != _shortWallet, "long and short wallets cannot be the same");
+        require(maintenanceMarginRate >0, "maintenance margin rate cannot be zero");
+        require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate) > 0, "FFA contract has to expire in the future");
+        long = _long;
+        short = _short;
+        //call valuation API to get initialForwardPrice!!!!!!!!!!!!!11
+        initialForwardPrice = _initialForwardPrice;
+        prevDayClosingPrice = initialForwardPrice;
+        //annualRiskFreeRate = _annualRiskFreeRate;
+        expirationDate = _expirationDate;
+        longWallet = _longWallet;
+        shortWallet = _shortWallet;
+        exposureMarginRate = _exposureMarginRate;
+        maintenanceMarginRate = _maintenanceMarginRate;
+        contractState = ContractState.Initiated;
+        //Do i need to deal with allowance?
+        uint initialMarginRate = exposureMarginRate + maintenanceMarginRate;
+        emit Initiated(long, short, initialForwardPrice, annualRiskFreeRate, expirationDate, sizeOfContract, initialMarginRate);
+        initiated_ = true;
+    }
 
-        //initiateFFA: initiates futures contract with given parameters
-        function initiateFFA(address _long, address _short, uint256 _initialForwardPrice, 
-                             uint _annualRiskFreeRate, uint256 _expirationDate,
-                             address _longWallet, address _shortWallet, uint _exposureMarginRate,
-                             uint _maintenanceMarginRate) 
-                             external override returns (bool initiated_) {
-            require(_long != address(0), "Long can't be zero address");
-            require(_short != address(0), "Short can't be zero address");
-            require(_long != _short, "Long and short can't be same party");
-            require(_longWallet != address(0), "Long wallet cannot have zero address");
-            require(_shortWallet != address(0), "Short wallet cannot have zero address");
-            require(_longWallet != _shortWallet, "long and short wallets cannot be the same");
-            require(maintenanceMarginRate >0, "maintenance margin rate cannot be zero");
-            require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate) > 0, "FFA contract has to expire in the future");
-            long = _long;
-            short = _short;
-            //call valuation API to get initialForwardPrice!!!!!!!!!!!!!11
-            initialForwardPrice = _initialForwardPrice;
-            prevDayClosingPrice = initialForwardPrice;
-            annualRiskFreeRate = _annualRiskFreeRate;
-            expirationDate = _expirationDate;
-            longWallet = _longWallet;
-            shortWallet = _shortWallet;
-            exposureMarginRate = _exposureMarginRate;
-            maintenanceMarginRate = _maintenanceMarginRate;
-            contractState = ContractState.Initiated;
-            //Do i need to deal with allowance?
-            uint initialMarginRate = exposureMarginRate + maintenanceMarginRate;
-            emit Initiated(long, short, initialForwardPrice, annualRiskFreeRate, expirationDate, sizeOfContract, initialMarginRate);
-            initiated_ = true;
-        }
+    //request underlying price
+    function requestUnderlyingPrice() public {
+        underlyingOracle.requestIndexPrice("");
+    }
 
-        //get underlying price
-        function setUnderlyingPrice() public {
-            underlyingOracle.requestIndexPrice();
-            underlyingPrice = underlyingOracle.getResult();
-        }
+    //set underlying price once job is fulfilled
+    function setUnderlyingPrice() public {
+        underlyingPrice = underlyingOracle.getResult();
+    }
 
-        //calculate forward price
-        function calcForwardPrice() public returns (uint256 price_) {
-            pricingDate = block.timestamp;
-            setUnderlyingPrice();
-            myValuationOracle.requestIndexPrice();
-            price_ = myValuationOracle.getResult();
+    //request forward price
+    function requestForwardPrice() public  {
+        valuationOracle.requestIndexPrice(concetenateStringsForURL(uint2str(underlyingPrice), uint2str(annualRiskFreeRate), uint2str(block.timestamp), uint2str(expirationDate)));
+    }
+
+    //set forward price once job is fulfilled
+    function getForwardPrice() public view returns(uint256){
+        return valuationOracle.getResult();
+    }
+
+    //concatanate strings and add /  where needed for URL
+    function concetenateStringsForURL(string memory a, string memory b, string memory c, string memory d) internal pure returns (string memory) {
+	    return string(abi.encodePacked(a,"/", b, "/", c, "/", d));
+    }
+
+    
+    //parse uint to string
+    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+        if (_i == 0) {
+            return "0";
         }
+        uint j = _i;
+        uint len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint k = len;
+        while (_i != 0) {
+            k = k-1;
+            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        return string(bstr);
+    }
 
         /*
             * Initial Margin = Maintenance Margin + Exposure Margin
@@ -133,12 +159,12 @@ contract FFAContract is IFFAContract{
             * https://zerodha.com/varsity/chapter/margin-m2m/
         */
         //mark to market
-        function markToMarket() external override returns (bool markedToMarket_) {
+        function markToMarket(uint256 currentForwardPrice) external override returns (bool markedToMarket_) {
             require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate) > 0, "M to m can only happen before expiration");
 
             //valuation
-            uint256 currentForwardPrice = calcForwardPrice();
+            //uint256 currentForwardPrice = calcForwardPrice();
             uint256 newContractValue = currentForwardPrice * sizeOfContract;
             uint256 oldContractValue = prevDayClosingPrice * sizeOfContract;
             //contract value change
@@ -267,8 +293,8 @@ contract FFAContract is IFFAContract{
             return sizeOfContract;
         }
 
-        function getDecimals() external view returns (int) {
-            return decimals;
+        function getUnderlyingDecimals() external view returns (int) {
+            return underlyingDecimals;
         }
 
         function getLong() external view returns (address) {
@@ -281,10 +307,6 @@ contract FFAContract is IFFAContract{
 
         function getInitialForwardPrice() external view returns (uint256) {
             return initialForwardPrice;
-        }
-
-        function getRiskFreeRate() external view returns (uint) {
-            return annualRiskFreeRate;
         }
 
         function getExpirationDate() external view returns (uint256) {

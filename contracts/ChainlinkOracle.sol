@@ -50,6 +50,7 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     }
 
     //Create Chainlink request with uint256 job
+    //apiURLParameters is empty string for underlying oracles
     function requestIndexPrice(string memory apiURLParameters) external override returns (bytes32 requestId) {
 
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);

@@ -18,14 +18,10 @@ contract FFAFactory {
     function createFFAContract(
         string memory name, 
         string memory symbol,
-        address oracleAddress,
-        bytes32 jobId, 
-        uint256 fee,
-        address linkAddress,
+        uint256 sizeOfContract,
         string memory underlyingApiURL,
         string memory underlyingApiPath,
-        int decimals,
-        uint256 sizeOfContract
+        int underlyingDecimals
         /* margin rate representation:
          * Scaled 1/100
          * 1.25% -> 125
@@ -33,13 +29,13 @@ contract FFAFactory {
         ) 
         external returns (address ffaContractAddress_) {
             
-            require (oracleAddress != address(0), "oracle address cannot be zero address");
-            require(jobId != "", "jobId cannot be empty string");
-            require(decimals != 0, "decimals can't be zero");
+            //require (oracleAddress != address(0), "oracle address cannot be zero address");
+            //require(jobId != "", "jobId cannot be empty string");
+           // require(decimals != 0, "decimals can't be zero");
             require(sizeOfContract > 0, "contract size cannot be zero");
 
             
-            ffaContractAddress_ = address(new FFAContract(name, symbol, oracleAddress, jobId, fee, linkAddress, underlyingApiURL, underlyingApiPath, decimals, sizeOfContract));
+            ffaContractAddress_ = address(new FFAContract(name, symbol, sizeOfContract, underlyingApiURL, underlyingApiPath, underlyingDecimals));
             require(keccak256(abi.encodePacked(FFAContract(ffaContractAddress_).getContractState())) == keccak256(abi.encodePacked("Created")), "contract not created");
             ffaContracts.push(ffaContractAddress_);
             emit Created(name, symbol, sizeOfContract);
