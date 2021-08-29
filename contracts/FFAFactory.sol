@@ -16,14 +16,14 @@ contract FFAFactory {
     event Created(string name, string symbol, uint256 sizeOfContract);
 
     function createFFAContract(
-        string calldata name, 
-        string calldata symbol,
+        string memory name, 
+        string memory symbol,
         address oracleAddress,
         bytes32 jobId, 
         uint256 fee,
         address linkAddress,
-        //string memory underlyingApiURL,
-        //string memory underlyingApiPath,
+        string memory underlyingApiURL,
+        string memory underlyingApiPath,
         int decimals,
         uint256 sizeOfContract
         /* margin rate representation:
@@ -33,13 +33,13 @@ contract FFAFactory {
         ) 
         external returns (address ffaContractAddress_) {
             
-            //require (oracleAddress != address(0), "oracle address cannot be zero address");
-            //require(jobId != "", "jobId cannot be empty string");
-            //require(decimals != 0, "decimals can't be zero");
-            //require(sizeOfContract > 0, "contract size cannot be zero");
+            require (oracleAddress != address(0), "oracle address cannot be zero address");
+            require(jobId != "", "jobId cannot be empty string");
+            require(decimals != 0, "decimals can't be zero");
+            require(sizeOfContract > 0, "contract size cannot be zero");
 
             
-            ffaContractAddress_ = address(new FFAContract(name, symbol, oracleAddress, jobId, fee, linkAddress, "test", "test", decimals, sizeOfContract));
+            ffaContractAddress_ = address(new FFAContract(name, symbol, oracleAddress, jobId, fee, linkAddress, underlyingApiURL, underlyingApiPath, decimals, sizeOfContract));
             require(keccak256(abi.encodePacked(FFAContract(ffaContractAddress_).getContractState())) == keccak256(abi.encodePacked("Created")), "contract not created");
             ffaContracts.push(ffaContractAddress_);
             emit Created(name, symbol, sizeOfContract);
@@ -50,18 +50,3 @@ contract FFAFactory {
     }
 }
 
-//Dennis notes:
-//query the state of the contract whether it's created
-            //no gas cost
-            //try catch - expect error and have specific plan to unwind system
-            // - heuristic call
-            //may or may not have direct control over what we are calling
-            //deal with 3rd party errors
-            //solidty added try-catch blocks for contract calls because they can be heuristic
-            //heuristic - range of things that go wrong
-            //if you have to try cath you dont try catch for internal server error
-            //in smart contract htings are heuristic - latency of network may fail for variety of reasons
-            //smart contracts don't make outside calls for this heuristic problem -> this is why chainlink is great
-            //this is why try catch was introduced
-            //destructor - sufficiently cleanup the object, nested, orpahns etc...
-            //"try catch finally" - tried event caught error, for any other error finally execute this

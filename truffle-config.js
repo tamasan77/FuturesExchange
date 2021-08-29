@@ -11,8 +11,7 @@ module.exports = {
     development: {
       port: 7545,
       network_id: "*",
-      host: "127.0.0.1",
-      gas: 4000000
+      host: "127.0.0.1"
     },
     rinkeby: {
       provider: function() {
@@ -56,7 +55,13 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: "^0.8.6"
+      version: "^0.8.6",
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 1
+        }
+      }
     }
   }
 };

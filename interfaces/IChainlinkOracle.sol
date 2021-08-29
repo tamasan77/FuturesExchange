@@ -11,7 +11,7 @@ interface IChainlinkOracle {
     event LinkWithdrawn(address withdrawer, uint256 amount);
     event Received(address sender, uint256 amount);
 
-    function requestIndexPrice() external returns (bytes32 requestId);
+    function requestIndexPrice(string memory apiURL) external returns (bytes32 requestId);
     function fulfill(bytes32 _requestId, uint256 _price) external;
     function withdrawLink() external;
 }

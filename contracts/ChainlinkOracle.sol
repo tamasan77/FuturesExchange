@@ -23,16 +23,11 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     address public oracleAddress;
     bytes32 public jobId;
 
-    //could these be bytes(x) instead of string?
-
-    //URL to make GET request from
-    string private apiURL;
 
     //path for API response
     string private apiPath;
 
-    //address of the link contract address for given network
-    address public linkAddress;//I could set this here as a constant as it wouldn't change--------------
+    string private apiBaseURL;
 
     //deal with decimals
     int public decimals;
@@ -40,38 +35,26 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     //fee is usually 0.1Link which is equal to (0.1 * 10 ** 18)
     uint256 public fee;
 
-    constructor(address _oracleAddress, bytes32 _jobId, string memory _apiURL, string memory _apiPath, address _linkAddress, uint256 _fee, int _decimals) {  
-        //Kovan link
-        /*
-            address _link = 0xa36085F69e2889c224210F603D836748e7dC0088;
-            if (_link ==address(0)) {
-                setPublicChainlinkToken();
-            } else {
-                setChainlinkToken(_link);
-            }
-
-            //kovan node oracle
-            oracleAddress = 0x56dd6586DB0D08c6Ce7B2f2805af28616E082455;
-            jobId = "b6602d14e4734c49a5e1ce19d45a4632";
-
-            fee =  0.1 * 10 ** 18; //0.1 LINK
-        */
-
+    constructor(address _oracleAddress, bytes32 _jobId, address linkAddress, uint256 _fee, int _decimals, string memory _apiBaseURL, string memory _apiPath) {  
+        if (linkAddress == address(0)) {
+            setPublicChainlinkToken();
+        } else {
+            setChainlinkToken(linkAddress);
+        }
         oracleAddress = _oracleAddress;
         jobId = _jobId;
-        apiURL = _apiURL;
-        apiPath = _apiPath;
-        linkAddress = _linkAddress;
         fee = _fee;
         decimals = _decimals;
+        apiBaseURL = _apiBaseURL;
+        apiPath = _apiPath;
     }
 
     //Create Chainlink request with uint256 job
-    function requestIndexPrice() external override returns (bytes32 requestId) {
+    function requestIndexPrice(string memory apiURLParameters) external override returns (bytes32 requestId) {
 
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
 
-        request.add("get", apiURL);
+        request.add("get", concetenateTwoStrings(apiBaseURL, apiURLParameters));
         //set path to data
         request.add("path", apiPath);
         request.addInt("times", decimals);
@@ -93,6 +76,41 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
         uint256 linkBalance = link.balanceOf(address(this));
         require(link.transfer(msg.sender, linkBalance), "Unable to withdraw");
         emit LinkWithdrawn(msg.sender, linkBalance);
+    }
+
+    /*
+    //concatanate strings and add /  where needed for URL
+    function concetenateStringsForURL(string memory a, string memory b, string memory c, string memory d, string memory e) internal pure returns (string memory) {
+	    return string(abi.encodePacked(a,"/", b, "/", c, "/", d, "/", e));
+    }*/
+
+    /*
+    //parse uint to string
+    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+        if (_i == 0) {
+            return "0";
+        }
+        uint j = _i;
+        uint len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint k = len;
+        while (_i != 0) {
+            k = k-1;
+            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        return string(bstr);
+    }*/
+
+    //concatanate two strings
+    function concetenateTwoStrings(string memory a, string memory b) internal pure returns(string memory) {
+        return string(abi.encodePacked(a, b));
     }
 
     //fallback function to receive eth

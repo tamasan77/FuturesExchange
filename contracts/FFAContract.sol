@@ -11,7 +11,8 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "../interfaces/IFFAContract.sol";
 import "./ChainlinkOracle.sol";
 import "./CollateralWallet.sol";
-import "./Oracles/ValuationOracle.sol";
+import "./Oracles/LinkPoolOracles/LinkPoolValuationOracle.sol";
+import "./Oracles/LinkPoolOracles/LinkPoolOracle.sol";
 
 contract FFAContract is IFFAContract{
         using SafeERC20 for IERC20;
@@ -22,7 +23,6 @@ contract FFAContract is IFFAContract{
         //contract detail
         string private name;
         string private symbol;
-        int private decimals = 100;//as each price is given to precision of cent
         ContractState public contractState;
         uint256 private sizeOfContract;
         address private long;
@@ -50,45 +50,28 @@ contract FFAContract is IFFAContract{
         uint256 private pricingDate;
 
         //underlying index price oracle
-        /* Sometimes oracles and jobs start and stop working so
-         * we need to be able to set oracle address and job
-         */
-        address public oracleAddress;
-        bytes32 public jobId;
-        uint256 public fee;
-        address public linkAddress;
         string private underlyingApiURL;
         string private underlyingApiPath;
 
-        ValuationOracle myValuationOracle;
-        ChainlinkOracle underlyingOracle;
+        LinkPoolValuationOracle valuationOracle;
+        LinkPoolOracle underlyingOracle;
 
         constructor(
             string memory _name, 
             string memory _symbol, 
-            address _oracleAddress,
-            bytes32 _jobId, 
-            uint256 _fee,
-            address _linkAddress,
+            uint256 _sizeOfContract,
             string memory _underlyingApiURL,
-            string memory _underlyingApiPath,
-            int _decimals,
-            uint256 _sizeOfContract
+            stirng memory _underlyingApiPath
             //address _collateralTokenAddress,
         ) {
             name = _name;
             symbol = _symbol;
-            oracleAddress = _oracleAddress;
-            jobId = _jobId;
-            fee = _fee;
-            linkAddress = _linkAddress;
-            underlyingApiURL = _underlyingApiURL;
-            underlyingApiPath = _underlyingApiPath;
-            decimals = _decimals;
             sizeOfContract = _sizeOfContract;
+            underlyingApiPath = _underlyingApiPath;
+            underlyingApiURL = _underlyingApiURL;
             //collateralTokenAddress = _collateralTokenAddress;
 
-            myValuationOracle = new ValuationOracle(oracleAddress, jobId, linkAddress, fee, underlyingPrice, annualRiskFreeRate, pricingDate, expirationDate);
+            valuationOracle = new LinkPoolValuationOracle();
             underlyingOracle = new ChainlinkOracle(oracleAddress, jobId, underlyingApiURL, underlyingApiPath, linkAddress, fee, decimals);
             contractState = ContractState.Created;
             emit CreatedContract(decimals, sizeOfContract);
