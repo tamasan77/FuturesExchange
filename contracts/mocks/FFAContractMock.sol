@@ -11,11 +11,7 @@ contract FFAContractMock is FFAContract {
                               "http://valuation-api.herokuapp.com/price/4500/1000/0/15778476", 
                               "price", 100) {}
 
-    function setStateToCreated() external {
-        contractState = ContractState.Created;
-    }
-
-    
+    /* Create long and short wallets for FFAContract*/
     CollateralWallet public longTestWallet;
     CollateralWallet public shortTestWallet;
     function createLongCollateralWallet(string memory _name) external returns(address walletAddress_) {
@@ -25,6 +21,10 @@ contract FFAContractMock is FFAContract {
     function createShortCollateralWallet(string memory _name) external returns(address walletAddress_) {
             shortTestWallet = new CollateralWallet(_name);
             walletAddress_ = address(shortTestWallet);
+    }
+
+    function setStateToCreated() external {
+           contractState = ContractState.Created;
     }
 
     function setStateToInitiated() external {

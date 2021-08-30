@@ -249,13 +249,17 @@ contract("FFAContract", accounts => {
         assert.equal(shortWalletBalance, 100, "transfer failed");
         
         //check error for mToM which cannot be called before initiation
-        
+        await ffaContractInstance.setStateToCreated();
+        assert.equal(ffaContractInstance.getContractState(), "Created", "State incorrectly set");
         try {
             await mockFFAContractInstance.markToMarket(4600);
         } catch(error) {
             beforeInitError = error;
         }
         assert.notEqual(beforeInitError, undefined, "Error must be thrown");
+
+        await ffaContractInstance.setStateToInitiated();
+        assert.equal(ffaContractInstance.getContractState(), "Initiated", "State incorrectly set");
         
 
     });
