@@ -4,6 +4,7 @@ const { assert } = require("chai");
 const FFAContract = artifacts.require("./FFAContract.sol");
 const CollateralWallet = artifacts.require("./CollateralWallet.sol");
 const TestERC20Token = artifacts.require("./TestERC20Token.sol");
+const FFAContractMock = artifacts.require("./mocks/FFAContractMock.sol");
 
 
 contract("FFAContract", accounts => {
@@ -22,7 +23,7 @@ contract("FFAContract", accounts => {
         const longWalletInstance = await CollateralWallet.at(longWallet);
         const shortWalletInstance = await CollateralWallet.at(shortWallet);
 
-        let initialForwardPrice = 4378;
+        let initialForwardPrice = 4300;
         let shortParty = accounts[4];
         let expirationDate = 16295802270;
         let exposureMarginRate = 200;
@@ -137,25 +138,17 @@ contract("FFAContract", accounts => {
         
         maintenanceMarginRate = 800;
 
-        /*Checking some functions that cannot be called before initiation*/
-        //check error for mToM which cannot be called before initiation
-        try {
-            await ffaContractInstance.markToMarket(4600);
-        } catch(error) {
-            beforeInitError = error;
-        }
-        assert.notEqual(beforeInitError, undefined, "Error must be thrown");
-
         //testing inititation
         await ffaContractInstance.initiateFFA(longParty, shortParty, 
                                               initialForwardPrice, expirationDate, 
                                               longWalletAddress, shortWalletAddress,
-                                              200, 800);
+                                              exposureMarginRate, maintenanceMarginRate);
         assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
         assert.equal(await ffaContractInstance.getLong(), longParty, "Long not correct");
         assert.equal(await ffaContractInstance.getShort(), shortParty, "Short not correct");
         assert.equal(await ffaContractInstance.getInitialForwardPrice(), initialForwardPrice, "Price not correct");
-        assert.equal(await ffaContractInstance.maintenanceMarginRate(), 800, "Rate not correct");
+        assert.equal(await ffaContractInstance.maintenanceMarginRate(), maintenanceMarginRate, "Rate not correct");
+        assert.equal(await ffaContractInstance.exposureMarginRate(), exposureMarginRate, "Rate not correct");
         assert.equal(await ffaContractInstance.getExpirationDate(), expirationDate, "Expiration date not correct");
         assert.equal(await ffaContractInstance.getLongWalletAddress(), longWalletInstance.address, "Long wallet not correct");
         assert.equal(await ffaContractInstance.getShortWalletAddress(), shortWalletInstance.address, "Short wallet not correct");
@@ -240,6 +233,7 @@ contract("FFAContract", accounts => {
     });
 
     it("markToMarket should work and catch incorrect parameters", async function() {
+        /*
         const ffaContractInstance = await FFAContract.deployed();
         const testERC20TokenInstance = await TestERC20Token.deployed();
 
@@ -247,6 +241,47 @@ contract("FFAContract", accounts => {
         const shortWallet = await ffaContractInstance.shortTestWallet();
         const longWalletInstance = await CollateralWallet.at(longWallet);
         const shortWalletInstance = await CollateralWallet.at(shortWallet);
+
+        //both long and short wallets' balance set to 100
+        await ffaContractInstance.transferCollateralFrom(web3.utils.toChecksumAddress(shortWalletInstance.address), web3.utils.toChecksumAddress(longWalletInstance.address), 25, web3.utils.toChecksumAddress(testERC20TokenInstance.address));
+        const longWalletBalance = await longWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
+        const shortWalletBalance = await shortWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
+        assert.equal(longWalletBalance, 100, "transfer failed");
+        assert.equal(shortWalletBalance, 100, "transfer failed");*/
+
+        const mockFFAContractInstance = await FFAContractMock.deployed();
+        const testERC20TokenInstance = await TestERC20Token.deployed();
+
+        //check error for mToM which cannot be called before initiation
+        try {
+            await mockFFAContractInstance.markToMarket(4600);
+        } catch(error) {
+            beforeInitError = error;
+        }
+        assert.notEqual(beforeInitError, undefined, "Error must be thrown");
+
+        await mockFFAContractInstance.createLongCollateralWallet("long wallet");
+        await mockFFAContractInstance.createShortCollateralWallet("short wallet");
+        const longWallet = await mockFFAContractInstance.longTestWallet();
+        const shortWallet = await mockFFAContractInstance.shortTestWallet();
+        const longWalletInstance = await CollateralWallet.at(longWallet);
+        const shortWalletInstance = await CollateralWallet.at(shortWallet);
+
+        let initialForwardPrice = 4300;
+        let longParty = accounts[5]
+        let shortParty = accounts[6];
+        let expirationDate = 16295802270;
+        let exposureMarginRate = 200;
+        let maintenanceMarginRate = 800;
+
+        //transfer 100 tokens to each wallet
+        await longWalletInstance.setNewBalance(ffaContractInstance.address, testERC20TokenInstance.address, 100);
+        await shortWalletInstance.setNewBalance(ffaContractInstance.address, testERC20TokenInstance.address, 100);
+        await testERC20TokenInstance.transfer(longWalletInstance.address, 100);
+        await testERC20TokenInstance.transfer(shortWalletInstance.address, 100);
+
+        //let set = await mockFFAContractInstance.setStateToCreated();
+        //assert.equal(await mockFFAContractInstance.getContractState(), "Created", "State set doesn't work");
 
         
 

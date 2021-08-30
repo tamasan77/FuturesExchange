@@ -21,13 +21,13 @@ contract FFAContract is IFFAContract{
     //contract detail
     string private name;
     string private symbol;
-    ContractState public contractState;
+    ContractState internal contractState;
     uint256 private sizeOfContract;
     address private long;
     address private short;
     uint256 private initialForwardPrice;
     uint public annualRiskFreeRate;
-    uint256 private expirationDate;
+    uint256 internal expirationDate;
     uint256 private underlyingPrice;//scaled 1/100 ie. 45.07 -> 4507
     //collateral wallets
     address private longWallet;
@@ -261,6 +261,7 @@ contract FFAContract is IFFAContract{
     }
     //these are for testing
     /////////////////////////////////////
+    /*
     CollateralWallet public longTestWallet;
     CollateralWallet public shortTestWallet;
     function createLongCollateralWallet(string memory _name) external returns(address walletAddress_) {
@@ -270,7 +271,7 @@ contract FFAContract is IFFAContract{
     function createShortCollateralWallet(string memory _name) external returns(address walletAddress_) {
             shortTestWallet = new CollateralWallet(_name);
             walletAddress_ = address(shortTestWallet);
-    }
+    }*/
     //////////////////////////////////////
     //receive and fallback functions
     /*
