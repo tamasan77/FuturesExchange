@@ -72,7 +72,7 @@ contract FFAContract is IFFAContract{
     function initiateFFA(address _long, address _short, uint256 _initialForwardPrice, 
                          uint256 _expirationDate,
                          address _longWallet, address _shortWallet, uint _exposureMarginRate,
-                         uint _maintenanceMarginRate) 
+                         uint _maintenanceMarginRate, address _collateralTokenAddress) 
                          external override returns (bool initiated_) {
         require(_long != address(0), "Long can't be zero address");
         require(_short != address(0), "Short can't be zero address");
@@ -93,6 +93,7 @@ contract FFAContract is IFFAContract{
         shortWallet = _shortWallet;
         exposureMarginRate = _exposureMarginRate;
         maintenanceMarginRate = _maintenanceMarginRate;
+        collateralTokenAddress = _collateralTokenAddress;
         contractState = ContractState.Initiated;
         //Do i need to deal with allowance?
         uint initialMarginRate = exposureMarginRate + maintenanceMarginRate;
@@ -160,7 +161,7 @@ contract FFAContract is IFFAContract{
     */
 
     /* markToMarket : does mark to market daily */
-    function markToMarket(uint256 currentForwardPrice) external override returns (bool markedToMarket_) {
+    function markToMarket(uint256 currentForwardPrice) external override {
         require(contractState == ContractState.Initiated, 
                 "Contract has to be in Initiated state");
         require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate) > 0, 
@@ -171,7 +172,9 @@ contract FFAContract is IFFAContract{
         uint256 oldContractValue = prevDayClosingPrice * sizeOfContract;
         //contract value change
         int256 contractValueChange = int256(newContractValue - oldContractValue);
+
         //delivery within collateral wallets
+        //In this case the amount to be transfered is in cents, not dollars due to 1:100 scaling
         if (contractValueChange > 0) {
             transferCollateralFrom(shortWallet, longWallet, 
                                    uint256(contractValueChange), collateralTokenAddress);
@@ -186,7 +189,6 @@ contract FFAContract is IFFAContract{
         prevDayClosingPrice = currentForwardPrice;
         
         emit MarkedToMarket(block.timestamp, contractValueChange, long, short);
-        markedToMarket_ = true;
     }
     //settle contract 
     function settleAtExpiration() external override returns (bool settled_) {

@@ -15,10 +15,11 @@ interface IFFAContract {
     function initiateFFA(address _long, address _short, uint256 _forwardPrice, 
                             uint256 _expirationDate,
                              address _longWallet, address _shortWallet, 
-                             uint exposureMarginRate, uint maintenanceMarginRate) 
+                             uint exposureMarginRate, uint maintenanceMarginRate, 
+                             address collateralTokenAddress) 
                              external returns (bool initiated_);
     //function calcFFAValue() external returns (uint256 value_);
-    function markToMarket(uint256 currentForwardPrice) external returns (bool markedToMarket_);
+    function markToMarket(uint256 currentForwardPrice) external;
     function settleAtExpiration() external returns (bool settled_);
     function defaultContract(address _defaultingParty) external returns (bool defaulted_);
 }

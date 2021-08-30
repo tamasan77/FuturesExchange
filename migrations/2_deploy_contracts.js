@@ -19,7 +19,7 @@ module.exports = async function(deployer) {
   //await deployer.deploy(FFAContract, "Test Contract", "TSTC", 100, "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,JPY,EUR", "USD", 100);
   
   //await deployer.deploy(CollateralWallet, "Test Wallet");
-  await deployer.deploy(TestERC20Token, 1000000);
+  await deployer.deploy(TestERC20Token, 100000000);
   //await deployer.deploy(ChainlinkOracle);
   await deployer.deploy(FFAContractMock);
 };
