@@ -38,7 +38,7 @@ contract FFAContract is IFFAContract{
     uint public exposureMarginRate;
     uint public maintenanceMarginRate;
     //M2M
-    uint256 private prevDayClosingPrice;
+    uint256 public prevDayClosingPrice;
     //underlying index price oracle
     string private underlyingApiURL;
     string private underlyingApiPath;

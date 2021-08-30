@@ -291,6 +291,28 @@ contract("FFAContract", accounts => {
         shortWalletBalance = await shortWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
         assert.equal(longWalletBalance, 115000, "mark to market failed");
         assert.equal(shortWalletBalance, 85000, "mark to market failed");
+        assert.equal(await ffaContractInstance.prevDayClosingPrice(), 4450, "previous day closing price failed to update");
+
+        /*testing marktToMarket when price changes:
+         * currently we have:
+         *      - sizeOfContract = 100
+         *      - prevDayClosingPrice = 4450
+         * Forward price decreases to 4346 
+         *      - newContractValue = 4346 * 100 = 434600
+         *      - oldContractValue = 4450 * 100 = 445000
+         * That means that the function needs to transfer abs(434600 - 445000) =  10400-> $104
+         * from the long wallet to the short wallet. This result in the long wallet's balance
+         * decreasing to 115000 - 10400 = 104600 and short wallet's balance increasing to 
+         * 85000 + 10400 = 95400.
+         */
+        
+        await ffaContractInstance.markToMarket(4346);
+        longWalletBalance = await longWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
+        shortWalletBalance = await shortWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
+        assert.equal(longWalletBalance, 104600, "mark to market failed");
+        assert.equal(shortWalletBalance, 95400, "mark to market failed");
+        assert.equal(await ffaContractInstance.prevDayClosingPrice(), 4346, "previous day closing price failed to update");
+
 
     });
 });
