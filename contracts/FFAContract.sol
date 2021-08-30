@@ -259,20 +259,7 @@ contract FFAContract is IFFAContract{
  
             transfered_ = true;
     }
-    //these are for testing
-    /////////////////////////////////////
-    /*
-    CollateralWallet public longTestWallet;
-    CollateralWallet public shortTestWallet;
-    function createLongCollateralWallet(string memory _name) external returns(address walletAddress_) {
-            longTestWallet = new CollateralWallet(_name);
-            walletAddress_ = address(longTestWallet);
-    }
-    function createShortCollateralWallet(string memory _name) external returns(address walletAddress_) {
-            shortTestWallet = new CollateralWallet(_name);
-            walletAddress_ = address(shortTestWallet);
-    }*/
-    //////////////////////////////////////
+
     //receive and fallback functions
     /*
     receive () external payable {
@@ -280,6 +267,7 @@ contract FFAContract is IFFAContract{
     }
     fallback () external payable {
     }*/
+    
     //getter functions
     function getContractState() external view returns(string memory) {
             if (contractState == ContractState.Created) {

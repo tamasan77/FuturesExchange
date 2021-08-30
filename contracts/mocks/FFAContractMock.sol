@@ -15,8 +15,7 @@ contract FFAContractMock is FFAContract {
         contractState = ContractState.Created;
     }
 
-    //these are for testing
-    /////////////////////////////////////
+    
     CollateralWallet public longTestWallet;
     CollateralWallet public shortTestWallet;
     function createLongCollateralWallet(string memory _name) external returns(address walletAddress_) {

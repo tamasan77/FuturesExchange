@@ -1,7 +1,7 @@
 const { assert } = require("chai");
 
 
-const FFAContract = artifacts.require("./FFAContract.sol");
+//const FFAContract = artifacts.require("./FFAContract.sol");
 const CollateralWallet = artifacts.require("./CollateralWallet.sol");
 const TestERC20Token = artifacts.require("./TestERC20Token.sol");
 const FFAContractMock = artifacts.require("./mocks/FFAContractMock.sol");
@@ -14,7 +14,7 @@ contract("FFAContract", accounts => {
     };
 
     it("should initiate FFA and catch incorrect parameters", async function() {
-        const ffaContractInstance = await FFAContract.deployed();
+        const ffaContractInstance = await FFAContractMock.deployed();
 
         await ffaContractInstance.createLongCollateralWallet("long wallet");
         await ffaContractInstance.createShortCollateralWallet("short wallet");
@@ -155,7 +155,7 @@ contract("FFAContract", accounts => {
     });
     
     it("transferCollateralFrom should work and catch incorrect parameters", async function() {
-        const ffaContractInstance = await FFAContract.deployed();
+        const ffaContractInstance = await FFAContractMock.deployed();
 
         const longWallet = await ffaContractInstance.longTestWallet();
         const shortWallet = await ffaContractInstance.shortTestWallet();
@@ -233,8 +233,7 @@ contract("FFAContract", accounts => {
     });
 
     it("markToMarket should work and catch incorrect parameters", async function() {
-        /*
-        const ffaContractInstance = await FFAContract.deployed();
+        const ffaContractInstance = await FFAContractMock.deployed();
         const testERC20TokenInstance = await TestERC20Token.deployed();
 
         const longWallet = await ffaContractInstance.longTestWallet();
@@ -247,44 +246,17 @@ contract("FFAContract", accounts => {
         const longWalletBalance = await longWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
         const shortWalletBalance = await shortWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
         assert.equal(longWalletBalance, 100, "transfer failed");
-        assert.equal(shortWalletBalance, 100, "transfer failed");*/
-
-        const mockFFAContractInstance = await FFAContractMock.deployed();
-        const testERC20TokenInstance = await TestERC20Token.deployed();
-
+        assert.equal(shortWalletBalance, 100, "transfer failed");
+        
         //check error for mToM which cannot be called before initiation
+        
         try {
             await mockFFAContractInstance.markToMarket(4600);
         } catch(error) {
             beforeInitError = error;
         }
         assert.notEqual(beforeInitError, undefined, "Error must be thrown");
-
-        await mockFFAContractInstance.createLongCollateralWallet("long wallet");
-        await mockFFAContractInstance.createShortCollateralWallet("short wallet");
-        const longWallet = await mockFFAContractInstance.longTestWallet();
-        const shortWallet = await mockFFAContractInstance.shortTestWallet();
-        const longWalletInstance = await CollateralWallet.at(longWallet);
-        const shortWalletInstance = await CollateralWallet.at(shortWallet);
-
-        let initialForwardPrice = 4300;
-        let longParty = accounts[5]
-        let shortParty = accounts[6];
-        let expirationDate = 16295802270;
-        let exposureMarginRate = 200;
-        let maintenanceMarginRate = 800;
-
-        //transfer 100 tokens to each wallet
-        await longWalletInstance.setNewBalance(ffaContractInstance.address, testERC20TokenInstance.address, 100);
-        await shortWalletInstance.setNewBalance(ffaContractInstance.address, testERC20TokenInstance.address, 100);
-        await testERC20TokenInstance.transfer(longWalletInstance.address, 100);
-        await testERC20TokenInstance.transfer(shortWalletInstance.address, 100);
-
-        //let set = await mockFFAContractInstance.setStateToCreated();
-        //assert.equal(await mockFFAContractInstance.getContractState(), "Created", "State set doesn't work");
-
         
-
 
     });
 });
