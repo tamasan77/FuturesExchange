@@ -20,6 +20,6 @@ interface IFFAContract {
                              external returns (bool initiated_);
     //function calcFFAValue() external returns (uint256 value_);
     function markToMarket(uint256 currentForwardPrice) external;
-    function settleAtExpiration() external returns (bool settled_);
+    function settleAtExpiration() external;
     function defaultContract(address _defaultingParty) external returns (bool defaulted_);
 }

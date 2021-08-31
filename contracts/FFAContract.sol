@@ -191,19 +191,19 @@ contract FFAContract is IFFAContract{
         emit MarkedToMarket(block.timestamp, contractValueChange, long, short);
     }
     //settle contract 
-    function settleAtExpiration() external override returns (bool settled_) {
+    function settleAtExpiration() external override {
             require(BokkyPooBahsDateTimeLibrary.diffSeconds(expirationDate, block.timestamp) >= 0, "Settlement cannot occure before expiration date" );
             require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
 
             //calculate P&L
             uint256 initialContractValue = initialForwardPrice * sizeOfContract;
             uint256 finalContractValue = prevDayClosingPrice * sizeOfContract;
-            int256 profitAndLoss = int256(finalContractValue - initialContractValue);
+            int profitAndLoss = int256(finalContractValue) - int256(initialContractValue);
 
             //change contract state and emit event
             contractState = ContractState.Settled;
             emit Settled(long, short, expirationDate, profitAndLoss);
-            settled_ = true;
+            //settled_ = true;
     }
     //default contract
     function defaultContract(address _defaultingParty) public override returns (bool defaulted_) {

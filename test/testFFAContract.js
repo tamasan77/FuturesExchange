@@ -285,7 +285,7 @@ contract("FFAContract", accounts => {
          * from the short wallet to the long wallet. This result in the long wallet's balance
          * increasing to 115000 and short wallet's balance decreasing to 85000.
          */
-
+    
         await ffaContractInstance.markToMarket(4450);
         longWalletBalance = await longWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
         shortWalletBalance = await shortWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
@@ -312,7 +312,51 @@ contract("FFAContract", accounts => {
         assert.equal(longWalletBalance, 104600, "mark to market failed");
         assert.equal(shortWalletBalance, 95400, "mark to market failed");
         assert.equal(await ffaContractInstance.prevDayClosingPrice(), 4346, "previous day closing price failed to update");
-        
-
     });
+
+    it("settleAtExpiration should work and catch incorrect parameters", async function() {
+        const ffaContractInstance = await FFAContractMock.deployed();
+        const testERC20TokenInstance = await TestERC20Token.deployed();
+
+        const longWallet = await ffaContractInstance.longTestWallet();
+        const shortWallet = await ffaContractInstance.shortTestWallet();
+        const longWalletInstance = await CollateralWallet.at(longWallet);
+        const shortWalletInstance = await CollateralWallet.at(shortWallet);
+
+        //both long and short wallets' balance set to 100000
+        await ffaContractInstance.transferCollateralFrom(
+            web3.utils.toChecksumAddress(longWalletInstance.address),
+            web3.utils.toChecksumAddress(shortWalletInstance.address),  
+            4600, web3.utils.toChecksumAddress(testERC20TokenInstance.address));
+        let longWalletBalance = await longWalletInstance.getMappedBalance(
+            ffaContractInstance.address, testERC20TokenInstance.address);
+        let shortWalletBalance = await shortWalletInstance.getMappedBalance(
+            ffaContractInstance.address, testERC20TokenInstance.address);
+        assert.equal(longWalletBalance, 100000, "transfer failed");
+        assert.equal(shortWalletBalance, 100000, "transfer failed");
+        
+        //test error for settling before expiration date
+        try {
+            await ffaContractInstance.settleAtExpiration();
+        } catch(error) {
+            settleStateError = error;
+        }
+        assert.notEqual(settleStateError, undefined, "Error must be thrown");
+
+        //test error for settling when not in initiated date
+        await ffaContractInstance.setStateToCreated();
+        try {
+            await ffaContractInstance.settleAtExpiration();
+        } catch(error) {
+            settleInitError = error;
+        }
+        assert.notEqual(settleInitError, undefined, "Error must be thrown");
+        await ffaContractInstance.setStateToInitiated();
+
+        await ffaContractInstance.setExpirationDate(1630287791); //31/june/2021
+        await ffaContractInstance.settleAtExpiration();
+        assert.equal("Settled", await ffaContractInstance.getContractState(), "State not updated to settled");
+    });
+
+    //it
 });
