@@ -9,7 +9,6 @@ import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 
 import "./FFAContract.sol";
-//import "../interfaces/ICollateralWallet.sol";
 
 contract CollateralWallet is Pausable, Ownable{//IERC20Metadata
     using SafeERC20 for IERC20;

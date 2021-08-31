@@ -273,10 +273,10 @@ contract FFAContract is IFFAContract{
 
     //receive and fallback functions
     /*
-    receive () external payable {
-
-    }
-    fallback () external payable {
+        receive () external payable {
+        
+        }
+        fallback () external payable {
     }*/
     
     //getter functions
