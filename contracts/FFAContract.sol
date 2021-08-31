@@ -171,7 +171,7 @@ contract FFAContract is IFFAContract{
         uint256 newContractValue = currentForwardPrice * sizeOfContract;
         uint256 oldContractValue = prevDayClosingPrice * sizeOfContract;
         //contract value change
-        int256 contractValueChange = int256(newContractValue - oldContractValue);
+        int contractValueChange = int256(newContractValue) - int256(oldContractValue);
 
         //delivery within collateral wallets
         //In this case the amount to be transfered is in cents, not dollars due to 1:100 scaling
@@ -181,7 +181,7 @@ contract FFAContract is IFFAContract{
         }
         if (contractValueChange < 0) {
             transferCollateralFrom(longWallet, shortWallet, 
-                                   uint256(-1 * contractValueChange), 
+                                   uint256(-contractValueChange), 
                                    collateralTokenAddress);
         }
 

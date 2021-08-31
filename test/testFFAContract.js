@@ -312,7 +312,7 @@ contract("FFAContract", accounts => {
         assert.equal(longWalletBalance, 104600, "mark to market failed");
         assert.equal(shortWalletBalance, 95400, "mark to market failed");
         assert.equal(await ffaContractInstance.prevDayClosingPrice(), 4346, "previous day closing price failed to update");
-
+        
 
     });
 });
