@@ -353,10 +353,39 @@ contract("FFAContract", accounts => {
         assert.notEqual(settleInitError, undefined, "Error must be thrown");
         await ffaContractInstance.setStateToInitiated();
 
+        //test settlement after expiration date
         await ffaContractInstance.setExpirationDate(1630287791); //31/june/2021
         await ffaContractInstance.settleAtExpiration();
         assert.equal("Settled", await ffaContractInstance.getContractState(), "State not updated to settled");
     });
 
-    //it
+    it("defaultContract should work and catch incorrect parameters", async function() {
+        const ffaContractInstance = await FFAContractMock.deployed();
+        const testERC20TokenInstance = await TestERC20Token.deployed();
+
+        //test error for only defaulting in initiated state
+        await ffaContractInstance.setStateToCreated();
+        assert.equal(await ffaContractInstance.getContractState(), "Created", "State set incorrectly")
+        try {
+            await ffaContractInstance.defaultContract(web3.utils.toChecksumAddress(await ffaContractInstance.getLong()));
+        } catch(error) {
+            defaultStateError = error;
+        }
+        assert.notEqual(defaultStateError, undefined, "Error must be thrown");
+        await ffaContractInstance.setStateToInitiated();
+
+        //test error for defaulting after expiration date
+        assert.equal(await ffaContractInstance.getExpirationDate(), 1630287791, "Date set incorrectly")
+        try {
+            await ffaContractInstance.defaultContract(web3.utils.toChecksumAddress(await ffaContractInstance.getLong()));
+        } catch(error) {
+            defaultDateError = error;
+        }
+        assert.notEqual(defaultDateError, undefined, "Error must be thrown");
+        await ffaContractInstance.setExpirationDate(16295802270);
+
+        //test default with correct parameters
+        await ffaContractInstance.defaultContract(web3.utils.toChecksumAddress(await ffaContractInstance.getLong()));
+        assert.equal(await ffaContractInstance.getContractState(), "Defaulted", "Defaulted state not set");
+    });
 });

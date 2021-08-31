@@ -35,6 +35,10 @@ contract FFAContractMock is FFAContract {
         expirationDate = newDate;
     }
 
+    function setLong(address newLong) external{
+        long = newLong;
+    }
+
     function compareStrings(string memory a, string memory b) public pure returns (bool) {
         return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
     }  

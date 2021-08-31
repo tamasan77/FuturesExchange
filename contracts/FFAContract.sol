@@ -23,8 +23,8 @@ contract FFAContract is IFFAContract{
     string private symbol;
     ContractState internal contractState;
     uint256 private sizeOfContract;
-    address private long;
-    address private short;
+    address internal long;
+    address internal short;
     uint256 private initialForwardPrice;
     uint public annualRiskFreeRate;
     uint256 internal expirationDate;
@@ -205,6 +205,15 @@ contract FFAContract is IFFAContract{
             emit Settled(long, short, expirationDate, profitAndLoss);
             //settled_ = true;
     }
+
+    /* What happens when futures/forward contract counterparty defaults?
+     * https://money.stackexchange.com/questions/46475/what-happens-if-futures-contract-seller-defaults
+     * In this case we assume that the losing party's collateral wallet will always have enough funds to
+     * cover losses.
+     * A party can "terminate" the forward contract by entering another same contract taking the opposite
+     * position. 
+     * https://financetrain.com/forward-contract-termination-prior-to-expiry/
+     */
     //default contract
     function defaultContract(address _defaultingParty) public override returns (bool defaulted_) {
             require(contractState == ContractState.Initiated, "Contract has to be in Initiated state");
