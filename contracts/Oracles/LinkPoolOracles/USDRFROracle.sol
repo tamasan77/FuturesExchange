@@ -10,4 +10,39 @@ import "./LinkPoolOracle.sol";
  * time period.
  * Calculating the risk free rate: 
  * https://www.orionstartups.com/research/how-to-calculate-the-risk-free-rate
+ * WATCH OUT: rate can be negative!!!
+ * Put API key in .env file
+ *
+ * have start_date be an adjustable parameter:
+ * depending on the current date and the expiration date the risk free rate can be 
+ * determined from T-bills with various maturity trenches.
+ * We expect standard forward contracts to be up to twelve month. (anything beyond that would be a long-dated forward)
+ * In the quandl API here is how to get various maturity trnches according data[n] array index:
+ * "column_names":[
+		"Date",
+		"4 Wk Bank Discount Rate", (index 1)
+		"4 Wk Coupon Equiv",
+		"8 Wk Bank Discount Rate", (index 3)
+		"8 Wk Coupon Equiv",
+		"13 Wk Bank Discount Rate", (index 5)
+		"13 Wk Coupon Equiv",
+		"26 Wk Bank Discount Rate", (index 7)
+		"26 Wk Coupon Equiv",
+		"52 Wk Bank Discount Rate", (index 9)
+		"52 Wk Coupon Equiv"],
+ * - for 0-6weeks expiration we'll use 4Wk rate
+ * - for 7-10weeks use 8Wk rate
+ * - for 11-19weeks use 13Wk rate
+ * - for 20-39weeks use 26Wk rate
+ * - for 40+ weeks use 52Wk rate
+ *
+ * Watch out for decimals for risk free rates!! Data is given as percentage
+ * Decimal convention for risk free rate: 1.23 => 1.23 % => scale by 1:100 => 123
  */
+
+ contract USDRFROracle is LinkPoolOracle {
+     int public _decimals = 10 ** 2;
+     string public constant _apiBaseURL = "https://www.quandl.com/api/v3/datasets/USTREASURY/BILLRATES.json?api_key=";
+     //use 0 index for data array since we always want the most recent value
+     string public constant _apiPath = "dataset.data[0];
+ }
