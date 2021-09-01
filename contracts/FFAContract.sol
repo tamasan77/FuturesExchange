@@ -325,7 +325,12 @@ contract FFAContract is IFFAContract{
             return shortWallet;
     }
 
+    function getUnderlyingApiURL() external view returns (string memory) {
+        return underlyingApiURL;
+    }
 
-
+    function getUnderlyingApiPath() external view returns (string memory) {
+        return underlyingApiPath;
+    }
 
 }
