@@ -2,19 +2,19 @@
 
 pragma solidity ^0.8.6;
 
-import "./LinkPoolOracle.sol";
+import "./LinkPoolUintOracle.sol";
 
-contract LinkPoolBTCUSDOracle is LinkPoolOracle {
-    int public _decimals = 10 ** 2;
-    string private constant _apiBaseURL = "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,JPY,EUR";
-    string public constant _apiPath = "USD";
+contract LinkPoolBTCUSDOracle is LinkPoolUintOracle {
+    int public _decimals_ = 10 ** 2;
+    string private constant _apiBaseURL_ = "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,JPY,EUR";
+    string public constant _apiPath_ = "USD";
     
 
     constructor()
-       LinkPoolOracle (
-           _decimals,
-           _apiBaseURL,
-           _apiPath
+       LinkPoolUintOracle (
+           _decimals_,
+           _apiBaseURL_,
+           _apiPath_
        ) {
     }
 }

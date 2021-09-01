@@ -2,18 +2,18 @@
 
 pragma solidity ^0.8.6;
 
-import "./LinkPoolOracle.sol";
+import "./LinkPoolUintOracle.sol";
 
-contract LinkPoolValuationOracle is LinkPoolOracle {
-    int public _decimals = 10 ** 2;
-    string private constant _apiBaseURL = "http://valuation-api.herokuapp.com/price/";
-    string public constant _apiPath = "price";
+contract LinkPoolValuationOracle is LinkPoolUintOracle {
+    int public _decimals_ = 10 ** 2;
+    string private constant _apiBaseURL_ = "http://valuation-api.herokuapp.com/price/";
+    string public constant _apiPath_ = "price";
 
     constructor() 
-        LinkPoolOracle (
-            _decimals,
-            _apiBaseURL,
-            _apiPath
+        LinkPoolUintOracle (
+            _decimals_,
+            _apiBaseURL_,
+            _apiPath_
         ) {
     }
 }

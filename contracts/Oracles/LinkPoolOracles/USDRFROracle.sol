@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.6;
 
-import "./LinkPoolOracle.sol";
+import "./LinkPoolIntOracle.sol";
 
 /* Using https://www.quandl.com/data/USTREASURY/BILLRATES-Treasury-Bill-Rates
  * Risk free rate is usually considered to be equal to interest paid on 3-month T-bill
@@ -17,7 +17,7 @@ import "./LinkPoolOracle.sol";
  * depending on the current date and the expiration date the risk free rate can be 
  * determined from T-bills with various maturity trenches.
  * We expect standard forward contracts to be up to twelve month. (anything beyond that would be a long-dated forward)
- * In the quandl API here is how to get various maturity trnches according data[n] array index:
+ * In the quandl API here is how to get various maturity tranches according data[n] array index:
  * "column_names":[
 		"Date",
 		"4 Wk Bank Discount Rate", (index 1)
@@ -40,9 +40,17 @@ import "./LinkPoolOracle.sol";
  * Decimal convention for risk free rate: 1.23 => 1.23 % => scale by 1:100 => 123
  */
 
- contract USDRFROracle is LinkPoolOracle {
-     int public _decimals = 10 ** 2;
-     string public constant _apiBaseURL = "https://www.quandl.com/api/v3/datasets/USTREASURY/BILLRATES.json?api_key=";
-     //use 0 index for data array since we always want the most recent value
-     string public constant _apiPath = "dataset.data[0];
- }
+contract USDRFROracle is LinkPoolIntOracle {
+    int public _decimals_ = 10 ** 2;
+    //need to add API key to base URL
+    //start date will be a api URL parameter
+    string public constant _apiBaseURL_ = "https://www.quandl.com/api/v3/datasets/USTREASURY/BILLRATES.json?api_key=";
+    //use 0 index for data array since we always want the most recent value
+    string public constant _apiPath_ = "dataset.data[0]";
+    constructor(
+       string memory startDate,
+       uint8 maturityTranchIndex
+    ) LinkPoolIntOracle(
+        _decimals_
+    )
+}
