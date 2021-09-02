@@ -44,17 +44,16 @@ contract USDRFROracle is LinkPoolIntOracle {
     int public _decimals_ = 10 ** 2;
     //need to add API key to base URL
     //start date will be a api URL parameter
-    string public constant _apiBaseURL_ = "https://www.quandl.com/api/v3/datasets/USTREASURY/BILLRATES.json?api_key=[my key]&start_date=";
+    string public constant _apiBaseURL_ = "https://www.quandl.com/api/v3/datasets/USTREASURY/BILLRATES.json?api_key=[my key]";
     //use 0 index for data array since we always want the most recent value
     string public constant _apiPath_ = "dataset.data[0][";
 
     constructor(
-       string memory startDate,
        uint8 maturityTranchIndex
     ) LinkPoolIntOracle(
         _decimals_,
-        concetenateTwoStrings(_apiBaseURL_, startDate),
-        
+        _apiBaseURL_,
+
     ) {}
     
      //concatanate strings and add /  where needed for URL
