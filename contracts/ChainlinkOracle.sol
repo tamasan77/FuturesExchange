@@ -14,7 +14,9 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
 
 
     //store answer from oracle
-    uint256 private result;
+    bool public isSignedResult;
+    uint256 private unsignedResult;
+    int256 private signedResult;
 
     //oracle and job info
     /* The reason I don't set these to a constant value is because
@@ -35,7 +37,7 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     //fee is usually 0.1Link which is equal to (0.1 * 10 ** 18)
     uint256 public fee;
 
-    constructor(address _oracleAddress, bytes32 _jobId, address linkAddress, uint256 _fee, int _decimals, string memory _apiBaseURL, string memory _apiPath) {  
+    constructor(address _oracleAddress, bytes32 _jobId, address linkAddress, uint256 _fee, int _decimals, string memory _apiBaseURL, string memory _apiPath, bool _isSignedResult) {  
         if (linkAddress == address(0)) {
             setPublicChainlinkToken();
         } else {
@@ -47,13 +49,18 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
         decimals = _decimals;
         apiBaseURL = _apiBaseURL;
         apiPath = _apiPath;
+        isSignedResult = _isSignedResult;
     }
 
     //Create Chainlink request with uint256 job
     //apiURLParameters is empty string for underlying oracles
     function requestIndexPrice(string memory apiURLParameters) external override returns (bytes32 requestId) {
-
-        Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
+        Chainlink.Request memory request;
+        if (isSignedResult) {
+            request = buildChainlinkRequest(jobId, address(this), this.fulfillSigned.selector);
+        } else {
+            request = buildChainlinkRequest(jobId, address(this), this.fulfillUnsigned.selector);
+        }
 
         request.add("get", concetenateTwoStrings(apiBaseURL, apiURLParameters));
         //set path to data
@@ -66,10 +73,16 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
 
     //receive response as uint256
     //recordChainlinkFulffilment ensures that only requesting oracle can fulfill
-    function fulfill(bytes32 _requestId, uint256 _result) external override recordChainlinkFulfillment(_requestId){
-        result = _result;
+    function fulfillSigned(bytes32 _requestId, int256 _result) external override recordChainlinkFulfillment(_requestId){
+        signedResult = _result;
         emit Fulfilled(_requestId);
     }
+
+    function fulfillUnsigned(bytes32 _requestId, uint256 _result) external override recordChainlinkFulfillment(_requestId){
+        unsignedResult = _result;
+        emit Fulfilled(_requestId);
+    }
+
 
     // withdrawLink allows the owner to withdraw any extra LINK on the contract
     function withdrawLink() external override onlyOwner {
@@ -123,8 +136,12 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
 
     }
 
-    function getResult() external view returns (uint256) {
-        return result;
+    function getUnsignedResult() external view returns (uint256) {
+        return unsignedResult;
+    }
+
+    function getSignedResult() external view returns (int256) {
+        return signedResult;
     }
 }
 

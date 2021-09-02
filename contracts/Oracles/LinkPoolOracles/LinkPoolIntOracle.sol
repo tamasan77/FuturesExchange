@@ -16,7 +16,8 @@ contract LinkPoolIntOracle is LinkPoolOracle {
         __jobId,
         __decimals,
         __apiBaseURL,
-        __apiPath
+        __apiPath, 
+        true
     ) {
     }
 }

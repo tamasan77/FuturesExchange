@@ -14,7 +14,8 @@ contract LinkPoolOracle is ChainlinkOracle {
         bytes32 _jobId,
         int _decimals, 
         string memory _apiBaseURL, 
-        string memory _apiPath)
+        string memory _apiPath, 
+        bool _isSignedResult)
         ChainlinkOracle (
             _oracleAddress, 
             _jobId,
@@ -22,7 +23,8 @@ contract LinkPoolOracle is ChainlinkOracle {
             _fee,
             _decimals,
             _apiBaseURL,
-            _apiPath
+            _apiPath,
+            _isSignedResult
         ) {
     }
 }

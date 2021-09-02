@@ -12,7 +12,7 @@ import "../interfaces/IFFAContract.sol";
 import "./ChainlinkOracle.sol";
 import "./CollateralWallet.sol";
 import "./Oracles/LinkPoolOracles/LinkPoolValuationOracle.sol";
-import "./Oracles/LinkPoolOracles/LinkPoolOracle.sol";
+import "./Oracles/LinkPoolOracles/LinkPoolUintOracle.sol";
 
 contract FFAContract is IFFAContract{
     using SafeERC20 for IERC20;
@@ -44,7 +44,7 @@ contract FFAContract is IFFAContract{
     string private underlyingApiPath;
     int public underlyingDecimals;
     LinkPoolValuationOracle valuationOracle;
-    LinkPoolOracle underlyingOracle;
+    LinkPoolUintOracle underlyingOracle;
 
     constructor(
             string memory _name, 
@@ -63,7 +63,7 @@ contract FFAContract is IFFAContract{
         underlyingDecimals = _underlyingDecimals;
         //collateralTokenAddress = _collateralTokenAddress;
         valuationOracle = new LinkPoolValuationOracle();
-        underlyingOracle = new LinkPoolOracle(underlyingDecimals, underlyingApiURL, underlyingApiPath);
+        underlyingOracle = new LinkPoolUintOracle(underlyingDecimals, underlyingApiURL, underlyingApiPath);
         contractState = ContractState.Created;
         //emit CreatedContract(decimals, sizeOfContract);
     }
@@ -108,7 +108,7 @@ contract FFAContract is IFFAContract{
 
     //set underlying price once job is fulfilled
     function setUnderlyingPrice() public {
-        underlyingPrice = underlyingOracle.getResult();
+        underlyingPrice = underlyingOracle.getUnsignedResult();
     }
 
     //request forward price
@@ -118,7 +118,7 @@ contract FFAContract is IFFAContract{
 
     //set forward price once job is fulfilled
     function getForwardPrice() public view returns(uint256){
-        return valuationOracle.getResult();
+        return valuationOracle.getUnsignedResult();
     }
 
     //concatanate strings and add /  where needed for URL
