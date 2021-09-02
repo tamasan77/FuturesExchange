@@ -44,24 +44,36 @@ contract USDRFROracle is LinkPoolIntOracle {
     int public _decimals_ = 10 ** 2;
     //need to add API key to base URL
     //start date will be a api URL parameter
-    string public constant _apiBaseURL_ = "https://www.quandl.com/api/v3/datasets/USTREASURY/BILLRATES.json?api_key=[my key]";
+    string public constant _apiBaseURL_ = "https://www.quandl.com/api/v3/datasets/USTREASURY/BILLRATES.json?api_key=MY_KEY";
     //use 0 index for data array since we always want the most recent value
-    string public constant _apiPath_ = "dataset.data[0][";
+    string public constant _apiPath_ = "dataset.data.0.1";//correct thsi (it is not correct syntax and also it's fixed 4 Wk rate)
 
     constructor(
-       uint8 maturityTranchIndex
     ) LinkPoolIntOracle(
         _decimals_,
         _apiBaseURL_,
-
+        _apiPath_
     ) {}
-    
-     //concatanate strings and add /  where needed for URL
-    function constructApiPath(string memory a, string memory b) internal pure returns (string memory) {
-	    return string(abi.encodePacked(a,"/", b, "/", c, "/", d));
+
+    //updateAPIPath: update apiPath based on period of forward contract
+    function updateAPIPath(uint contractDurationInSeconds) external {
+        string memory maturityTranchIndex;
+        /* week duration calculation
+         * 1 week = 7*24*60*60 = 604800 seconds
+         */
+         if (contractDurationInSeconds <= 3628800) {// <=4 weeks
+             maturityTranchIndex = "1";
+         } else if ((3628800 < contractDurationInSeconds) && (contractDurationInSeconds <= 6048000)) {
+             maturityTranchIndex = "2";
+         } else if ((6048000 < contractDurationInSeconds) && (contractDurationInSeconds <= 11491200)) {
+             maturityTranchIndex = "3";
+         } else if ((11491200 < contractDurationInSeconds) && (contractDurationInSeconds <= 23587200)) {
+             maturityTranchIndex = "4";
+         } else {
+             maturityTranchIndex = "5";
+         }
     }
 
-    
     //parse uint to string
     function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
         if (_i == 0) {
