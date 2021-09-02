@@ -46,7 +46,7 @@ contract USDRFROracle is LinkPoolIntOracle {
     //start date will be a api URL parameter
     string public constant _apiBaseURL_ = "https://www.quandl.com/api/v3/datasets/USTREASURY/BILLRATES.json?api_key=MY_KEY";
     //use 0 index for data array since we always want the most recent value
-    string public constant _apiPath_ = "dataset.data.0.1";//correct thsi (it is not correct syntax and also it's fixed 4 Wk rate)
+    string public  _apiPath_ = "dataset.data.0.1";//correct thsi (it is not correct syntax and also it's fixed 4 Wk rate)
 
     constructor(
     ) LinkPoolIntOracle(
@@ -72,6 +72,7 @@ contract USDRFROracle is LinkPoolIntOracle {
          } else {
              maturityTranchIndex = "5";
          }
+         _apiPath_ = "";
     }
 
     //parse uint to string

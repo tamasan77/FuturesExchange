@@ -13,6 +13,7 @@ import "./ChainlinkOracle.sol";
 import "./CollateralWallet.sol";
 import "./Oracles/LinkPoolOracles/LinkPoolValuationOracle.sol";
 import "./Oracles/LinkPoolOracles/LinkPoolUintOracle.sol";
+import "./Oracles/LinkPoolOracles/USDRFROracle.sol";
 
 contract FFAContract is IFFAContract{
     using SafeERC20 for IERC20;
@@ -45,6 +46,8 @@ contract FFAContract is IFFAContract{
     int public underlyingDecimals;
     LinkPoolValuationOracle valuationOracle;
     LinkPoolUintOracle underlyingOracle;
+    USDRDROracle usdRiskFreeRateOracle;
+    uint8 private rfrMaturityTranchIndex;
 
     constructor(
             string memory _name, 
