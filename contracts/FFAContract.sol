@@ -46,7 +46,7 @@ contract FFAContract is IFFAContract{
     int public underlyingDecimals;
     LinkPoolValuationOracle valuationOracle;
     LinkPoolUintOracle underlyingOracle;
-    USDRDROracle usdRiskFreeRateOracle;
+    USDRFROracle usdRiskFreeRateOracle;
     uint8 private rfrMaturityTranchIndex;
 
     constructor(
