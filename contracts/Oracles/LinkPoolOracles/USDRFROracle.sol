@@ -46,7 +46,8 @@ contract USDRFROracle is LinkPoolIntOracle {
     //start date will be a api URL parameter
     string public constant _apiBaseURL_ = "https://www.quandl.com/api/v3/datasets/USTREASURY/BILLRATES.json?api_key=MY_KEY";
     //use 0 index for data array since we always want the most recent value
-    string public  _apiPath_ = "dataset.data.0.1";//correct thsi (it is not correct syntax and also it's fixed 4 Wk rate)
+    string public  _apiPathBase_ = "dataset.data.0.";//correct thsi (it is not correct syntax and also it's fixed 4 Wk rate)
+    string public _apiPath_;
 
     constructor(
     ) LinkPoolIntOracle(
@@ -55,8 +56,7 @@ contract USDRFROracle is LinkPoolIntOracle {
         _apiPath_
     ) {}
 
-    //updateAPIPath: update apiPath based on period of forward contract
-    function updateAPIPath(uint contractDurationInSeconds) external {
+    function updateAPIPath(uint contractDurationInSeconds) internal {
         string memory maturityTranchIndex;
         /* week duration calculation
          * 1 week = 7*24*60*60 = 604800 seconds
@@ -72,30 +72,6 @@ contract USDRFROracle is LinkPoolIntOracle {
          } else {
              maturityTranchIndex = "5";
          }
-         _apiPath_ = "";
+         _apiPath_ = string(abi.encodePacked(_apiPathBase_, maturityTranchIndex));
     }
-
-    //parse uint to string
-    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
-        if (_i == 0) {
-            return "0";
-        }
-        uint j = _i;
-        uint len;
-        while (j != 0) {
-            len++;
-            j /= 10;
-        }
-        bytes memory bstr = new bytes(len);
-        uint k = len;
-        while (_i != 0) {
-            k = k-1;
-            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
-            bytes1 b1 = bytes1(temp);
-            bstr[k] = b1;
-            _i /= 10;
-        }
-        return string(bstr);
-    }
-
 }

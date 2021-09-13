@@ -88,7 +88,7 @@ contract FFAContract is IFFAContract{
         long = _long;
         short = _short;
         //call valuation API to get initialForwardPrice!!!!!!!!!!!!!11
-        initialForwardPrice = _initialForwardPrice;
+        initialForwardPrice = _initialForwardPrice;//this doesn't need to be a parameter, just set it here directly
         prevDayClosingPrice = initialForwardPrice;
         //annualRiskFreeRate = _annualRiskFreeRate;
         expirationDate = _expirationDate;

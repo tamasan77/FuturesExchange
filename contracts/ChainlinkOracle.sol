@@ -26,8 +26,9 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     bytes32 public jobId;
 
 
-    //path for API response
+    //path for API response can either be a string or a string array
     string private apiPath;
+    string[] private apiPathArray;
 
     string private apiBaseURL;
 
@@ -37,7 +38,11 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
     //fee is usually 0.1Link which is equal to (0.1 * 10 ** 18)
     uint256 public fee;
 
-    constructor(address _oracleAddress, bytes32 _jobId, address linkAddress, uint256 _fee, int _decimals, string memory _apiBaseURL, string memory _apiPath, bool _isSignedResult) {  
+    constructor(address _oracleAddress, bytes32 _jobId, 
+                address linkAddress, uint256 _fee, int _decimals, 
+                string memory _apiBaseURL, string memory _apiPath, 
+                bool _isSignedResult) 
+    {  
         if (linkAddress == address(0)) {
             setPublicChainlinkToken();
         } else {
