@@ -55,7 +55,7 @@ contract USDRFROracle is LinkPoolIntOracle {
         ""
     ) {}
 
-    function calcMaturityTranchIndex(uint contractDurationInSeconds) internal pure returns(uint) {
+    function calcMaturityTranchIndex(int contractDurationInSeconds) internal pure returns(uint) {
         if (contractDurationInSeconds <= 3628800) {// <=4 weeks
             return 1;
          } else if ((3628800 < contractDurationInSeconds) && (contractDurationInSeconds <= 6048000)) {
@@ -69,8 +69,8 @@ contract USDRFROracle is LinkPoolIntOracle {
          }
     }
 
-    function updateAPIPath(uint contractDurationInSeconds)  external {
-         setAPIPath(string(abi.encodePacked(_apiPathBase_, calcMaturityTranchIndex(contractDurationInSeconds)))); 
+    function updateAPIPath(int contractDurationInSeconds)  external {
+         setAPIPath(concetanateStringUint(_apiPathBase_, calcMaturityTranchIndex(contractDurationInSeconds))); 
     }
 
     function concetanateStringUint(string memory a, uint b) internal pure returns (string memory){

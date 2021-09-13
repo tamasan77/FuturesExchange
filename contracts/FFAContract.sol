@@ -89,7 +89,7 @@ contract FFAContract is IFFAContract{
         long = _long;
         short = _short;
         //update API path in accordance with the maturity of the contract
-        usdRiskFreeRateOracle.updateAPIPath(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate));
+        usdRiskFreeRateOracle.updateAPIPath(int(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate)));
 
         //call valuation API to get initialForwardPrice!!!!!!!!!!!!!11
         initialForwardPrice = 0;//this doesn't need to be a parameter, just set it here directly
@@ -110,7 +110,8 @@ contract FFAContract is IFFAContract{
 
     //request annual risk free rate
     function requestRiskFreeRate() public {
-        usdRiskFreeRateOracle.requestIndexPrice("");
+        usdRiskFreeRateOracle.updateAPIPath(int(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate)));
+        usdRiskFreeRateOracle.requestIndexPrice("");//do I add API key here??
     }
 
     //set annual risk free rate once job is fulfilled
@@ -130,7 +131,7 @@ contract FFAContract is IFFAContract{
 
     //request forward price
     function requestForwardPrice() public  {
-        valuationOracle.requestIndexPrice(concetenateStringsForURL(uint2str(underlyingPrice), uint2str(annualRiskFreeRate), uint2str(block.timestamp), uint2str(expirationDate)));
+        valuationOracle.requestIndexPrice(concetenateStringsForURL(uint2str(underlyingPrice), int2str(annualRiskFreeRate), uint2str(block.timestamp), uint2str(expirationDate)));
     }
 
     //set forward price once job is fulfilled
@@ -168,7 +169,14 @@ contract FFAContract is IFFAContract{
     }
 
     //parse int to string
-    
+    function int2str(int _i) internal pure returns (string memory _intAsString) {
+        if (_i >= 0) {
+            return uint2str(uint(_i));
+        } else {
+            return string(abi.encodePacked("-", uint2str(uint(-_i)))); 
+            //The only reason I used this solution is because I know that RFR can't be too many digits
+        }
+    }
 
     /*  Margin calculation
         * Initial Margin = Maintenance Margin + Exposure Margin
