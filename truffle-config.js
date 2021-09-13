@@ -47,10 +47,11 @@ module.exports = {
       networkCheckTimeout: 20000
     },
     ganache_local: {
-      provider: function() {
-        return new HDWalletProvider(process.env.MNEMONIC, "http://127.0.0.1:7545", AccountIndex)
-      },
-      network_id: 5777
+      port: 7545,
+      network_id: 5777,
+      host: "127.0.0.1",
+      gas: 97219750,
+      gasPrice: 20000000000
     }
   },
   compilers: {
@@ -59,7 +60,7 @@ module.exports = {
       settings: {
         optimizer: {
           enabled: true,
-          runs: 1
+          runs: 1000
         }
       }
     }
