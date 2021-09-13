@@ -27,7 +27,7 @@ contract FFAContract is IFFAContract{
     address internal long;
     address internal short;
     uint256 public initialForwardPrice;
-    uint public annualRiskFreeRate;
+    int public annualRiskFreeRate;
     uint256 internal expirationDate;
     uint256 private underlyingPrice;//scaled 1/100 ie. 45.07 -> 4507
     //collateral wallets
@@ -115,7 +115,7 @@ contract FFAContract is IFFAContract{
 
     //set annual risk free rate once job is fulfilled
     function setRiskFreeRate() public {
-        
+        annualRiskFreeRate = usdRiskFreeRateOracle.getSignedResult();
     }
 
     //request underlying price
@@ -166,6 +166,9 @@ contract FFAContract is IFFAContract{
         }
         return string(bstr);
     }
+
+    //parse int to string
+    
 
     /*  Margin calculation
         * Initial Margin = Maintenance Margin + Exposure Margin
