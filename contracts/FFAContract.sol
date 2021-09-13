@@ -26,7 +26,7 @@ contract FFAContract is IFFAContract{
     uint256 private sizeOfContract;
     address internal long;
     address internal short;
-    uint256 private initialForwardPrice;
+    uint256 public initialForwardPrice;
     uint public annualRiskFreeRate;
     uint256 internal expirationDate;
     uint256 private underlyingPrice;//scaled 1/100 ie. 45.07 -> 4507
@@ -67,12 +67,13 @@ contract FFAContract is IFFAContract{
         //collateralTokenAddress = _collateralTokenAddress;
         valuationOracle = new LinkPoolValuationOracle();
         underlyingOracle = new LinkPoolUintOracle(underlyingDecimals, underlyingApiURL, underlyingApiPath);
+        usdRiskFreeRateOracle = new USDRFROracle();
         contractState = ContractState.Created;
         //emit CreatedContract(decimals, sizeOfContract);
     }
 
     //initiateFFA: initiates futures contract with given parameters
-    function initiateFFA(address _long, address _short, uint256 _initialForwardPrice, 
+    function initiateFFA(address _long, address _short, /*uint256 _initialForwardPrice, */
                          uint256 _expirationDate,
                          address _longWallet, address _shortWallet, uint _exposureMarginRate,
                          uint _maintenanceMarginRate, address _collateralTokenAddress) 
@@ -87,8 +88,11 @@ contract FFAContract is IFFAContract{
         require(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate) > 0, "FFA contract has to expire in the future");
         long = _long;
         short = _short;
+        //update API path in accordance with the maturity of the contract
+        usdRiskFreeRateOracle.updateAPIPath(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate));
+
         //call valuation API to get initialForwardPrice!!!!!!!!!!!!!11
-        initialForwardPrice = _initialForwardPrice;//this doesn't need to be a parameter, just set it here directly
+        initialForwardPrice = 0;//this doesn't need to be a parameter, just set it here directly
         prevDayClosingPrice = initialForwardPrice;
         //annualRiskFreeRate = _annualRiskFreeRate;
         expirationDate = _expirationDate;
@@ -102,6 +106,16 @@ contract FFAContract is IFFAContract{
         uint initialMarginRate = exposureMarginRate + maintenanceMarginRate;
         emit Initiated(long, short, initialForwardPrice, annualRiskFreeRate, expirationDate, sizeOfContract, initialMarginRate);
         initiated_ = true;
+    }
+
+    //request annual risk free rate
+    function requestRiskFreeRate() public {
+        usdRiskFreeRateOracle.requestIndexPrice("");
+    }
+
+    //set annual risk free rate once job is fulfilled
+    function setRiskFreeRate() public {
+        
     }
 
     //request underlying price

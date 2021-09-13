@@ -47,31 +47,56 @@ contract USDRFROracle is LinkPoolIntOracle {
     string public constant _apiBaseURL_ = "https://www.quandl.com/api/v3/datasets/USTREASURY/BILLRATES.json?api_key=MY_KEY";
     //use 0 index for data array since we always want the most recent value
     string public  _apiPathBase_ = "dataset.data.0.";//correct thsi (it is not correct syntax and also it's fixed 4 Wk rate)
-    string public _apiPath_;
 
     constructor(
     ) LinkPoolIntOracle(
         _decimals_,
         _apiBaseURL_,
-        _apiPath_
+        ""
     ) {}
 
-    function updateAPIPath(uint contractDurationInSeconds) internal {
-        string memory maturityTranchIndex;
-        /* week duration calculation
-         * 1 week = 7*24*60*60 = 604800 seconds
-         */
-         if (contractDurationInSeconds <= 3628800) {// <=4 weeks
-             maturityTranchIndex = "1";
+    function calcMaturityTranchIndex(uint contractDurationInSeconds) internal pure returns(uint) {
+        if (contractDurationInSeconds <= 3628800) {// <=4 weeks
+            return 1;
          } else if ((3628800 < contractDurationInSeconds) && (contractDurationInSeconds <= 6048000)) {
-             maturityTranchIndex = "2";
+            return 2;
          } else if ((6048000 < contractDurationInSeconds) && (contractDurationInSeconds <= 11491200)) {
-             maturityTranchIndex = "3";
+            return 3;
          } else if ((11491200 < contractDurationInSeconds) && (contractDurationInSeconds <= 23587200)) {
-             maturityTranchIndex = "4";
+            return 4;
          } else {
-             maturityTranchIndex = "5";
+            return 5;
          }
-         _apiPath_ = string(abi.encodePacked(_apiPathBase_, maturityTranchIndex));
+    }
+
+    function updateAPIPath(uint contractDurationInSeconds)  external {
+         setAPIPath(string(abi.encodePacked(_apiPathBase_, calcMaturityTranchIndex(contractDurationInSeconds)))); 
+    }
+
+    function concetanateStringUint(string memory a, uint b) internal pure returns (string memory){
+        return string(abi.encodePacked(a, uint2str(b)));
+    }
+
+    //parse uint to string
+    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+        if (_i == 0) {
+            return "0";
+        }
+        uint j = _i;
+        uint len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint k = len;
+        while (_i != 0) {
+            k = k-1;
+            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        return string(bstr);
     }
 }

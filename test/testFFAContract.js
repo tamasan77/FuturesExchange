@@ -34,7 +34,7 @@ contract("FFAContract", accounts => {
         let longParty = 0;
         try {
             await ffaContractInstance.initiateFFA(longParty, shortParty, 
-                                                  initialForwardPrice, expirationDate, 
+                                                  /*initialForwardPrice,*/ expirationDate, 
                                                   web3.utils.toChecksumAddress(longWalletInstance.address), 
                                                   web3.utils.toChecksumAddress(shortWalletInstance.address), 
                                                   exposureMarginRate, maintenanceMarginRate);
@@ -48,7 +48,7 @@ contract("FFAContract", accounts => {
         shortParty = 0;
         try {
             await ffaContractInstance.initiateFFA(longParty, shortParty, 
-                                                  initialForwardPrice, expirationDate, 
+                                                  /*initialForwardPrice,*/ expirationDate, 
                                                   web3.utils.toChecksumAddress(longWalletInstance.address), 
                                                   web3.utils.toChecksumAddress(shortWalletInstance.address), 
                                                   exposureMarginRate, maintenanceMarginRate);
@@ -61,7 +61,7 @@ contract("FFAContract", accounts => {
         shortParty = accounts[3];
         try {
             await ffaContractInstance.initiateFFA(longParty, shortParty, 
-                                                  initialForwardPrice, expirationDate, 
+                                                  /*initialForwardPrice,*/ expirationDate, 
                                                   web3.utils.toChecksumAddress(longWalletInstance.address), 
                                                   web3.utils.toChecksumAddress(shortWalletInstance.address), 
                                                   exposureMarginRate, maintenanceMarginRate);
@@ -76,7 +76,7 @@ contract("FFAContract", accounts => {
         let longWalletAddress = 0;
         try {
             await ffaContractInstance.initiateFFA(longParty, shortParty, 
-                                                  initialForwardPrice, expirationDate, 
+                                                  /*initialForwardPrice,*/ expirationDate, 
                                                   longWalletAddress, 
                                                   web3.utils.toChecksumAddress(shortWalletInstance.address), 
                                                   exposureMarginRate, maintenanceMarginRate);
@@ -90,7 +90,7 @@ contract("FFAContract", accounts => {
         let shortWalletAddress = 0;
         try {
             await ffaContractInstance.initiateFFA(longParty, shortParty, 
-                                                  initialForwardPrice, expirationDate, 
+                                                  /*initialForwardPrice,*/ expirationDate, 
                                                   longWalletAddress, shortWalletAddress, 
                                                   exposureMarginRate, maintenanceMarginRate);
         } catch(error) {
@@ -101,7 +101,7 @@ contract("FFAContract", accounts => {
         shortWalletAddress = longWalletAddress;
         try {
             await ffaContractInstance.initiateFFA(longParty, shortParty, 
-                                                  initialForwardPrice, expirationDate, 
+                                                  /*initialForwardPrice,*/ expirationDate, 
                                                   longWalletAddress, shortWalletAddress, 
                                                   exposureMarginRate, maintenanceMarginRate);
         } catch(error) {
@@ -115,7 +115,7 @@ contract("FFAContract", accounts => {
         expirationDate = 935285085; //1999 date
         try {
             await ffaContractInstance.initiateFFA(longParty, shortParty, 
-                                                  initialForwardPrice, expirationDate,
+                                                  /*initialForwardPrice,*/ expirationDate,
                                                    longWalletAddress, shortWalletAddress, 
                                                    exposureMarginRate, maintenanceMarginRate);
         } catch(error) {
@@ -129,7 +129,7 @@ contract("FFAContract", accounts => {
         maintenanceMarginRate = 0;
         try {
             await ffaContractInstance.initiateFFA(longParty, shortParty, 
-                                                  initialForwardPrice, expirationDate,
+                                                  /*initialForwardPrice,*/ expirationDate,
                                                    longWalletAddress, shortWalletAddress, 
                                                    exposureMarginRate, maintenanceMarginRate);
         } catch(error) {
@@ -141,10 +141,14 @@ contract("FFAContract", accounts => {
 
         //testing inititation
         await ffaContractInstance.initiateFFA(longParty, shortParty, 
-                                              initialForwardPrice, expirationDate, 
+                                              /*initialForwardPrice,*/ expirationDate, 
                                               longWalletAddress, shortWalletAddress,
                                               exposureMarginRate, maintenanceMarginRate, 
                                               testERC20TokenInstance.address);
+        //set initial forward price after initiation for testing purposes
+        await ffaContractInstance.setInitialForwardPrice(4300);
+        await ffaContractInstance.setPrevDayClosingPrice(4300);
+        
         assert.equal(await ffaContractInstance.getContractState(), "Initiated", "Initiated state failed");
         assert.equal(await ffaContractInstance.getLong(), longParty, "Long not correct");
         assert.equal(await ffaContractInstance.getShort(), shortParty, "Short not correct");
@@ -285,7 +289,7 @@ contract("FFAContract", accounts => {
          * from the short wallet to the long wallet. This result in the long wallet's balance
          * increasing to 115000 and short wallet's balance decreasing to 85000.
          */
-    
+        
         await ffaContractInstance.markToMarket(4450);
         longWalletBalance = await longWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);
         shortWalletBalance = await shortWalletInstance.getMappedBalance(ffaContractInstance.address, testERC20TokenInstance.address);

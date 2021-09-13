@@ -42,4 +42,12 @@ contract FFAContractMock is FFAContract {
     function compareStrings(string memory a, string memory b) public pure returns (bool) {
         return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
     }  
+
+    function setInitialForwardPrice(uint newInitialForwardPrice) external {
+        initialForwardPrice = newInitialForwardPrice;
+    }
+
+    function setPrevDayClosingPrice(uint newPrevDayClosingPrice) external {
+        prevDayClosingPrice = newPrevDayClosingPrice;
+    }
 }

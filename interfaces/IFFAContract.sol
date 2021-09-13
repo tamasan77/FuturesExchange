@@ -12,7 +12,7 @@ interface IFFAContract {
     event Settled(address long, address short, uint256 expirationDate, int256 profitAndLoss);
     event Defaulted(uint256 defaultDate, address defaultingParty);
 
-    function initiateFFA(address _long, address _short, uint256 _forwardPrice, 
+    function initiateFFA(address _long, address _short, /*uint256 _forwardPrice, */
                             uint256 _expirationDate,
                              address _longWallet, address _shortWallet, 
                              uint exposureMarginRate, uint maintenanceMarginRate, 

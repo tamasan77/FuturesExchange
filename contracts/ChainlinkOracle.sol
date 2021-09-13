@@ -27,8 +27,7 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
 
 
     //path for API response can either be a string or a string array
-    string private apiPath;
-    string[] private apiPathArray;
+    string internal apiPath;
 
     string private apiBaseURL;
 
@@ -147,6 +146,10 @@ contract ChainlinkOracle is ChainlinkClient, Ownable,  IChainlinkOracle{
 
     function getSignedResult() external view returns (int256) {
         return signedResult;
+    }
+
+    function setAPIPath(string memory newAPIPath) internal {
+        apiPath = newAPIPath;
     }
 }
 
