@@ -50,7 +50,7 @@ module.exports = {
       port: 7545,
       network_id: 5777,
       host: "127.0.0.1",
-      gas: 97219750,
+      gas: 3721975000,
       gasPrice: 20000000000
     }
   },

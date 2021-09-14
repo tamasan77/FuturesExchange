@@ -14,28 +14,25 @@ contract FFAFactory {
     address[] private ffaContracts;
 
     event Created(string name, string symbol, uint256 sizeOfContract);
-
+    
     function createFFAContract(
         string memory name, 
         string memory symbol,
         uint256 sizeOfContract,
         string memory underlyingApiURL,
         string memory underlyingApiPath,
-        int underlyingDecimals
-        /* margin rate representation:
-         * Scaled 1/100
-         * 1.25% -> 125
-         */
+        int256 underlyingDecimals
         ) 
         external returns (address ffaContractAddress_) {
+            /*
             require(bytes(underlyingApiURL).length != 0, "url cannot be empty string");
             require(bytes(underlyingApiPath).length != 0, "url cannot be empty string");
             require(underlyingDecimals != 0, "decimals can't be zero");
-            require(sizeOfContract > 0, "contract size cannot be zero");
-
+            require(sizeOfContract > 0, "contract size cannot be zero");*/
             ffaContractAddress_ = address(new FFAContract(name, symbol, sizeOfContract, underlyingApiURL, underlyingApiPath, underlyingDecimals));
-            require(keccak256(abi.encodePacked(FFAContract(ffaContractAddress_).getContractState())) == keccak256(abi.encodePacked("Created")), "contract not created");
-            ffaContracts.push(ffaContractAddress_);
+            //ffaContractAddress_ = address(new FFAContract(name, symbol, sizeOfContract, underlyingApiURL, underlyingApiPath, underlyingDecimals));
+            //require(keccak256(abi.encodePacked(FFAContract(ffaContractAddress_).getContractState())) == keccak256(abi.encodePacked("Created")), "contract not created");
+            //ffaContracts.push(ffaContractAddress_);
             emit Created(name, symbol, sizeOfContract);
     }
 

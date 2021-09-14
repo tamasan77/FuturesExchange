@@ -10558,13 +10558,13 @@
         2088
       ],
       "IChainlinkOracle": [
-        6091
+        6004
       ],
       "LinkPoolIntOracle": [
-        5553
+        5466
       ],
       "LinkPoolOracle": [
-        5596
+        5509
       ],
       "LinkTokenInterface": [
         1007
@@ -10582,12 +10582,12 @@
         1136
       ]
     },
-    "id": 5554,
+    "id": 5467,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 5529,
+        "id": 5442,
         "literals": [
           "solidity",
           "^",
@@ -10600,11 +10600,11 @@
       {
         "absolutePath": "project:/contracts/Oracles/LinkPoolOracles/LinkPoolOracle.sol",
         "file": "./LinkPoolOracle.sol",
-        "id": 5530,
+        "id": 5443,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 5554,
-        "sourceUnit": 5597,
+        "scope": 5467,
+        "sourceUnit": 5510,
         "src": "69:30:26",
         "symbolAliases": [],
         "unitAlias": ""
@@ -10614,13 +10614,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 5531,
+              "id": 5444,
               "name": "LinkPoolOracle",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 5596,
+              "referencedDeclaration": 5509,
               "src": "133:14:26"
             },
-            "id": 5532,
+            "id": 5445,
             "nodeType": "InheritanceSpecifier",
             "src": "133:14:26"
           }
@@ -10628,12 +10628,12 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 5553,
+        "id": 5466,
         "linearizedBaseContracts": [
-          5553,
-          5596,
+          5466,
+          5509,
           4108,
-          6091,
+          6004,
           2192,
           3474,
           799
@@ -10645,12 +10645,12 @@
           {
             "constant": false,
             "functionSelector": "4665e65a",
-            "id": 5535,
+            "id": 5448,
             "mutability": "mutable",
             "name": "__jobId",
             "nameLocation": "192:7:26",
             "nodeType": "VariableDeclaration",
-            "scope": 5553,
+            "scope": 5466,
             "src": "177:59:26",
             "stateVariable": true,
             "storageLocation": "default",
@@ -10659,7 +10659,7 @@
               "typeString": "bytes32"
             },
             "typeName": {
-              "id": 5533,
+              "id": 5446,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
               "src": "177:7:26",
@@ -10670,7 +10670,7 @@
             },
             "value": {
               "hexValue": "3236343966633463613833633430313662666432643135373635353932626565",
-              "id": 5534,
+              "id": 5447,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -10688,23 +10688,23 @@
           },
           {
             "body": {
-              "id": 5551,
+              "id": 5464,
               "nodeType": "Block",
               "src": "483:8:26",
               "statements": []
             },
-            "id": 5552,
+            "id": 5465,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [
               {
                 "arguments": [
                   {
-                    "id": 5544,
+                    "id": 5457,
                     "name": "__jobId",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5535,
+                    "referencedDeclaration": 5448,
                     "src": "388:7:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
@@ -10712,11 +10712,11 @@
                     }
                   },
                   {
-                    "id": 5545,
+                    "id": 5458,
                     "name": "__decimals",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5537,
+                    "referencedDeclaration": 5450,
                     "src": "406:10:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_int256",
@@ -10724,11 +10724,11 @@
                     }
                   },
                   {
-                    "id": 5546,
+                    "id": 5459,
                     "name": "__apiBaseURL",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5539,
+                    "referencedDeclaration": 5452,
                     "src": "427:12:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_memory_ptr",
@@ -10736,11 +10736,11 @@
                     }
                   },
                   {
-                    "id": 5547,
+                    "id": 5460,
                     "name": "__apiPath",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5541,
+                    "referencedDeclaration": 5454,
                     "src": "450:9:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_memory_ptr",
@@ -10749,7 +10749,7 @@
                   },
                   {
                     "hexValue": "74727565",
-                    "id": 5548,
+                    "id": 5461,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -10764,13 +10764,13 @@
                     "value": "true"
                   }
                 ],
-                "id": 5549,
+                "id": 5462,
                 "kind": "baseConstructorSpecifier",
                 "modifierName": {
-                  "id": 5543,
+                  "id": 5456,
                   "name": "LinkPoolOracle",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 5596,
+                  "referencedDeclaration": 5509,
                   "src": "363:14:26"
                 },
                 "nodeType": "ModifierInvocation",
@@ -10781,17 +10781,17 @@
             "nameLocation": "-1:-1:-1",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 5542,
+              "id": 5455,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 5537,
+                  "id": 5450,
                   "mutability": "mutable",
                   "name": "__decimals",
                   "nameLocation": "272:10:26",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5552,
+                  "scope": 5465,
                   "src": "268:14:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -10800,7 +10800,7 @@
                     "typeString": "int256"
                   },
                   "typeName": {
-                    "id": 5536,
+                    "id": 5449,
                     "name": "int",
                     "nodeType": "ElementaryTypeName",
                     "src": "268:3:26",
@@ -10813,12 +10813,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 5539,
+                  "id": 5452,
                   "mutability": "mutable",
                   "name": "__apiBaseURL",
                   "nameLocation": "308:12:26",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5552,
+                  "scope": 5465,
                   "src": "294:26:26",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -10827,7 +10827,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 5538,
+                    "id": 5451,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "294:6:26",
@@ -10840,12 +10840,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 5541,
+                  "id": 5454,
                   "mutability": "mutable",
                   "name": "__apiPath",
                   "nameLocation": "346:9:26",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5552,
+                  "scope": 5465,
                   "src": "332:23:26",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -10854,7 +10854,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 5540,
+                    "id": 5453,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "332:6:26",
@@ -10869,19 +10869,19 @@
               "src": "257:105:26"
             },
             "returnParameters": {
-              "id": 5550,
+              "id": 5463,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "483:0:26"
             },
-            "scope": 5553,
+            "scope": 5466,
             "src": "245:246:26",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 5554,
+        "scope": 5467,
         "src": "103:391:26",
         "usedErrors": []
       }
@@ -10919,13 +10919,13 @@
         2088
       ],
       "IChainlinkOracle": [
-        6091
+        6004
       ],
       "LinkPoolIntOracle": [
-        5553
+        5466
       ],
       "LinkPoolOracle": [
-        5596
+        5509
       ],
       "LinkTokenInterface": [
         1007
@@ -10943,12 +10943,12 @@
         1136
       ]
     },
-    "id": 5554,
+    "id": 5467,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 5529,
+        "id": 5442,
         "literals": [
           "solidity",
           "^",
@@ -10961,11 +10961,11 @@
       {
         "absolutePath": "project:/contracts/Oracles/LinkPoolOracles/LinkPoolOracle.sol",
         "file": "./LinkPoolOracle.sol",
-        "id": 5530,
+        "id": 5443,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 5554,
-        "sourceUnit": 5597,
+        "scope": 5467,
+        "sourceUnit": 5510,
         "src": "69:30:26",
         "symbolAliases": [],
         "unitAlias": ""
@@ -10975,13 +10975,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 5531,
+              "id": 5444,
               "name": "LinkPoolOracle",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 5596,
+              "referencedDeclaration": 5509,
               "src": "133:14:26"
             },
-            "id": 5532,
+            "id": 5445,
             "nodeType": "InheritanceSpecifier",
             "src": "133:14:26"
           }
@@ -10989,12 +10989,12 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 5553,
+        "id": 5466,
         "linearizedBaseContracts": [
-          5553,
-          5596,
+          5466,
+          5509,
           4108,
-          6091,
+          6004,
           2192,
           3474,
           799
@@ -11006,12 +11006,12 @@
           {
             "constant": false,
             "functionSelector": "4665e65a",
-            "id": 5535,
+            "id": 5448,
             "mutability": "mutable",
             "name": "__jobId",
             "nameLocation": "192:7:26",
             "nodeType": "VariableDeclaration",
-            "scope": 5553,
+            "scope": 5466,
             "src": "177:59:26",
             "stateVariable": true,
             "storageLocation": "default",
@@ -11020,7 +11020,7 @@
               "typeString": "bytes32"
             },
             "typeName": {
-              "id": 5533,
+              "id": 5446,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
               "src": "177:7:26",
@@ -11031,7 +11031,7 @@
             },
             "value": {
               "hexValue": "3236343966633463613833633430313662666432643135373635353932626565",
-              "id": 5534,
+              "id": 5447,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -11049,23 +11049,23 @@
           },
           {
             "body": {
-              "id": 5551,
+              "id": 5464,
               "nodeType": "Block",
               "src": "483:8:26",
               "statements": []
             },
-            "id": 5552,
+            "id": 5465,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [
               {
                 "arguments": [
                   {
-                    "id": 5544,
+                    "id": 5457,
                     "name": "__jobId",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5535,
+                    "referencedDeclaration": 5448,
                     "src": "388:7:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
@@ -11073,11 +11073,11 @@
                     }
                   },
                   {
-                    "id": 5545,
+                    "id": 5458,
                     "name": "__decimals",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5537,
+                    "referencedDeclaration": 5450,
                     "src": "406:10:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_int256",
@@ -11085,11 +11085,11 @@
                     }
                   },
                   {
-                    "id": 5546,
+                    "id": 5459,
                     "name": "__apiBaseURL",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5539,
+                    "referencedDeclaration": 5452,
                     "src": "427:12:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_memory_ptr",
@@ -11097,11 +11097,11 @@
                     }
                   },
                   {
-                    "id": 5547,
+                    "id": 5460,
                     "name": "__apiPath",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 5541,
+                    "referencedDeclaration": 5454,
                     "src": "450:9:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_memory_ptr",
@@ -11110,7 +11110,7 @@
                   },
                   {
                     "hexValue": "74727565",
-                    "id": 5548,
+                    "id": 5461,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -11125,13 +11125,13 @@
                     "value": "true"
                   }
                 ],
-                "id": 5549,
+                "id": 5462,
                 "kind": "baseConstructorSpecifier",
                 "modifierName": {
-                  "id": 5543,
+                  "id": 5456,
                   "name": "LinkPoolOracle",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 5596,
+                  "referencedDeclaration": 5509,
                   "src": "363:14:26"
                 },
                 "nodeType": "ModifierInvocation",
@@ -11142,17 +11142,17 @@
             "nameLocation": "-1:-1:-1",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 5542,
+              "id": 5455,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 5537,
+                  "id": 5450,
                   "mutability": "mutable",
                   "name": "__decimals",
                   "nameLocation": "272:10:26",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5552,
+                  "scope": 5465,
                   "src": "268:14:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -11161,7 +11161,7 @@
                     "typeString": "int256"
                   },
                   "typeName": {
-                    "id": 5536,
+                    "id": 5449,
                     "name": "int",
                     "nodeType": "ElementaryTypeName",
                     "src": "268:3:26",
@@ -11174,12 +11174,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 5539,
+                  "id": 5452,
                   "mutability": "mutable",
                   "name": "__apiBaseURL",
                   "nameLocation": "308:12:26",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5552,
+                  "scope": 5465,
                   "src": "294:26:26",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -11188,7 +11188,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 5538,
+                    "id": 5451,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "294:6:26",
@@ -11201,12 +11201,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 5541,
+                  "id": 5454,
                   "mutability": "mutable",
                   "name": "__apiPath",
                   "nameLocation": "346:9:26",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5552,
+                  "scope": 5465,
                   "src": "332:23:26",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -11215,7 +11215,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 5540,
+                    "id": 5453,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "332:6:26",
@@ -11230,19 +11230,19 @@
               "src": "257:105:26"
             },
             "returnParameters": {
-              "id": 5550,
+              "id": 5463,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "483:0:26"
             },
-            "scope": 5553,
+            "scope": 5466,
             "src": "245:246:26",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 5554,
+        "scope": 5467,
         "src": "103:391:26",
         "usedErrors": []
       }
@@ -11255,7 +11255,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.2",
-  "updatedAt": "2021-09-13T15:41:16.659Z",
+  "updatedAt": "2021-09-14T17:02:23.100Z",
   "devdoc": {
     "kind": "dev",
     "methods": {

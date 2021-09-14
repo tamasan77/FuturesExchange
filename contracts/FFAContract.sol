@@ -20,10 +20,10 @@ contract FFAContract is IFFAContract{
     //state of contract
     enum ContractState {Created, Initiated, Settled, Defaulted}
     //contract detail
-    string private name;
-    string private symbol;
+    string public name;
+    string public symbol;
     ContractState internal contractState;
-    uint256 private sizeOfContract;
+    uint256 private sizeOfContract; //I should move this to initiation!!
     address internal long;
     address internal short;
     uint256 public initialForwardPrice;
@@ -55,7 +55,7 @@ contract FFAContract is IFFAContract{
             uint256 _sizeOfContract,
             string memory _underlyingApiURL,
             string memory _underlyingApiPath,
-            int _underlyingDecimals
+            int256 _underlyingDecimals
             //address _collateralTokenAddress,
     ) {
         name = _name;
@@ -65,9 +65,10 @@ contract FFAContract is IFFAContract{
         underlyingApiURL = _underlyingApiURL;
         underlyingDecimals = _underlyingDecimals;
         //collateralTokenAddress = _collateralTokenAddress;
+        /*
         valuationOracle = new LinkPoolValuationOracle();
-        underlyingOracle = new LinkPoolUintOracle(underlyingDecimals, underlyingApiURL, underlyingApiPath);
-        usdRiskFreeRateOracle = new USDRFROracle();
+        underlyingOracleAddress = new LinkPoolUintOracle(underlyingDecimals, underlyingApiURL, underlyingApiPath);
+        usdRiskFreeRateOracle = new USDRFROracle();*/
         contractState = ContractState.Created;
         //emit CreatedContract(decimals, sizeOfContract);
     }
@@ -111,7 +112,7 @@ contract FFAContract is IFFAContract{
     //request annual risk free rate
     function requestRiskFreeRate() public {
         usdRiskFreeRateOracle.updateAPIPath(int(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate)));
-        usdRiskFreeRateOracle.requestIndexPrice("");//do I add API key here??
+        usdRiskFreeRateOracle.requestIndexPrice("");//do I add my API key here??
     }
 
     //set annual risk free rate once job is fulfilled
