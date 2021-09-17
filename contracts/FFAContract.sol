@@ -6,14 +6,14 @@ import "../utils/BokkyPooBahsDateTimeLibrary.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "../interfaces/IFFAContract.sol";
-import "./ChainlinkOracle.sol";
 import "./CollateralWallet.sol";
 import "./Oracles/LinkPoolOracles/LinkPoolValuationOracle.sol";
 import "./Oracles/LinkPoolOracles/LinkPoolUintOracle.sol";
 import "./Oracles/LinkPoolOracles/USDRFROracle.sol";
+
+import "./Oracles/LinkPoolOracles/LinkPoolIntOracle.sol";
 
 contract FFAContract is IFFAContract{
     using SafeERC20 for IERC20;
@@ -44,9 +44,14 @@ contract FFAContract is IFFAContract{
     string private underlyingApiURL;
     string private underlyingApiPath;
     int public underlyingDecimals;
+    /*
     LinkPoolValuationOracle valuationOracle;
     LinkPoolUintOracle underlyingOracle;
     USDRFROracle usdRiskFreeRateOracle;
+    */
+    address payable valuationOracleAddress;
+    address payable underlyingOracleAddress;
+    address payable usdRiskFreeRateOracleAddress;
     uint8 private rfrMaturityTranchIndex;
 
     constructor(
@@ -56,7 +61,6 @@ contract FFAContract is IFFAContract{
             string memory _underlyingApiURL,
             string memory _underlyingApiPath,
             int256 _underlyingDecimals
-            //address _collateralTokenAddress,
     ) {
         name = _name;
         symbol = _symbol;
@@ -64,11 +68,14 @@ contract FFAContract is IFFAContract{
         underlyingApiPath = _underlyingApiPath;
         underlyingApiURL = _underlyingApiURL;
         underlyingDecimals = _underlyingDecimals;
-        //collateralTokenAddress = _collateralTokenAddress;
         /*
         valuationOracle = new LinkPoolValuationOracle();
-        underlyingOracleAddress = new LinkPoolUintOracle(underlyingDecimals, underlyingApiURL, underlyingApiPath);
+        underlyingOracle = new LinkPoolUintOracle(underlyingDecimals, underlyingApiURL, underlyingApiPath);
         usdRiskFreeRateOracle = new USDRFROracle();*/
+        
+        valuationOracleAddress = payable(address(new LinkPoolValuationOracle()));
+        underlyingOracleAddress = payable(address(new LinkPoolUintOracle(underlyingDecimals, underlyingApiURL, underlyingApiPath)));
+        usdRiskFreeRateOracleAddress = payable(address(new USDRFROracle()));
         contractState = ContractState.Created;
         //emit CreatedContract(decimals, sizeOfContract);
     }
@@ -90,7 +97,8 @@ contract FFAContract is IFFAContract{
         long = _long;
         short = _short;
         //update API path in accordance with the maturity of the contract
-        usdRiskFreeRateOracle.updateAPIPath(int(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate)));
+        USDRFROracle(usdRiskFreeRateOracleAddress).updateAPIPath(int(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate)));
+        //usdRiskFreeRateOracle.updateAPIPath(int(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, _expirationDate)));
 
         //call valuation API to get initialForwardPrice!!!!!!!!!!!!!11
         initialForwardPrice = 0;//this doesn't need to be a parameter, just set it here directly
@@ -111,33 +119,42 @@ contract FFAContract is IFFAContract{
 
     //request annual risk free rate
     function requestRiskFreeRate() public {
+        /*
         usdRiskFreeRateOracle.updateAPIPath(int(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate)));
         usdRiskFreeRateOracle.requestIndexPrice("");//do I add my API key here??
+        */
+        USDRFROracle(usdRiskFreeRateOracleAddress).updateAPIPath(int(BokkyPooBahsDateTimeLibrary.diffSeconds(block.timestamp, expirationDate)));
+        USDRFROracle(usdRiskFreeRateOracleAddress).requestIndexPrice("");//do I add my API key here??
     }
 
     //set annual risk free rate once job is fulfilled
     function setRiskFreeRate() public {
-        annualRiskFreeRate = usdRiskFreeRateOracle.getSignedResult();
+        //annualRiskFreeRate = usdRiskFreeRateOracle.getSignedResult();
+        annualRiskFreeRate = USDRFROracle(usdRiskFreeRateOracleAddress).getSignedResult();
     }
 
     //request underlying price
     function requestUnderlyingPrice() public {
-        underlyingOracle.requestIndexPrice("");
+        //underlyingOracle.requestIndexPrice("");
+        LinkPoolUintOracle(underlyingOracleAddress).requestIndexPrice("");
     }
 
     //set underlying price once job is fulfilled
     function setUnderlyingPrice() public {
-        underlyingPrice = underlyingOracle.getUnsignedResult();
+        //underlyingPrice = underlyingOracle.getUnsignedResult();
+        LinkPoolUintOracle(underlyingOracleAddress).getUnsignedResult();
     }
 
     //request forward price
     function requestForwardPrice() public  {
-        valuationOracle.requestIndexPrice(concetenateStringsForURL(uint2str(underlyingPrice), int2str(annualRiskFreeRate), uint2str(block.timestamp), uint2str(expirationDate)));
+        //valuationOracle.requestIndexPrice(concetenateStringsForURL(uint2str(underlyingPrice), int2str(annualRiskFreeRate), uint2str(block.timestamp), uint2str(expirationDate)));
+        LinkPoolValuationOracle(valuationOracleAddress).requestIndexPrice(concetenateStringsForURL(uint2str(underlyingPrice), int2str(annualRiskFreeRate), uint2str(block.timestamp), uint2str(expirationDate)));
     }
 
     //set forward price once job is fulfilled
     function getForwardPrice() public view returns(uint256){
-        return valuationOracle.getUnsignedResult();
+        //return valuationOracle.getUnsignedResult();
+        return LinkPoolValuationOracle(valuationOracleAddress).getUnsignedResult();
     }
 
     //concatanate strings and add /  where needed for URL

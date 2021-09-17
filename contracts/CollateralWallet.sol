@@ -24,23 +24,9 @@ contract CollateralWallet is Pausable, Ownable{//IERC20Metadata
 
     //add events here
 
-    constructor (/*IERC20[] memory _tokens,*/ string memory _name) {
+    constructor (string memory _name) {
         name = _name;
-        //tokens = _tokens;
     }
-
-    //receive and fallback functions
-    /*
-    receive () external payable {
-    
-    }
-    */
-    /*
-    fallback () external payable {
-
-    }*/
-
-
     //setters
     //ADD MODIFIERS FOR SAFETY!!!!!!!!!!!!
     function setNewBalance(address ffaContractAddress, address collateralTokenAddress, uint256 newBalance) external {

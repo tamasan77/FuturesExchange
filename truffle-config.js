@@ -50,7 +50,7 @@ module.exports = {
       port: 7545,
       network_id: 5777,
       host: "127.0.0.1",
-      gas: 3721975000,
+      gas: 372197500,
       gasPrice: 20000000000
     }
   },
@@ -60,7 +60,7 @@ module.exports = {
       settings: {
         optimizer: {
           enabled: true,
-          runs: 1000
+          runs: 200
         }
       }
     }

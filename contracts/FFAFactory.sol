@@ -24,15 +24,13 @@ contract FFAFactory {
         int256 underlyingDecimals
         ) 
         external returns (address ffaContractAddress_) {
-            /*
             require(bytes(underlyingApiURL).length != 0, "url cannot be empty string");
             require(bytes(underlyingApiPath).length != 0, "url cannot be empty string");
             require(underlyingDecimals != 0, "decimals can't be zero");
-            require(sizeOfContract > 0, "contract size cannot be zero");*/
+            require(sizeOfContract > 0, "contract size cannot be zero");
             ffaContractAddress_ = address(new FFAContract(name, symbol, sizeOfContract, underlyingApiURL, underlyingApiPath, underlyingDecimals));
-            //ffaContractAddress_ = address(new FFAContract(name, symbol, sizeOfContract, underlyingApiURL, underlyingApiPath, underlyingDecimals));
-            //require(keccak256(abi.encodePacked(FFAContract(ffaContractAddress_).getContractState())) == keccak256(abi.encodePacked("Created")), "contract not created");
-            //ffaContracts.push(ffaContractAddress_);
+            require(keccak256(abi.encodePacked(FFAContract(ffaContractAddress_).getContractState())) == keccak256(abi.encodePacked("Created")), "contract not created");
+            ffaContracts.push(ffaContractAddress_);
             emit Created(name, symbol, sizeOfContract);
     }
 
